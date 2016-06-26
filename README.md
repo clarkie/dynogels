@@ -90,7 +90,7 @@ var BlogPost = vogels.define('BlogPost', {
 });
 ```
 
-### Create Tables for all defined modules
+### Create Tables for all defined models
 
 ```js
 vogels.createTables(function(err) {
@@ -429,13 +429,14 @@ BlogPost.destroy({email: 'foo@example.com', title: 'Another Post'}, function (er
 `Model.destroy` accepts options to pass to DynamoDB when making the deleteItem request
 
 ```js
-Account.destroy('foo@example.com', {ReturnValues: true}, function (err, acc) {
+Account.destroy('foo@example.com', {ReturnValues: 'ALL_OLD'}, function (err, acc) {
   console.log('account deleted');
   console.log('deleted account name', acc.get('name'));
 });
 
 Account.destroy('foo@example.com', {expected: {age: 22}}, function (err) {
   console.log('account deleted if the age was 22');
+});
 ```
 
 

@@ -1,6 +1,6 @@
-# vogels [![Build Status](https://travis-ci.org/ryanfitz/vogels.png?branch=master)](https://travis-ci.org/ryanfitz/vogels)
+# dynogels [![Build Status](https://travis-ci.org/clarkie/dynogels.png?branch=master)](https://travis-ci.org/clarkie/dynogels)
 
-vogels is a [DynamoDB][5] data mapper for [node.js][1].
+Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from [Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name. 
 
 ## Features
 * Simplified data modeling and mapping to DynamoDB types
@@ -13,13 +13,13 @@ vogels is a [DynamoDB][5] data mapper for [node.js][1].
 
 ## Installation
 
-    npm install vogels
+    npm install dynogels
 
 ## Getting Started
 First, you need to configure the [AWS SDK][2] with your credentials.
 
 ```js
-var vogels = require('vogels');
+var vogels = require('dynogels');
 vogels.AWS.config.loadFromPath('credentials.json');
 ```
 
@@ -1064,7 +1064,7 @@ See the [examples][0] for more working sample code.
 
 ### Support
 
-Vogels is provided as-is, free of charge. For support, you have a few choices:
+Dynogels is provided as-is, free of charge. For support, you have a few choices:
 
 - Ask your support question on [Stackoverflow.com](http://stackoverflow.com), and tag your question with **vogels**.
 - If you believe you have found a bug in vogels, please submit a support ticket on the [Github Issues page for vogels](http://github.com/ryanfitz/vogels/issues). We'll get to them as soon as we can.
@@ -1073,6 +1073,7 @@ Vogels is provided as-is, free of charge. For support, you have a few choices:
 
 ### Maintainers
 
+- [Clarkie](https://github.com/clarkie) ([@clarkieclarkie](https://twitter.com/clarkieclarkie))
 - [Ryan Fitzgerald](http://github.com/ryanfitz) ([@ryanfitz](https://twitter.com/theryanfitz))
 
 ### License

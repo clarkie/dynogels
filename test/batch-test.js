@@ -15,7 +15,7 @@ describe('Batch', function () {
       table;
 
   beforeEach(function () {
-    serializer = helper.mockSerializer(),
+    serializer = helper.mockSerializer();
 
     table = helper.mockTable();
     table.serializer = Serializer;

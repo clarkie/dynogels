@@ -23,7 +23,7 @@ describe('table', function () {
       logger;
 
   beforeEach(function () {
-    serializer = helper.mockSerializer(),
+    serializer = helper.mockSerializer();
     docClient = helper.mockDocClient();
     dynamodb = docClient.service;
     logger = helper.testLogger();

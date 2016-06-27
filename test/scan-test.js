@@ -30,7 +30,7 @@ describe('Scan', function () {
       table;
 
   beforeEach(function () {
-    serializer = helper.mockSerializer(),
+    serializer = helper.mockSerializer();
 
     table = helper.mockTable();
     table.tableName = function () {

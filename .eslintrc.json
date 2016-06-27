@@ -23,7 +23,6 @@
     "no-param-reassign": [0],
     "no-shadow": [0],
     "padded-blocks": [0],
-    "no-sequences": [0],
     "object-shorthand": [0],
     "no-new": [0],
     "no-underscore-dangle": [0],

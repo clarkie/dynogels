@@ -1,10 +1,10 @@
 'use strict';
 
-var sinon = require('sinon'),
-    AWS = require('aws-sdk'),
-    Table = require('../lib/table'),
-    _ = require('lodash'),
-    bunyan = require('bunyan');
+var sinon = require('sinon');
+var AWS = require('aws-sdk');
+var Table = require('../lib/table');
+var _ = require('lodash');
+var bunyan = require('bunyan');
 
 exports.mockDynamoDB = function () {
   var opts = { endpoint: 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };

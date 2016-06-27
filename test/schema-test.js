@@ -1,11 +1,11 @@
 'use strict';
 
-var Schema = require('../lib/schema'),
-    chai = require('chai'),
-    expect = chai.expect,
-    Joi = require('joi'),
-    _ = require('lodash'),
-    sinon = require('sinon');
+var Schema = require('../lib/schema');
+var chai = require('chai');
+var expect = chai.expect;
+var Joi = require('joi');
+var _ = require('lodash');
+var sinon = require('sinon');
 
 chai.should();
 

@@ -1,13 +1,13 @@
 'use strict';
 
-var vogels = require('../index'),
-    AWS = require('aws-sdk'),
-    helper = require('./test-helper'),
-    Table = require('../lib/table'),
-    chai = require('chai'),
-    expect = chai.expect,
-    Joi = require('joi'),
-    sinon = require('sinon');
+var vogels = require('../index');
+var AWS = require('aws-sdk');
+var helper = require('./test-helper');
+var Table = require('../lib/table');
+var chai = require('chai');
+var expect = chai.expect;
+var Joi = require('joi');
+var sinon = require('sinon');
 
 chai.should();
 

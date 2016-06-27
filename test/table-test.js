@@ -1,26 +1,26 @@
 'use strict';
 
-var helper = require('./test-helper'),
-    _ = require('lodash'),
-    Joi = require('joi'),
-    Table = require('../lib/table'),
-    Schema = require('../lib/schema'),
-    Query = require('../lib//query'),
-    Scan = require('../lib//scan'),
-    Item = require('../lib/item'),
-    realSerializer = require('../lib/serializer'),
-    chai = require('chai'),
-    expect = chai.expect,
-    sinon = require('sinon');
+var helper = require('./test-helper');
+var _ = require('lodash');
+var Joi = require('joi');
+var Table = require('../lib/table');
+var Schema = require('../lib/schema');
+var Query = require('../lib//query');
+var Scan = require('../lib//scan');
+var Item = require('../lib/item');
+var realSerializer = require('../lib/serializer');
+var chai = require('chai');
+var expect = chai.expect;
+var sinon = require('sinon');
 
 chai.should();
 
 describe('table', function () {
-  var table,
-      serializer,
-      docClient,
-      dynamodb,
-      logger;
+  var table;
+  var serializer;
+  var docClient;
+  var dynamodb;
+  var logger;
 
   beforeEach(function () {
     serializer = helper.mockSerializer();
@@ -703,12 +703,12 @@ describe('table', function () {
 
     it('should accept falsy key and range values', function (done) {
       var config = {
-          hashKey: 'userId',
-          rangeKey: 'timeOffset',
-          schema: {
-              hashKey: Joi.number(),
-              rangeKey: Joi.number()
-          }
+        hashKey: 'userId',
+        rangeKey: 'timeOffset',
+        schema: {
+          hashKey: Joi.number(),
+          rangeKey: Joi.number()
+        }
       };
 
       var s = new Schema(config);
@@ -716,9 +716,9 @@ describe('table', function () {
       table = new Table('users', s, realSerializer, docClient, logger);
 
       var request = {
-          TableName: 'users',
-          Key: { userId: 0, timeOffset: 0 },
-          ReturnValues: 'ALL_NEW'
+        TableName: 'users',
+        Key: { userId: 0, timeOffset: 0 },
+        ReturnValues: 'ALL_NEW'
       };
 
       var returnedAttributes = { userId: 0, timeOffset: 0 };
@@ -727,12 +727,12 @@ describe('table', function () {
 
       var item = { userId: 0, timeOffset: 0 };
       table.update(item, function (err, user) {
-          user.should.be.instanceof(Item);
+        user.should.be.instanceof(Item);
 
-          user.get('userId').should.equal(0);
-          user.get('timeOffset').should.equal(0);
+        user.get('userId').should.equal(0);
+        user.get('timeOffset').should.equal(0);
 
-          done();
+        done();
       });
     });
 

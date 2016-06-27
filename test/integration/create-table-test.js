@@ -1,11 +1,11 @@
 'use strict';
 
-var vogels = require('../../index'),
-    chai = require('chai'),
-    expect = chai.expect,
-    _ = require('lodash'),
-    helper = require('../test-helper'),
-    Joi = require('joi');
+var vogels = require('../../index');
+var chai = require('chai');
+var expect = chai.expect;
+var _ = require('lodash');
+var helper = require('../test-helper');
+var Joi = require('joi');
 
 chai.should();
 
@@ -359,8 +359,8 @@ describe('Create Tables Integration Tests', function () {
 
 describe('Update Tables Integration Tests', function () {
   this.timeout(0);
-  var Tweet,
-      tableName;
+  var Tweet;
+  var tableName;
 
   before(function (done) {
     vogels.dynamoDriver(helper.realDynamoDB());

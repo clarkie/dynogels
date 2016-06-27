@@ -1,13 +1,13 @@
 'use strict';
 
-var vogels = require('../../index'),
-    chai = require('chai'),
-    expect = chai.expect,
-    async = require('async'),
-    _ = require('lodash'),
-    helper = require('../test-helper'),
-    uuid = require('node-uuid'),
-    Joi = require('joi');
+var vogels = require('../../index');
+var chai = require('chai');
+var expect = chai.expect;
+var async = require('async');
+var _ = require('lodash');
+var helper = require('../test-helper');
+var uuid = require('node-uuid');
+var Joi = require('joi');
 
 chai.should();
 
@@ -26,50 +26,50 @@ internals.loadSeedData = function (callback) {
 
   async.parallel([
     function (callback) {
-    async.times(15, function (n, next) {
-      var roles = ['user'];
-      if (n % 3 === 0) {
-        roles = ['admin', 'editor'];
-      } else if (n % 5 === 0) {
-        roles = ['qa', 'dev'];
-      }
+      async.times(15, function (n, next) {
+        var roles = ['user'];
+        if (n % 3 === 0) {
+          roles = ['admin', 'editor'];
+        } else if (n % 5 === 0) {
+          roles = ['qa', 'dev'];
+        }
 
-      User.create({ id: internals.userId(n), email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n + 10, roles: roles }, next);
-    }, callback);
-  },
-  function (callback) {
-    async.times(15 * 5, function (n, next) {
-      var userId = internals.userId(n % 5);
-      var p = { UserId: userId, content: 'I love tweeting, in fact Ive tweeted ' + n + ' times', num: n };
-      if (n % 3 === 0) {
-        p.tag = '#test';
-      }
+        User.create({ id: internals.userId(n), email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n + 10, roles: roles }, next);
+      }, callback);
+    },
+    function (callback) {
+      async.times(15 * 5, function (n, next) {
+        var userId = internals.userId(n % 5);
+        var p = { UserId: userId, content: 'I love tweeting, in fact Ive tweeted ' + n + ' times', num: n };
+        if (n % 3 === 0) {
+          p.tag = '#test';
+        }
 
-      return Tweet.create(p, next);
-    }, callback);
-  },
-  function (callback) {
-    async.times(10, function (n, next) {
-      var director = { firstName: 'Steven', lastName: 'Spielberg the ' + n, titles: ['Producer', 'Writer', 'Director'] };
-      var actors = [
+        return Tweet.create(p, next);
+      }, callback);
+    },
+    function (callback) {
+      async.times(10, function (n, next) {
+        var director = { firstName: 'Steven', lastName: 'Spielberg the ' + n, titles: ['Producer', 'Writer', 'Director'] };
+        var actors = [
         { firstName: 'Tom', lastName: 'Hanks', titles: ['Producer', 'Actor', 'Soundtrack'] }
-      ];
+        ];
 
-      var tags = ['tag ' + n];
+        var tags = ['tag ' + n];
 
-      if (n % 3 === 0) {
-        actors.push({ firstName: 'Rex', lastName: 'Ryan', titles: ['Actor', 'Head Coach'] });
-        tags.push('Action');
-      }
+        if (n % 3 === 0) {
+          actors.push({ firstName: 'Rex', lastName: 'Ryan', titles: ['Actor', 'Head Coach'] });
+          tags.push('Action');
+        }
 
-      if (n % 5 === 0) {
-        actors.push({ firstName: 'Tom', lastName: 'Coughlin', titles: ['Writer', 'Head Coach'] });
-        tags.push('Comedy');
-      }
+        if (n % 5 === 0) {
+          actors.push({ firstName: 'Tom', lastName: 'Coughlin', titles: ['Writer', 'Head Coach'] });
+          tags.push('Comedy');
+        }
 
-      Movie.create({ title: 'Movie ' + n, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
-    }, callback);
-  },
+        Movie.create({ title: 'Movie ' + n, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
+      }, callback);
+    },
   ], callback);
 };
 
@@ -666,14 +666,14 @@ describe('Vogels Integration Tests', function () {
       User.scan()
         .where('age').gt(18)
         .attributes(['email', 'roles', 'age']).exec(function (err, data) {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
-        _.each(data.Items, function (u) {
-          expect(u.get()).to.include.keys('email', 'roles', 'age');
-        });
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
+          _.each(data.Items, function (u) {
+            expect(u.get()).to.include.keys('email', 'roles', 'age');
+          });
 
-        return done();
-      });
+          return done();
+        });
     });
 
     it('should return 10 users', function (done) {

@@ -1,12 +1,12 @@
 'use strict';
 
-var helper = require('./test-helper'),
-    Schema = require('../lib/schema'),
-    Scan = require('../lib/scan'),
-    _ = require('lodash'),
-    chai = require('chai'),
-    expect = chai.expect,
-    Joi = require('joi');
+var helper = require('./test-helper');
+var Schema = require('../lib/schema');
+var Scan = require('../lib/scan');
+var _ = require('lodash');
+var chai = require('chai');
+var expect = chai.expect;
+var Joi = require('joi');
 
 chai.should();
 
@@ -25,9 +25,9 @@ internals.assertScanFilter = function (scan, expected) {
 };
 
 describe('Scan', function () {
-  var schema,
-      serializer,
-      table;
+  var schema;
+  var serializer;
+  var table;
 
   beforeEach(function () {
     serializer = helper.mockSerializer();

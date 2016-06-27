@@ -1,11 +1,11 @@
 'use strict';
 
-var serializer = require('../lib/serializer'),
-    chai = require('chai'),
-    expect = chai.expect,
-    Schema = require('../lib/schema'),
-    helper = require('./test-helper'),
-    Joi = require('joi');
+var serializer = require('../lib/serializer');
+var chai = require('chai');
+var expect = chai.expect;
+var Schema = require('../lib/schema');
+var helper = require('./test-helper');
+var Joi = require('joi');
 
 chai.should();
 
@@ -468,7 +468,7 @@ describe('Serializer', function () {
       item.should.eql({ name: { Exists: false } });
     });
 
-  it('should serialize nested attributes', function () {
+    it('should serialize nested attributes', function () {
       var config = {
         hashKey: 'name',
         schema: {

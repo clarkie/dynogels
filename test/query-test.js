@@ -1,20 +1,20 @@
 'use strict';
 
-var helper = require('./test-helper'),
-    Schema = require('../lib/schema'),
-    Query = require('../lib//query'),
-    Serializer = require('../lib/serializer'),
-    Table = require('../lib/table'),
-    chai = require('chai'),
-    expect = chai.expect,
-    assert = require('assert'),
-    Joi = require('joi');
+var helper = require('./test-helper');
+var Schema = require('../lib/schema');
+var Query = require('../lib//query');
+var Serializer = require('../lib/serializer');
+var Table = require('../lib/table');
+var chai = require('chai');
+var expect = chai.expect;
+var assert = require('assert');
+var Joi = require('joi');
 
 chai.should();
 
 describe('Query', function () {
-  var serializer,
-      table;
+  var serializer;
+  var table;
 
   beforeEach(function () {
     serializer = helper.mockSerializer();

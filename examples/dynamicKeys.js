@@ -1,11 +1,11 @@
 'use strict';
 
-var vogels = require('../index'),
-    AWS = vogels.AWS,
-    Joi = require('joi'),
-    async = require('async'),
-    util = require('util'),
-    _ = require('lodash');
+var vogels = require('../index');
+var AWS = vogels.AWS;
+var Joi = require('joi');
+var async = require('async');
+var util = require('util');
+var _ = require('lodash');
 
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 

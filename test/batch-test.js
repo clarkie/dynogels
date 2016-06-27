@@ -1,18 +1,18 @@
 'use strict';
 
-var helper = require('./test-helper'),
-    chai = require('chai'),
-    expect = chai.expect,
-    Schema = require('../lib/schema'),
-    Item = require('../lib/item'),
-    batch = require('../lib/batch'),
-    Serializer = require('../lib/serializer'),
-    Joi = require('joi'),
-    _ = require('lodash');
+var helper = require('./test-helper');
+var chai = require('chai');
+var expect = chai.expect;
+var Schema = require('../lib/schema');
+var Item = require('../lib/item');
+var batch = require('../lib/batch');
+var Serializer = require('../lib/serializer');
+var Joi = require('joi');
+var _ = require('lodash');
 
 describe('Batch', function () {
-  var serializer,
-      table;
+  var serializer;
+  var table;
 
   beforeEach(function () {
     serializer = helper.mockSerializer();

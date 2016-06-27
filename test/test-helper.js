@@ -27,7 +27,7 @@ exports.mockDynamoDB = function () {
 };
 
 exports.realDynamoDB = function () {
-  var opts = { endpoint : 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };
+  var opts = { endpoint : 'http://localhost:8000', apiVersion: '2012-08-10', region: 'eu-west-1' };
   return new AWS.DynamoDB(opts);
 };
 

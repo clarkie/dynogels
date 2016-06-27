@@ -11,7 +11,10 @@ var vogels = require('../../index'),
 
 chai.should();
 
-var User, Tweet, Movie, DynamicKeyModel; // models
+var User;
+var Tweet;
+var Movie;
+var DynamicKeyModel;
 var internals = {};
 
 internals.userId = function (n) {

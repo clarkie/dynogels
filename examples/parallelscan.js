@@ -42,7 +42,7 @@ var loadSeedData = function (callback) {
 
   async.times(30, function (n, next) {
     var purchased = n %4 === 0 ? true : false;
-    Product.create({accountId : n %5, purchased : purchased, price : n}, next);
+    Product.create({ accountId : n %5, purchased : purchased, price : n }, next);
   }, callback);
 };
 

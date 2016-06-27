@@ -43,7 +43,7 @@ var loadSeedData = function (callback) {
 
   async.times(30, function (n, next) {
     var scores = n %5 === 0 ? [3, 4, 5] : [1, 2];
-    Account.create({email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, scores : scores}, next);
+    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, scores : scores }, next);
   }, callback);
 };
 

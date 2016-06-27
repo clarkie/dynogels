@@ -29,7 +29,7 @@ describe('item', function () {
   });
 
   it('JSON.stringify should only serialize attrs', function () {
-    var attrs = {num: 1, name: 'foo'};
+    var attrs = { num: 1, name: 'foo' };
     var item = new Item(attrs, table);
     var stringified = JSON.stringify(item);
 
@@ -41,7 +41,7 @@ describe('item', function () {
     it('should return error', function (done) {
       table.docClient.put.yields(new Error('fail'));
 
-      var attrs = {num: 1, name: 'foo'};
+      var attrs = { num: 1, name: 'foo' };
       var item = new Item(attrs, table);
 
       item.save(function (err, data) {
@@ -57,14 +57,14 @@ describe('item', function () {
 
   describe('#update', function () {
     it('should return item', function (done) {
-      table.docClient.update.yields(null, {Attributes : {num : 1, name : 'foo'}});
+      table.docClient.update.yields(null, { Attributes : { num : 1, name : 'foo' } });
 
-      var attrs = {num: 1, name: 'foo'};
+      var attrs = { num: 1, name: 'foo' };
       var item = new Item(attrs, table);
 
       item.update(function (err, data) {
         expect(err).to.not.exist;
-        expect(data.get()).to.eql({ num : 1, name : 'foo'});
+        expect(data.get()).to.eql({ num : 1, name : 'foo' });
 
         return done();
       });
@@ -74,7 +74,7 @@ describe('item', function () {
     it('should return error', function (done) {
       table.docClient.update.yields(new Error('fail'));
 
-      var attrs = {num: 1, name: 'foo'};
+      var attrs = { num: 1, name: 'foo' };
       var item = new Item(attrs, table);
 
       item.update(function (err, data) {
@@ -89,7 +89,7 @@ describe('item', function () {
     it('should return null', function (done) {
       table.docClient.update.yields(null, {});
 
-      var attrs = {num: 1, name: 'foo'};
+      var attrs = { num: 1, name: 'foo' };
       var item = new Item(attrs, table);
 
       item.update(function (err, data) {

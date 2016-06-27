@@ -47,11 +47,11 @@ vogels.createTables(function (err) {
     process.exit(1);
   }
 
-  Account.create({email: 'test11@example.com'}, function (err, acc) {
-    acc.set({age: 25});
+  Account.create({ email: 'test11@example.com' }, function (err, acc) {
+    acc.set({ age: 25 });
 
     acc.update(function () {
-      acc.destroy({ReturnValues: 'ALL_OLD'});
+      acc.destroy({ ReturnValues: 'ALL_OLD' });
     });
 
   });

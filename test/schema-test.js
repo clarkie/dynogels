@@ -164,7 +164,7 @@ describe('schema', function () {
     });
 
     it('should throw error when hash key is not present', function () {
-      var config = {rangeKey : 'foo'};
+      var config = { rangeKey : 'foo' };
 
       expect(function () {
         new Schema(config);
@@ -176,7 +176,7 @@ describe('schema', function () {
       var config = {
         hashKey : 'foo',
         indexes : [
-          {hashKey : 'foo', rangeKey : 'bar', type:'local', name : 'LocalBarIndex'}
+          { hashKey : 'foo', rangeKey : 'bar', type:'local', name : 'LocalBarIndex' }
         ]
       };
 
@@ -189,7 +189,7 @@ describe('schema', function () {
       var config = {
         hashKey : 'foo',
         indexes : [
-          {rangeKey : 'bar', type:'local', name : 'LocalBarIndex'}
+          { rangeKey : 'bar', type:'local', name : 'LocalBarIndex' }
         ]
       };
 
@@ -202,7 +202,7 @@ describe('schema', function () {
       var config = {
         hashKey : 'foo',
         indexes : [
-          {hashKey : 'foo', type:'local', name : 'LocalBarIndex'}
+          { hashKey : 'foo', type:'local', name : 'LocalBarIndex' }
         ]
       };
 
@@ -215,7 +215,7 @@ describe('schema', function () {
       var config = {
         hashKey : 'foo',
         indexes : [
-          {hashKey : 'bar', rangeKey: 'date', type:'local', name : 'LocalDateIndex'}
+          { hashKey : 'bar', rangeKey: 'date', type:'local', name : 'LocalDateIndex' }
         ]
       };
 
@@ -228,7 +228,7 @@ describe('schema', function () {
       var config = {
         hashKey : 'foo',
         indexes : [
-          {hashKey : 'bar', type:'global', name : 'GlobalBarIndex'}
+          { hashKey : 'bar', type:'global', name : 'GlobalBarIndex' }
         ]
       };
 
@@ -241,7 +241,7 @@ describe('schema', function () {
       var config = {
         hashKey : 'foo',
         indexes : [
-          {rangeKey: 'date', type:'global', name : 'GlobalDateIndex'}
+          { rangeKey: 'date', type:'global', name : 'GlobalDateIndex' }
         ]
       };
 
@@ -258,16 +258,16 @@ describe('schema', function () {
           date : Joi.date().default(Date.now),
           count: Joi.number(),
           flag: Joi.boolean(),
-          nums : Joi.array().includes(Joi.number()).meta({dynamoType : 'NS'}),
+          nums : Joi.array().includes(Joi.number()).meta({ dynamoType : 'NS' }),
           items : Joi.array(),
           data : Joi.object().keys({
-            stuff : Joi.array().meta({dynamoType : 'SS'}),
+            stuff : Joi.array().meta({ dynamoType : 'SS' }),
             nested : {
               first : Joi.string(),
               last : Joi.string(),
-              nicks : Joi.array().meta({dynamoType : 'SS', foo : 'bar'}),
-              ages : Joi.array().meta({foo : 'bar'}).meta({dynamoType : 'NS'}),
-              pics : Joi.array().meta({dynamoType : 'BS'}),
+              nicks : Joi.array().meta({ dynamoType : 'SS', foo : 'bar' }),
+              ages : Joi.array().meta({ foo : 'bar' }).meta({ dynamoType : 'NS' }),
+              pics : Joi.array().meta({ dynamoType : 'BS' }),
               bin : Joi.binary()
             }
           })
@@ -400,7 +400,7 @@ describe('schema', function () {
 
       var s = new Schema(config);
 
-      expect(s.validate({email: 'foo@bar.com'}).error).to.be.null;
+      expect(s.validate({ email: 'foo@bar.com' }).error).to.be.null;
     });
 
     it('should return no error for valid date object', function () {
@@ -413,8 +413,8 @@ describe('schema', function () {
 
       var s = new Schema(config);
 
-      expect(s.validate({created: new Date()}).error).to.be.null;
-      expect(s.validate({created: Date.now()}).error).to.be.null;
+      expect(s.validate({ created: new Date() }).error).to.be.null;
+      expect(s.validate({ created: Date.now() }).error).to.be.null;
     });
 
   });
@@ -432,7 +432,7 @@ describe('schema', function () {
 
       var s = new Schema(config);
 
-      var d = s.applyDefaults({email: 'foo@bar.com'});
+      var d = s.applyDefaults({ email: 'foo@bar.com' });
 
       d.email.should.equal('foo@bar.com');
       d.name.should.equal('Foo Bar');
@@ -456,7 +456,7 @@ describe('schema', function () {
 
       var s = new Schema(config);
 
-      var d = s.applyDefaults({email: 'foo@bar.com', data : {} });
+      var d = s.applyDefaults({ email: 'foo@bar.com', data : {} });
 
       d.should.eql({
         email : 'foo@bar.com',

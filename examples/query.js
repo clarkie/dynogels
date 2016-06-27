@@ -20,7 +20,7 @@ var Account = vogels.define('example-query', {
   },
 
   indexes : [
-    {hashKey : 'name', rangeKey : 'createdAt', type : 'local', name : 'CreatedAtIndex'}
+    { hashKey : 'name', rangeKey : 'createdAt', type : 'local', name : 'CreatedAtIndex' }
   ]
 });
 
@@ -46,7 +46,7 @@ var loadSeedData = function (callback) {
 
   async.times(25, function (n, next) {
     var prefix = n %5 === 0 ? 'foo' : 'test';
-    Account.create({email: prefix + n + '@example.com', name : 'Test ' + n %3, age: n}, next);
+    Account.create({ email: prefix + n + '@example.com', name : 'Test ' + n %3, age: n }, next);
   }, callback);
 };
 

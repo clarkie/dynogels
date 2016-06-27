@@ -58,13 +58,13 @@ vogels.createTables(function (err) {
   var params = {
     email: 'test11@example.com', name : 'test 11', age: 21, scores : [22, 55, 44],
     list : ['a', 'b', 'c', 1, 2, 3],
-    settings : {nickname : 'tester'}
+    settings : { nickname : 'tester' }
   };
 
   Account.create(params, function (err, acc) {
     printAccountInfo(err, acc);
 
-    acc.set({name: 'Test 11', age: 25}).update(function (err) {
+    acc.set({ name: 'Test 11', age: 25 }).update(function (err) {
       console.log('account updated', err, acc.get());
     });
   });

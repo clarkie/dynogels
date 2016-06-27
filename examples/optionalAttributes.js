@@ -30,9 +30,9 @@ vogels.createTables(function (err) {
     process.exit(1);
   }
 
-  Person.create({name : 'Nick'}, printInfo);
-  Person.create({name : null}, printInfo);
+  Person.create({ name : 'Nick' }, printInfo);
+  Person.create({ name : null }, printInfo);
 
-  var p = new Person({name : null});
+  var p = new Person({ name : null });
   p.save(printInfo);
 });

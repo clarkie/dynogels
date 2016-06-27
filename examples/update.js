@@ -24,23 +24,23 @@ vogels.createTables(function (err) {
     process.exit(1);
   }
 
-  Account.update({email : 'test5@example.com', age : {$add : 1}}, function (err, acc) {
+  Account.update({ email : 'test5@example.com', age : { $add : 1 } }, function (err, acc) {
     console.log('incremented age', acc.get('age'));
   });
 
-  Account.update({email : 'test@example.com', nicknames : {$add : 'smalls'}}, function (err, acc) {
+  Account.update({ email : 'test@example.com', nicknames : { $add : 'smalls' } }, function (err, acc) {
     console.log('added one nickname', acc.get('nicknames'));
   });
 
-  Account.update({email : 'test@example.com', nicknames : {$add : ['bigs', 'big husk', 'the dude']}}, function (err, acc) {
+  Account.update({ email : 'test@example.com', nicknames : { $add : ['bigs', 'big husk', 'the dude'] } }, function (err, acc) {
     console.log('added three nicknames', acc.get('nicknames'));
   });
 
-  Account.update({email : 'test@example.com', nicknames : {$del : 'the dude'}}, function (err, acc) {
+  Account.update({ email : 'test@example.com', nicknames : { $del : 'the dude' } }, function (err, acc) {
     console.log('removed nickname', acc.get('nicknames'));
   });
 
-  Account.update({email : 'test@example.com', nested : {roles : ['guest']}}, function (err, acc) {
+  Account.update({ email : 'test@example.com', nested : { roles : ['guest'] } }, function (err, acc) {
     console.log('added nested data', acc.get('nested'));
   });
 

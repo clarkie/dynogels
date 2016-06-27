@@ -88,8 +88,8 @@ describe('Create Tables Integration Tests', function () {
         time : Joi.date()
       },
       indexes : [
-        {hashKey : 'name', rangeKey : 'nick', type : 'local', name : 'NickIndex'},
-        {hashKey : 'name', rangeKey : 'time', type : 'local', name : 'TimeIndex'},
+        { hashKey : 'name', rangeKey : 'nick', type : 'local', name : 'NickIndex' },
+        { hashKey : 'name', rangeKey : 'time', type : 'local', name : 'TimeIndex' },
       ]
     });
 
@@ -149,7 +149,7 @@ describe('Create Tables Integration Tests', function () {
         rangeKey : 'nick',
         type : 'local',
         name : 'KeysOnlyNickIndex',
-        projection : { ProjectionType: 'KEYS_ONLY'}
+        projection : { ProjectionType: 'KEYS_ONLY' }
       }]
     });
 
@@ -193,7 +193,7 @@ describe('Create Tables Integration Tests', function () {
         age : Joi.number(),
         nick : Joi.string()
       },
-      indexes : [{hashKey : 'nick', type : 'global', name : 'GlobalNickIndex'}]
+      indexes : [{ hashKey : 'nick', type : 'global', name : 'GlobalNickIndex' }]
     });
 
     Model.createTable(function (err, result) {
@@ -220,7 +220,7 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 1, WriteCapacityUnits : 1});
+      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 1, WriteCapacityUnits : 1 });
 
       return Model.deleteTable(done);
     });
@@ -271,7 +271,7 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 10, WriteCapacityUnits : 5});
+      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 10, WriteCapacityUnits : 5 });
 
       return Model.deleteTable(done);
     });
@@ -289,8 +289,8 @@ describe('Create Tables Integration Tests', function () {
         wins : Joi.number()
       },
       indexes : [
-        { hashKey : 'name', rangeKey : 'nick', type   : 'local', name        : 'NameNickIndex'},
-        { hashKey : 'name', rangeKey : 'wins', type   : 'local', name        : 'NameWinsIndex'},
+        { hashKey : 'name', rangeKey : 'nick', type   : 'local', name        : 'NameNickIndex' },
+        { hashKey : 'name', rangeKey : 'wins', type   : 'local', name        : 'NameWinsIndex' },
         { hashKey : 'nick', type     : 'global', name : 'GlobalNickIndex' },
         { hashKey : 'age', rangeKey : 'wins', type   : 'global', name       : 'GlobalAgeWinsIndex' }
       ]
@@ -323,7 +323,7 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 1, WriteCapacityUnits : 1});
+      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 1, WriteCapacityUnits : 1 });
 
       var ageWinsIndex = _.find(desc.GlobalSecondaryIndexes, { IndexName: 'GlobalAgeWinsIndex' });
       expect(ageWinsIndex.IndexName).to.eql('GlobalAgeWinsIndex');
@@ -332,7 +332,7 @@ describe('Create Tables Integration Tests', function () {
         { AttributeName: 'age', KeyType: 'HASH' },
         { AttributeName: 'wins', KeyType: 'RANGE' },
       ]);
-      expect(ageWinsIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 1, WriteCapacityUnits : 1});
+      expect(ageWinsIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits : 1, WriteCapacityUnits : 1 });
 
       expect(desc.LocalSecondaryIndexes).to.have.length(2);
 
@@ -398,7 +398,7 @@ describe('Update Tables Integration Tests', function () {
         PublishedDateTime : Joi.date().default(Date.now)
       },
       indexes : [
-        { hashKey : 'UserId', rangeKey : 'PublishedDateTime', type : 'global', name : 'PublishedDateTimeIndex'}
+        { hashKey : 'UserId', rangeKey : 'PublishedDateTime', type : 'global', name : 'PublishedDateTimeIndex' }
       ]
     });
 
@@ -413,9 +413,9 @@ describe('Update Tables Integration Tests', function () {
 
         var idx = _.first(globalIndexes);
         expect(idx.IndexName).to.eql('PublishedDateTimeIndex');
-        expect(idx.KeySchema).to.eql([{AttributeName: 'UserId', KeyType: 'HASH'},
-                                      {AttributeName: 'PublishedDateTime', KeyType:'RANGE'}]);
-        expect(idx.Projection).to.eql({ProjectionType : 'ALL'});
+        expect(idx.KeySchema).to.eql([{ AttributeName: 'UserId', KeyType: 'HASH' },
+                                      { AttributeName: 'PublishedDateTime', KeyType:'RANGE' }]);
+        expect(idx.Projection).to.eql({ ProjectionType : 'ALL' });
 
         return done();
       });

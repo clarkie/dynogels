@@ -32,7 +32,7 @@ exports.realDynamoDB = function () {
 };
 
 exports.mockDocClient = function () {
-  var client = new AWS.DynamoDB.DocumentClient({service : exports.mockDynamoDB()});
+  var client = new AWS.DynamoDB.DocumentClient({ service : exports.mockDynamoDB() });
 
   var operations= [
     'batchGet',
@@ -96,7 +96,7 @@ exports.randomName = function (prefix) {
 exports.testLogger = function () {
   return bunyan.createLogger({
     name: 'vogels-tests',
-    serializers : {err: bunyan.stdSerializers.err},
+    serializers : { err: bunyan.stdSerializers.err },
     level : bunyan.FATAL
   });
 };

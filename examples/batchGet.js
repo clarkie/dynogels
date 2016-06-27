@@ -34,7 +34,7 @@ var loadSeedData = function (callback) {
 
   async.times(15, function (n, next) {
     var roles = n %3 === 0 ? ['admin', 'editor'] : ['user'];
-    Account.create({email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, roles : roles}, next);
+    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, roles : roles }, next);
   }, callback);
 };
 
@@ -55,14 +55,14 @@ async.series([
   });
 
   // Same as above but a strongly consistent read is used
-  Account.getItems(['test3@example.com', 'test4@example.com'], {ConsistentRead: true}, function (err, accounts) {
+  Account.getItems(['test3@example.com', 'test4@example.com'], { ConsistentRead: true }, function (err, accounts) {
     accounts.forEach(function (acc) {
       printAccountInfo(null, acc);
     });
   });
 
   // Get two accounts, but only fetching the age attribute
-  Account.getItems(['test5@example.com', 'test6@example.com'], {AttributesToGet : ['age']}, function (err, accounts) {
+  Account.getItems(['test5@example.com', 'test6@example.com'], { AttributesToGet : ['age'] }, function (err, accounts) {
     accounts.forEach(function (acc) {
       printAccountInfo(null, acc);
     });

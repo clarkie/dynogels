@@ -15,7 +15,7 @@ vogels.define('example-Account', {
     age   : Joi.number()
   },
   indexes : [
-    {hashKey : 'name', rangeKey : 'age', type: 'local', name : 'NameAgeIndex'},
+    { hashKey : 'name', rangeKey : 'age', type: 'local', name : 'NameAgeIndex' },
   ]
 });
 
@@ -40,8 +40,8 @@ vogels.define('example-GameScore', {
 });
 
 vogels.createTables({
-  'example-Account'   : {readCapacity: 1, writeCapacity: 1},
-  'example-GameScore' : {readCapacity: 1, writeCapacity: 1}
+  'example-Account'   : { readCapacity: 1, writeCapacity: 1 },
+  'example-GameScore' : { readCapacity: 1, writeCapacity: 1 }
 }, function (err) {
   if (err) {
     console.log('Error creating tables', err);

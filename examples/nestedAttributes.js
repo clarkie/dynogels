@@ -34,7 +34,7 @@ var printResults = function (err, data) {
   if (err) {
     console.log('Error - ', err);
   } else {
-    console.log('Movie - ', util.inspect(data.get(), {depth : null}));
+    console.log('Movie - ', util.inspect(data.get(), { depth : null }));
   }
   console.log('----------------------------------------------------------------------');
 };
@@ -43,24 +43,24 @@ var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
   async.times(10, function (n, next) {
-    var director = { firstName : 'Steven', lastName : 'Spielberg the ' + n, titles : ['Producer', 'Writer', 'Director']};
+    var director = { firstName : 'Steven', lastName : 'Spielberg the ' + n, titles : ['Producer', 'Writer', 'Director'] };
     var actors = [
-      { firstName : 'Tom', lastName : 'Hanks', titles : ['Producer', 'Actor', 'Soundtrack']}
+      { firstName : 'Tom', lastName : 'Hanks', titles : ['Producer', 'Actor', 'Soundtrack'] }
     ];
 
     var tags = ['tag ' + n];
 
     if (n %3 === 0) {
-      actors.push({ firstName : 'Rex', lastName : 'Ryan', titles : ['Actor', 'Head Coach']});
+      actors.push({ firstName : 'Rex', lastName : 'Ryan', titles : ['Actor', 'Head Coach'] });
       tags.push('Action');
     }
 
     if (n %5 === 0) {
-      actors.push({ firstName : 'Tom', lastName : 'Coughlin', titles : ['Writer', 'Head Coach']});
+      actors.push({ firstName : 'Tom', lastName : 'Coughlin', titles : ['Writer', 'Head Coach'] });
       tags.push('Comedy');
     }
 
-    Movie.create({title : 'Movie ' + n, releaseYear : 2001 + n, actors : actors, director : director, tags: tags}, next);
+    Movie.create({ title : 'Movie ' + n, releaseYear : 2001 + n, actors : actors, director : director, tags: tags }, next);
   }, callback);
 };
 
@@ -73,9 +73,9 @@ var runExample = function () {
       firstName : 'George', lastName : 'Lucas', titles : ['Director']
     },
     actors : [
-      { firstName : 'Mark', lastName : 'Hamill', titles : ['Actor']},
-      { firstName : 'Harrison', lastName : 'Ford', titles : ['Actor', 'Producer']},
-      { firstName : 'Carrie', lastName : 'Fisher', titles : ['Actress', 'Writer']},
+      { firstName : 'Mark', lastName : 'Hamill', titles : ['Actor'] },
+      { firstName : 'Harrison', lastName : 'Ford', titles : ['Actor', 'Producer'] },
+      { firstName : 'Carrie', lastName : 'Fisher', titles : ['Actress', 'Writer'] },
     ],
     tags : ['Action', 'Adventure']
   }, printResults);
@@ -96,7 +96,7 @@ var runExample = function () {
     ':tag' : vogels.Set(['Sports', 'Horror'], 'S')
   };
 
-  Movie.update({title : 'Movie 0'}, params, printResults);
+  Movie.update({ title : 'Movie 0' }, params, printResults);
 };
 
 async.series([

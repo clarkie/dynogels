@@ -37,7 +37,7 @@ vogels.createTables(function (err) {
       throw err;
     }
 
-    BinModel.create({name : 'basic.js', data: data}, printFileInfo);
+    BinModel.create({ name : 'basic.js', data: data }, printFileInfo);
 
   });
 });

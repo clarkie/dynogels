@@ -21,7 +21,7 @@ var Account = vogels.define('example-query-filter', {
   },
 
   indexes : [
-    {hashKey : 'name', rangeKey : 'createdAt', type : 'local', name : 'CreatedAtIndex'}
+    { hashKey : 'name', rangeKey : 'createdAt', type : 'local', name : 'CreatedAtIndex' }
   ]
 });
 
@@ -50,7 +50,7 @@ var loadSeedData = function (callback) {
 
   async.times(30, function (n, next) {
     var roles = n %3 === 0 ? ['admin', 'editor'] : ['user'];
-    Account.create({email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, roles : roles}, next);
+    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, roles : roles }, next);
   }, callback);
 };
 

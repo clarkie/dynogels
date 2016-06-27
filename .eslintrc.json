@@ -10,7 +10,6 @@
     "key-spacing": [0],
     "no-var": [0],
     "one-var": [0],
-    "object-curly-spacing": [0],
     "indent": [0],
     "prefer-arrow-callback": [0],
     "space-infix-ops": [0],

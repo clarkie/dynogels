@@ -36,8 +36,8 @@ vogels.createTables(function (err) {
   } else {
     console.log('tables created & active');
     Account.get('test@example.com', printAccountInfo);
-    Account.get('foo@example.com', {ConsistentRead: true}, printAccountInfo);
+    Account.get('foo@example.com', { ConsistentRead: true }, printAccountInfo);
 
-    Account.create({email: 'test@example.com', name : 'test', age: 21}, printAccountInfo);
+    Account.create({ email: 'test@example.com', name : 'test', age: 21 }, printAccountInfo);
   }
 });

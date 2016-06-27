@@ -183,7 +183,7 @@ describe('expressions', function () {
       var updates ={
         id : 'foobar',
         email : 'test@test.com',
-        age : {$add : 1}
+        age : { $add : 1 }
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);
@@ -209,7 +209,7 @@ describe('expressions', function () {
     it('should return single DELETE action', function () {
       var updates = {
         id : 'foobar',
-        names : { $del : 'tester'},
+        names : { $del : 'tester' },
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);

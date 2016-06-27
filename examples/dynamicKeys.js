@@ -35,7 +35,7 @@ var printResults = function (err, resp) {
 };
 
 vogels.createTables({
-  'example-Account'  : {readCapacity: 1, writeCapacity: 10},
+  'example-Account'  : { readCapacity: 1, writeCapacity: 10 },
 }, function (err) {
   if (err) {
     console.log('Error creating tables', err);
@@ -43,7 +43,7 @@ vogels.createTables({
   }
 
   async.times(25, function (n, next) {
-    var data = {id : 'Model ' + n};
+    var data = { id : 'Model ' + n };
 
     if (n % 3 === 0) {
       data.name = 'Dynamic Model the 3rd';

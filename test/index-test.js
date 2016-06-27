@@ -35,30 +35,30 @@ describe('vogels', function () {
 
       expect(function () {
         vogels.define('Account', function (schema) {
-          schema.String('email', {hashKey: true});
+          schema.String('email', { hashKey: true });
         });
 
       }).to.throw(/define no longer accepts schema callback, migrate to new api/);
     });
 
     it('should have config method', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
-      Account.config({tableName: 'test-accounts'});
+      Account.config({ tableName: 'test-accounts' });
 
       Account.config().name.should.equal('test-accounts');
     });
 
     it('should configure table name as accounts', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
       Account.config().name.should.equal('accounts');
     });
 
     it('should return new account item', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
-      var acc = new Account({name: 'Test Acc'});
+      var acc = new Account({ name: 'Test Acc' });
       acc.table.should.be.instanceof(Table);
     });
 
@@ -71,7 +71,7 @@ describe('vogels', function () {
     });
 
     it('should contain single model', function () {
-      vogels.define('Account', {hashKey : 'id'});
+      vogels.define('Account', { hashKey : 'id' });
 
       vogels.models.should.contain.keys('Account');
     });
@@ -80,7 +80,7 @@ describe('vogels', function () {
 
   describe('#model', function () {
     it('should return defined model', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
       vogels.model('Account').should.equal(Account);
     });
@@ -93,36 +93,36 @@ describe('vogels', function () {
 
   describe('model config', function () {
     it('should configure set dynamodb driver', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
-      Account.config({tableName: 'test-accounts' });
+      Account.config({ tableName: 'test-accounts' });
 
       Account.config().name.should.eq('test-accounts');
     });
 
     it('should configure set dynamodb driver', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
       var dynamodb = helper.realDynamoDB();
-      Account.config({dynamodb: dynamodb });
+      Account.config({ dynamodb: dynamodb });
 
       Account.docClient.service.config.endpoint.should.eq(dynamodb.config.endpoint);
     });
 
     it('should set document client', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
       var docClient = new AWS.DynamoDB.DocumentClient(helper.realDynamoDB());
 
-      Account.config({docClient: docClient });
+      Account.config({ docClient: docClient });
 
       Account.docClient.should.eq(docClient);
     });
 
 
     it('should globally set dynamodb driver for all models', function () {
-      var Account = vogels.define('Account', {hashKey : 'id'});
-      var Post = vogels.define('Post', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
+      var Post = vogels.define('Post', { hashKey : 'id' });
 
       var dynamodb = helper.realDynamoDB();
       vogels.dynamoDriver(dynamodb);
@@ -135,7 +135,7 @@ describe('vogels', function () {
       var dynamodb = helper.mockDynamoDB();
       vogels.dynamoDriver(dynamodb);
 
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
       Account.docClient.service.config.endpoint.should.eq(dynamodb.config.endpoint);
     });
@@ -160,14 +160,14 @@ describe('vogels', function () {
     it('should create single definied model', function (done) {
       this.timeout(0);
 
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
       var second = {
-        Table : { TableStatus : 'PENDING'}
+        Table : { TableStatus : 'PENDING' }
       };
 
       var third = {
-        Table : { TableStatus : 'ACTIVE'}
+        Table : { TableStatus : 'ACTIVE' }
       };
 
       var dynamodb = Account.docClient.service;
@@ -190,7 +190,7 @@ describe('vogels', function () {
     });
 
     it('should return error', function (done) {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
 
       var dynamodb = Account.docClient.service;
       dynamodb.describeTable.onCall(0).yields(null, null);
@@ -205,15 +205,15 @@ describe('vogels', function () {
     });
 
     it('should create model without callback', function (done) {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
       var dynamodb = Account.docClient.service;
 
       var second = {
-        Table : { TableStatus : 'PENDING'}
+        Table : { TableStatus : 'PENDING' }
       };
 
       var third = {
-        Table : { TableStatus : 'ACTIVE'}
+        Table : { TableStatus : 'ACTIVE' }
       };
 
       dynamodb.describeTable
@@ -233,11 +233,11 @@ describe('vogels', function () {
     });
 
     it('should return error when waiting for table to become active', function (done) {
-      var Account = vogels.define('Account', {hashKey : 'id'});
+      var Account = vogels.define('Account', { hashKey : 'id' });
       var dynamodb = Account.docClient.service;
 
       var second = {
-        Table : { TableStatus : 'PENDING'}
+        Table : { TableStatus : 'PENDING' }
       };
 
       dynamodb.describeTable

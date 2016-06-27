@@ -1,13 +1,13 @@
 'use strict';
 
 var vogels = require('../../index'),
-    chai   = require('chai'),
+    chai = require('chai'),
     expect = chai.expect,
-    async  = require('async'),
-    _      = require('lodash'),
+    async = require('async'),
+    _ = require('lodash'),
     helper = require('../test-helper'),
-    uuid   = require('node-uuid'),
-    Joi    = require('joi');
+    uuid = require('node-uuid'),
+    Joi = require('joi');
 
 chai.should();
 

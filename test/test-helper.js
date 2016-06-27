@@ -1,26 +1,26 @@
 'use strict';
 
-var sinon  = require('sinon'),
-    AWS    = require('aws-sdk'),
-    Table  = require('../lib/table'),
-    _      = require('lodash'),
+var sinon = require('sinon'),
+    AWS = require('aws-sdk'),
+    Table = require('../lib/table'),
+    _ = require('lodash'),
     bunyan = require('bunyan');
 
 exports.mockDynamoDB = function () {
   var opts = { endpoint : 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };
   var db = new AWS.DynamoDB(opts);
 
-  db.scan          = sinon.stub();
-  db.putItem       = sinon.stub();
-  db.deleteItem    = sinon.stub();
-  db.query         = sinon.stub();
-  db.getItem       = sinon.stub();
-  db.updateItem    = sinon.stub();
-  db.createTable   = sinon.stub();
+  db.scan = sinon.stub();
+  db.putItem = sinon.stub();
+  db.deleteItem = sinon.stub();
+  db.query = sinon.stub();
+  db.getItem = sinon.stub();
+  db.updateItem = sinon.stub();
+  db.createTable = sinon.stub();
   db.describeTable = sinon.stub();
-  db.updateTable   = sinon.stub();
-  db.deleteTable   = sinon.stub();
-  db.batchGetItem  = sinon.stub();
+  db.updateTable = sinon.stub();
+  db.deleteTable = sinon.stub();
+  db.batchGetItem = sinon.stub();
   db.batchWriteItem = sinon.stub();
 
   return db;
@@ -49,17 +49,17 @@ exports.mockDocClient = function () {
     client[op] = sinon.stub();
   });
 
-  client.service.scan          = sinon.stub();
-  client.service.putItem       = sinon.stub();
-  client.service.deleteItem    = sinon.stub();
-  client.service.query         = sinon.stub();
-  client.service.getItem       = sinon.stub();
-  client.service.updateItem    = sinon.stub();
-  client.service.createTable   = sinon.stub();
+  client.service.scan = sinon.stub();
+  client.service.putItem = sinon.stub();
+  client.service.deleteItem = sinon.stub();
+  client.service.query = sinon.stub();
+  client.service.getItem = sinon.stub();
+  client.service.updateItem = sinon.stub();
+  client.service.createTable = sinon.stub();
   client.service.describeTable = sinon.stub();
-  client.service.updateTable   = sinon.stub();
-  client.service.deleteTable   = sinon.stub();
-  client.service.batchGetItem  = sinon.stub();
+  client.service.updateTable = sinon.stub();
+  client.service.deleteTable = sinon.stub();
+  client.service.batchGetItem = sinon.stub();
   client.service.batchWriteItem = sinon.stub();
 
   return client;

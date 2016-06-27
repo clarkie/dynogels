@@ -1,11 +1,11 @@
 'use strict';
 
 var vogels = require('../index'),
-    util   = require('util'),
-    _      = require('lodash'),
-    async  = require('async'),
-    Joi    = require('joi'),
-    AWS    = vogels.AWS;
+    util = require('util'),
+    _ = require('lodash'),
+    async = require('async'),
+    Joi = require('joi'),
+    AWS = vogels.AWS;
 
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
@@ -73,9 +73,9 @@ var runExample = function () {
       firstName : 'George', lastName : 'Lucas', titles : ['Director']
     },
     actors : [
-      { firstName : 'Mark',     lastName : 'Hamill', titles : ['Actor']},
-      { firstName : 'Harrison', lastName : 'Ford',   titles : ['Actor', 'Producer']},
-      { firstName : 'Carrie',   lastName : 'Fisher', titles : ['Actress', 'Writer']},
+      { firstName : 'Mark', lastName : 'Hamill', titles : ['Actor']},
+      { firstName : 'Harrison', lastName : 'Ford', titles : ['Actor', 'Producer']},
+      { firstName : 'Carrie', lastName : 'Fisher', titles : ['Actress', 'Writer']},
     ],
     tags : ['Action', 'Adventure']
   }, printResults);

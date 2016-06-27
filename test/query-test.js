@@ -2,13 +2,13 @@
 
 var helper = require('./test-helper'),
     Schema = require('../lib/schema'),
-    Query  = require('../lib//query'),
+    Query = require('../lib//query'),
     Serializer = require('../lib/serializer'),
-    Table  = require('../lib/table'),
-    chai   = require('chai'),
+    Table = require('../lib/table'),
+    chai = require('chai'),
     expect = chai.expect,
     assert = require('assert'),
-    Joi    = require('joi');
+    Joi = require('joi');
 
 chai.should();
 

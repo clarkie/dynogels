@@ -1,13 +1,13 @@
 'use strict';
 
-var Item   = require('../lib/item'),
-    Table  = require('../lib/table'),
+var Item = require('../lib/item'),
+    Table = require('../lib/table'),
     Schema = require('../lib/schema'),
-    chai   = require('chai'),
+    chai = require('chai'),
     expect = chai.expect,
     helper = require('./test-helper'),
     serializer = require('../lib/serializer'),
-    Joi    = require('joi');
+    Joi = require('joi');
 
 chai.should();
 

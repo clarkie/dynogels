@@ -1,17 +1,17 @@
 'use strict';
 
 var helper = require('./test-helper'),
-    _      = require('lodash'),
-    Joi    = require('joi'),
-    Table  = require('../lib/table'),
+    _ = require('lodash'),
+    Joi = require('joi'),
+    Table = require('../lib/table'),
     Schema = require('../lib/schema'),
-    Query  = require('../lib//query'),
-    Scan   = require('../lib//scan'),
-    Item   = require('../lib/item'),
+    Query = require('../lib//query'),
+    Scan = require('../lib//scan'),
+    Item = require('../lib/item'),
     realSerializer = require('../lib/serializer'),
-    chai   = require('chai'),
+    chai = require('chai'),
     expect = chai.expect,
-    sinon  = require('sinon');
+    sinon = require('sinon');
 
 chai.should();
 

@@ -2,11 +2,11 @@
 
 var helper = require('./test-helper'),
     Schema = require('../lib/schema'),
-    Scan   = require('../lib/scan'),
-    _      = require('lodash'),
-    chai   = require('chai'),
+    Scan = require('../lib/scan'),
+    _ = require('lodash'),
+    chai = require('chai'),
     expect = chai.expect,
-    Joi    = require('joi');
+    Joi = require('joi');
 
 chai.should();
 

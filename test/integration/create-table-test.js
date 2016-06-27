@@ -1,11 +1,11 @@
 'use strict';
 
 var vogels = require('../../index'),
-    chai   = require('chai'),
+    chai = require('chai'),
     expect = chai.expect,
-    _      = require('lodash'),
+    _ = require('lodash'),
     helper = require('../test-helper'),
-    Joi    = require('joi');
+    Joi = require('joi');
 
 chai.should();
 

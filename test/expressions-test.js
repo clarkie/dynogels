@@ -1,10 +1,10 @@
 'use strict';
 
 var expressions = require('../lib/expressions'),
-    chai        = require('chai'),
-    expect      = chai.expect,
-    Schema      = require('../lib/schema'),
-    Joi         = require('joi');
+    chai = require('chai'),
+    expect = chai.expect,
+    Schema = require('../lib/schema'),
+    Joi = require('joi');
 
 chai.should();
 

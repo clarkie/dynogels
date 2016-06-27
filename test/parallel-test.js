@@ -1,14 +1,14 @@
 'use strict';
 
-var Table  = require('../lib/table'),
+var Table = require('../lib/table'),
     ParallelScan = require('../lib/parallelScan'),
     Schema = require('../lib/schema'),
-    chai   = require('chai'),
+    chai = require('chai'),
     expect = chai.expect,
     assert = require('assert'),
     helper = require('./test-helper'),
     serializer = require('../lib/serializer'),
-    Joi    = require('joi');
+    Joi = require('joi');
 
 chai.should();
 

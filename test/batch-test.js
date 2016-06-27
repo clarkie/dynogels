@@ -1,14 +1,14 @@
 'use strict';
 
 var helper = require('./test-helper'),
-    chai   = require('chai'),
+    chai = require('chai'),
     expect = chai.expect,
     Schema = require('../lib/schema'),
-    Item   = require('../lib/item'),
-    batch  = require('../lib/batch'),
+    Item = require('../lib/item'),
+    batch = require('../lib/batch'),
     Serializer = require('../lib/serializer'),
-    Joi    = require('joi'),
-    _      = require('lodash');
+    Joi = require('joi'),
+    _ = require('lodash');
 
 describe('Batch', function () {
   var serializer,

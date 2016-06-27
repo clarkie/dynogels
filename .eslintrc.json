@@ -6,7 +6,6 @@
   "rules": {
     "comma-dangle": [0],
     "func-names": [0],
-    "no-multi-spaces": [0],
     "strict": [0],
     "key-spacing": [0],
     "no-var": [0],

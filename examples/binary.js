@@ -1,9 +1,9 @@
 'use strict';
 
 var vogels = require('../index'),
-    fs     = require('fs'),
-    AWS    = vogels.AWS,
-    Joi    = require('joi');
+    fs = require('fs'),
+    AWS = vogels.AWS,
+    Joi = require('joi');
 
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
@@ -33,7 +33,7 @@ vogels.createTables(function (err) {
   }
 
   fs.readFile(__dirname + '/basic.js', function (err, data) {
-    if (err)  {
+    if (err) {
       throw err;
     }
 

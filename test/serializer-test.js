@@ -1,11 +1,11 @@
 'use strict';
 
 var serializer = require('../lib/serializer'),
-    chai       = require('chai'),
-    expect     = chai.expect,
-    Schema     = require('../lib/schema'),
-    helper     = require('./test-helper'),
-    Joi        = require('joi');
+    chai = require('chai'),
+    expect = chai.expect,
+    Schema = require('../lib/schema'),
+    helper = require('./test-helper'),
+    Joi = require('joi');
 
 chai.should();
 

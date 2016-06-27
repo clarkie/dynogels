@@ -19,9 +19,8 @@ before_script:
   - tar -xzf /tmp/dynamodb_local_latest.tar.gz -C /tmp
   - java -Djava.library.path=/tmp/DynamoDBLocal_lib -jar /tmp/DynamoDBLocal.jar -inMemory &
   - sleep 2
-script: make coverage
-after_success:
-  - coveralls
+script: npm run ci
+after_success: npm run coveralls
 addons:
   hosts:
     - dynamodb-local

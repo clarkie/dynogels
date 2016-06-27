@@ -4,8 +4,8 @@ TESTSRC = $(shell find test -name "*.js" -type f | sort)
 
 default: test
 
-lint: $(SRC) $(TESTSRC)
-	@node_modules/.bin/jshint --reporter=node_modules/jshint-stylish $^
+lint:
+	npm run lint
 
 test-unit: lint
 	@node node_modules/.bin/mocha \

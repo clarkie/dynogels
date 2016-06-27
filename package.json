@@ -8,6 +8,7 @@
   "description": "DynamoDB data mapper",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "make test",
     "ci": "make coverage",
     "coveralls": "cat coverage/lcov.info | coveralls"
@@ -36,10 +37,11 @@
   "devDependencies": {
     "chai": "1.x.x",
     "coveralls": "^2.11.9",
+    "eslint": "^2.13.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.9.2",
     "istanbul": "^0.4.4",
     "jscoverage": "^0.6.0",
-    "jshint": "2.x.x",
-    "jshint-stylish": "2.x.x",
     "mocha": "2.x.x",
     "sinon": "^1.17.4"
   }

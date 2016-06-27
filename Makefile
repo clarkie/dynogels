@@ -32,7 +32,7 @@ test-cov-html: lint
 
 coverage: lint
 	@node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha $(TESTSRC)
-	@node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100
+	@node_modules/.bin/istanbul check-coverage
 
 test-io: lint
 	@node node_modules/.bin/mocha \

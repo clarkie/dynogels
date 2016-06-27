@@ -31,7 +31,6 @@
     "array-bracket-spacing": [0],
     "no-new": [0],
     "no-underscore-dangle": [0],
-    "spaced-comment": [0],
     "keyword-spacing": [0],
     "newline-per-chained-call": [0],
     "comma-spacing": [0],

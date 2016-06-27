@@ -5,7 +5,6 @@ var expressions = require('../lib/expressions'),
     expect      = chai.expect,
     Schema      = require('../lib/schema'),
     Joi         = require('joi');
-    //_         = require('lodash');
 
 chai.should();
 

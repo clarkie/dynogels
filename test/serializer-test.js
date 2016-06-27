@@ -260,7 +260,7 @@ describe('Serializer', function () {
 
       serializer.serializeItem(s, {agree: false}).should.eql({agree: false});
       serializer.serializeItem(s, {agree: 'false'}).should.eql({agree: false});
-      //serializer.serializeItem(schema, {agree: null}).should.eql({agree: {N: '0'}});
+
       serializer.serializeItem(s, {agree: 0}).should.eql({agree: false});
     });
 

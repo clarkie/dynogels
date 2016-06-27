@@ -51,7 +51,6 @@ describe('ParallelScan', function() {
     var stream = scan.exec();
 
     stream.on('error', function (err) {
-      console.log('test here');
       expect(err).to.exist;
       return done();
     });

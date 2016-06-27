@@ -35,7 +35,6 @@
     "newline-per-chained-call": [0],
     "comma-spacing": [0],
     "new-cap": [0],
-    "no-console": [0],
     "no-else-return": [0],
     "consistent-return": [0],
     "prefer-rest-params": [0],

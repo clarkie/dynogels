@@ -26,7 +26,7 @@ vogels.createTables({
     process.exit(1);
   }
 
-  async.times(25, function(n, next) {
+  async.times(25, function (n, next) {
     Account.create({name : 'Account ' + n, email : 'account' +n + '@gmail.com', age : n}, next);
   });
 });

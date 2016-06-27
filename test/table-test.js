@@ -1803,7 +1803,7 @@ describe('table', function () {
           return done();
         });
 
-        table.create(item, function () {} );
+        table.create(item, function () {});
       });
     });
 
@@ -1847,7 +1847,7 @@ describe('table', function () {
           return done();
         });
 
-        table.update(item, function () {} );
+        table.update(item, function () {});
       });
 
       it('should return error when before hook returns error', function (done) {
@@ -1905,7 +1905,7 @@ describe('table', function () {
           return done();
         });
 
-        table.update(item, function () {} );
+        table.update(item, function () {});
       });
     });
 
@@ -1930,7 +1930,7 @@ describe('table', function () {
         return done();
       });
 
-      table.destroy('test@test.com', function () {} );
+      table.destroy('test@test.com', function () {});
     });
   });
 });

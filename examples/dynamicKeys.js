@@ -42,7 +42,7 @@ vogels.createTables({
     process.exit(1);
   }
 
-  async.times(25, function(n, next) {
+  async.times(25, function (n, next) {
     var data = {id : 'Model ' + n};
 
     if (n % 3 === 0) {

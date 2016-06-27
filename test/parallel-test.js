@@ -12,7 +12,7 @@ var Table  = require('../lib/table'),
 
 chai.should();
 
-describe('ParallelScan', function() {
+describe('ParallelScan', function () {
   var table;
 
   beforeEach(function () {

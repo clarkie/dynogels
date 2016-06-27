@@ -11,7 +11,7 @@ var Item   = require('../lib/item'),
 
 chai.should();
 
-describe('item', function() {
+describe('item', function () {
   var table;
 
   beforeEach(function () {
@@ -28,7 +28,7 @@ describe('item', function() {
     table = new Table('mockTable', schema, serializer, helper.mockDocClient(), helper.testLogger());
   });
 
-  it('JSON.stringify should only serialize attrs', function() {
+  it('JSON.stringify should only serialize attrs', function () {
     var attrs = {num: 1, name: 'foo'};
     var item = new Item(attrs, table);
     var stringified = JSON.stringify(item);

@@ -26,7 +26,7 @@ internals.loadSeedData = function (callback) {
 
   async.parallel([
     function (callback) {
-    async.times(15, function(n, next) {
+    async.times(15, function (n, next) {
       var roles = ['user'];
       if (n % 3 === 0) {
         roles = ['admin', 'editor'];
@@ -38,10 +38,10 @@ internals.loadSeedData = function (callback) {
     }, callback);
   },
   function (callback) {
-    async.times(15 * 5, function(n, next) {
-      var userId = internals.userId( n %5);
+    async.times(15 * 5, function (n, next) {
+      var userId = internals.userId(n %5);
       var p = {UserId : userId, content: 'I love tweeting, in fact Ive tweeted ' + n + ' times', num : n};
-      if (n %3 === 0 ) {
+      if (n %3 === 0) {
         p.tag = '#test';
       }
 
@@ -49,7 +49,7 @@ internals.loadSeedData = function (callback) {
     }, callback);
   },
   function (callback) {
-    async.times(10, function(n, next) {
+    async.times(10, function (n, next) {
       var director = { firstName : 'Steven', lastName : 'Spielberg the ' + n, titles : ['Producer', 'Writer', 'Director']};
       var actors = [
         { firstName : 'Tom', lastName : 'Hanks', titles : ['Producer', 'Actor', 'Soundtrack']}
@@ -73,7 +73,7 @@ internals.loadSeedData = function (callback) {
   ], callback);
 };
 
-describe('Vogels Integration Tests', function() {
+describe('Vogels Integration Tests', function () {
   this.timeout(0);
 
   before(function (done) {
@@ -156,7 +156,7 @@ describe('Vogels Integration Tests', function() {
   });
 
   describe('#create', function () {
-    it('should create item with hash key', function(done) {
+    it('should create item with hash key', function (done) {
       User.create({
         email : 'foo@bar.com',
         age : 18,
@@ -174,7 +174,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should create item with empty string', function(done) {
+    it('should create item with empty string', function (done) {
       User.create({
         email : 'foo2@bar.com',
         name : '',
@@ -192,7 +192,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return condition exception when using ConditionExpression', function(done) {
+    it('should return condition exception when using ConditionExpression', function (done) {
       var item = { email : 'test123@test.com', age : 33, roles : ['user'] };
 
       User.create(item, function (err, acc) {
@@ -216,7 +216,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return condition exception when using expected shorthand', function(done) {
+    it('should return condition exception when using expected shorthand', function (done) {
       var item = { email : 'test444@test.com', age : 33, roles : ['user'] };
 
       User.create(item, function (err, acc) {
@@ -237,7 +237,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return condition exception when using overwrite shorthand', function(done) {
+    it('should return condition exception when using overwrite shorthand', function (done) {
       var item = { email : 'testOverwrite@test.com', age : 20};
 
       User.create(item, function (err, acc) {
@@ -255,7 +255,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should create item with dynamic keys', function(done) {
+    it('should create item with dynamic keys', function (done) {
       DynamicKeyModel.create({
         id : 'rand-1',
         name : 'Foo Bar',
@@ -285,7 +285,7 @@ describe('Vogels Integration Tests', function() {
   });
 
   describe('#get', function () {
-    it('should get item by hash key', function(done) {
+    it('should get item by hash key', function (done) {
       User.get({ id : '123456789'}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -294,7 +294,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should get return selected attributes AttributesToGet param', function(done) {
+    it('should get return selected attributes AttributesToGet param', function (done) {
       User.get({ id : '123456789'}, {AttributesToGet : ['email', 'age']}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -303,7 +303,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should get return selected attributes using ProjectionExpression param', function(done) {
+    it('should get return selected attributes using ProjectionExpression param', function (done) {
       User.get({ id : '123456789'}, {ProjectionExpression : 'email, age, settings.nickname'}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -317,7 +317,7 @@ describe('Vogels Integration Tests', function() {
   });
 
   describe('#update', function () {
-    it('should update item appended role', function(done) {
+    it('should update item appended role', function (done) {
       User.update({
         id : '123456789',
         roles  : {$add : 'tester'}
@@ -331,7 +331,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should remove name attribute from user record when set to empty string', function(done) {
+    it('should remove name attribute from user record when set to empty string', function (done) {
       User.update({ id : '9999', name : ''}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -341,7 +341,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should update age using expected value', function(done) {
+    it('should update age using expected value', function (done) {
       User.update({ id : '9999', age : 100}, {expected: {age: 99}}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -351,7 +351,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should update email using expected that an email already exists', function(done) {
+    it('should update email using expected that an email already exists', function (done) {
       User.update({ id : '9999', email : 'new9999@test.com'}, {expected: {email: {Exists : true}}}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -361,7 +361,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should remove settings attribute from user record', function(done) {
+    it('should remove settings attribute from user record', function (done) {
       User.update({ id : '123456789', settings : null}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -371,7 +371,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should update User using updateExpression', function(done) {
+    it('should update User using updateExpression', function (done) {
       var params = {};
       params.UpdateExpression = 'ADD #a :x SET things[0].buz = :y';
       params.ConditionExpression = '#a = :current';
@@ -415,7 +415,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should update item with dynamic keys', function(done) {
+    it('should update item with dynamic keys', function (done) {
       DynamicKeyModel.update({
         id : 'rand-5',
         color : 'green',
@@ -425,7 +425,7 @@ describe('Vogels Integration Tests', function() {
         expect(acc).to.exist;
         expect(acc.get()).to.have.keys(['id', 'settings', 'color']);
 
-        expect(acc.get()).to.eql( {
+        expect(acc.get()).to.eql({
           id : 'rand-5',
           color : 'green',
           settings : { email : 'dynupdate@test.com'}
@@ -438,7 +438,7 @@ describe('Vogels Integration Tests', function() {
   });
 
   describe('#getItems', function () {
-    it('should return 3 items', function(done) {
+    it('should return 3 items', function (done) {
       User.getItems(['userid-1', 'userid-2', 'userid-3'], function (err, accounts) {
         expect(err).to.not.exist;
         expect(accounts).to.have.length(3);
@@ -446,7 +446,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return 2 items with only selected attributes', function(done) {
+    it('should return 2 items with only selected attributes', function (done) {
       var opts = {AttributesToGet : ['email', 'age']};
 
       User.getItems(['userid-1', 'userid-2'], opts, function (err, accounts) {
@@ -462,7 +462,7 @@ describe('Vogels Integration Tests', function() {
   });
 
   describe('#query', function () {
-    it('should return users tweets', function(done) {
+    it('should return users tweets', function (done) {
       Tweet.query('userid-1').exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -475,7 +475,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users tweets with specific attributes', function(done) {
+    it('should return users tweets with specific attributes', function (done) {
       Tweet.query('userid-1').attributes(['num', 'content']).exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -489,7 +489,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return tweets using secondaryIndex', function(done) {
+    it('should return tweets using secondaryIndex', function (done) {
       Tweet.query('userid-1')
       .usingIndex('PublishedDateTimeIndex')
       .consistentRead(true)
@@ -515,7 +515,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return tweets using secondaryIndex and date object', function(done) {
+    it('should return tweets using secondaryIndex and date object', function (done) {
       var oneMinAgo = new Date(new Date().getTime() - 60*1000);
 
       Tweet.query('userid-1')
@@ -543,7 +543,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return tweets that match filters', function(done) {
+    it('should return tweets that match filters', function (done) {
       Tweet.query('userid-1')
       .filter('num').between(4, 8)
       .filter('tag').exists()
@@ -562,7 +562,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return tweets that match exists filter', function(done) {
+    it('should return tweets that match exists filter', function (done) {
       Tweet.query('userid-1')
         .filter('tag').exists()
         .exec(function (err, data) {
@@ -578,7 +578,7 @@ describe('Vogels Integration Tests', function() {
         });
     });
 
-    it('should return tweets that match IN filter', function(done) {
+    it('should return tweets that match IN filter', function (done) {
       Tweet.query('userid-1')
         .filter('num').in([4, 6, 8])
         .exec(function (err, data) {
@@ -595,7 +595,7 @@ describe('Vogels Integration Tests', function() {
         });
     });
 
-    it('should return tweets that match expression filters', function(done) {
+    it('should return tweets that match expression filters', function (done) {
       Tweet.query('userid-1')
       .filterExpression('#num BETWEEN :low AND :high AND attribute_exists(#tag)')
       .expressionAttributeValues({ ':low' : 4, ':high' : 8})
@@ -615,7 +615,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return tweets with projection expression', function(done) {
+    it('should return tweets with projection expression', function (done) {
       Tweet.query('userid-1')
       .projectionExpression('#con, UserId')
       .expressionAttributeNames({ '#con' : 'content'})
@@ -631,7 +631,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return all tweets from user', function(done) {
+    it('should return all tweets from user', function (done) {
       Tweet.query('userid-1').limit(2).loadAll().exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -648,7 +648,7 @@ describe('Vogels Integration Tests', function() {
 
 
   describe('#scan', function () {
-    it('should return all users', function(done) {
+    it('should return all users', function (done) {
       User.scan().loadAll().exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -657,7 +657,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return all users with limit', function(done) {
+    it('should return all users with limit', function (done) {
       User.scan().limit(2).loadAll().exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -666,7 +666,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users with specific attributes', function(done) {
+    it('should return users with specific attributes', function (done) {
       User.scan()
         .where('age').gt(18)
         .attributes(['email', 'roles', 'age']).exec(function (err, data) {
@@ -680,7 +680,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return 10 users', function(done) {
+    it('should return 10 users', function (done) {
       User.scan().limit(10).exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length(10);
@@ -689,7 +689,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users older than 18', function(done) {
+    it('should return users older than 18', function (done) {
       User.scan()
       .where('age').gt(18)
       .exec(function (err, data) {
@@ -704,7 +704,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users matching multiple filters', function(done) {
+    it('should return users matching multiple filters', function (done) {
       User.scan()
       .where('age').between(18, 22)
       .where('email').beginsWith('test1')
@@ -721,7 +721,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users contains admin role', function(done) {
+    it('should return users contains admin role', function (done) {
       User.scan()
       .where('roles').contains('admin')
       .exec(function (err, data) {
@@ -736,7 +736,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users using stream interface', function(done) {
+    it('should return users using stream interface', function (done) {
       var stream = User.scan().exec();
 
       var called = false;
@@ -754,7 +754,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users that match expression filters', function(done) {
+    it('should return users that match expression filters', function (done) {
       User.scan()
       .filterExpression('#age BETWEEN :low AND :high AND begins_with(#email, :e)')
       .expressionAttributeValues({ ':low' : 18, ':high' : 22, ':e' : 'test1'})
@@ -772,7 +772,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users between ages', function(done) {
+    it('should return users between ages', function (done) {
       User.scan()
         .where('age').between(18, 22)
         .where('email').beginsWith('test1')
@@ -789,7 +789,7 @@ describe('Vogels Integration Tests', function() {
         });
     });
 
-    it('should return users matching IN filter', function(done) {
+    it('should return users matching IN filter', function (done) {
       User.scan()
         .where('age').in([2, 9, 20])
         .exec(function (err, data) {
@@ -805,7 +805,7 @@ describe('Vogels Integration Tests', function() {
         });
     });
 
-    it('should return users with projection expression', function(done) {
+    it('should return users with projection expression', function (done) {
       User.scan()
       .projectionExpression('age, email, #roles')
       .expressionAttributeNames({ '#roles' : 'roles'})
@@ -821,7 +821,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should load all users with limit', function(done) {
+    it('should load all users with limit', function (done) {
       User.scan().loadAll().limit(2).exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -830,7 +830,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users using stream interface and limit', function(done) {
+    it('should return users using stream interface and limit', function (done) {
       var stream = User.scan().loadAll().limit(2).exec();
 
       var called = false;
@@ -849,7 +849,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should load tweets using not null tag clause', function(done) {
+    it('should load tweets using not null tag clause', function (done) {
       Tweet.scan().where('tag').notNull().exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -865,7 +865,7 @@ describe('Vogels Integration Tests', function() {
   });
 
   describe('#parallelScan', function () {
-    it('should return all users', function(done) {
+    it('should return all users', function (done) {
       User.parallelScan(4).exec(function (err, data) {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -875,7 +875,7 @@ describe('Vogels Integration Tests', function() {
 
     });
 
-    it('should return users older than 18', function(done) {
+    it('should return users older than 18', function (done) {
       User.parallelScan(4)
       .where('age').gt(18)
       .exec(function (err, data) {
@@ -890,7 +890,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return users using stream interface', function(done) {
+    it('should return users using stream interface', function (done) {
       var stream = User.parallelScan(4).exec();
 
       var called = false;
@@ -1015,14 +1015,14 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should destroy item with hash key', function(done) {
+    it('should destroy item with hash key', function (done) {
       User.destroy({ id : userId }, function (err) {
         expect(err).to.not.exist;
         return done();
       });
     });
 
-    it('should destroy item and return old values', function(done) {
+    it('should destroy item and return old values', function (done) {
       User.destroy({ id : userId }, {ReturnValues : 'ALL_OLD'}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -1031,7 +1031,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return condition exception when using ConditionExpression', function(done) {
+    it('should return condition exception when using ConditionExpression', function (done) {
       var params = {};
       params.ConditionExpression = '#i = :x';
       params.ExpressionAttributeNames = {'#i' : 'id'};
@@ -1046,7 +1046,7 @@ describe('Vogels Integration Tests', function() {
       });
     });
 
-    it('should return condition exception when using Expected shorthand', function(done) {
+    it('should return condition exception when using Expected shorthand', function (done) {
       var opts = {expected : {id : 'dontexist'}};
 
       User.destroy({id : 'dontexist'}, opts, function (err, acc) {

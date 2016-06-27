@@ -390,7 +390,7 @@ describe('schema', function () {
 
   describe('#validate', function () {
 
-    it('should return no err for string', function() {
+    it('should return no err for string', function () {
       var config = {
         hashKey : 'email',
         schema : {
@@ -403,7 +403,7 @@ describe('schema', function () {
       expect(s.validate({email: 'foo@bar.com'}).error).to.be.null;
     });
 
-    it('should return no error for valid date object', function() {
+    it('should return no error for valid date object', function () {
       var config = {
         hashKey : 'created',
         schema : {

@@ -32,7 +32,7 @@ var printAccountInfo = function (err, acc) {
 var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
-  async.times(15, function(n, next) {
+  async.times(15, function (n, next) {
     var roles = n %3 === 0 ? ['admin', 'editor'] : ['user'];
     Account.create({email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, roles : roles}, next);
   }, callback);

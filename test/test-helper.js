@@ -93,7 +93,7 @@ exports.randomName = function (prefix) {
   return prefix + '_' + Date.now() + '.' + _.random(1000);
 };
 
-exports.testLogger = function() {
+exports.testLogger = function () {
   return bunyan.createLogger({
     name: 'vogels-tests',
     serializers : {err: bunyan.stdSerializers.err},

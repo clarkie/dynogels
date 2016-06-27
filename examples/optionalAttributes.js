@@ -24,7 +24,7 @@ var printInfo = function (err, person) {
   }
 };
 
-vogels.createTables( function (err) {
+vogels.createTables(function (err) {
   if (err) {
     console.log('Failed to create table', err);
     process.exit(1);

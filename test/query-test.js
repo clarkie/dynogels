@@ -236,7 +236,7 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).projectionExpression( '#name, #email');
+      var query = new Query('tim', table, serializer).projectionExpression('#name, #email');
 
       query.request.ProjectionExpression.should.eql('#name, #email');
     });
@@ -477,7 +477,7 @@ describe('Query', function () {
       query = new Query('tim', table, serializer);
     });
 
-    it('should have hash key and range key equals clauses', function() {
+    it('should have hash key and range key equals clauses', function () {
       query = query.where('email').equals('foo@example.com');
       query.exec();
 
@@ -486,7 +486,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email = :email) AND (#name = :name)');
     });
 
-    it('should have equals clause', function() {
+    it('should have equals clause', function () {
       query = query.where('email').equals('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -494,7 +494,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email = :email)');
     });
 
-    it('should have less than or equal clause', function() {
+    it('should have less than or equal clause', function () {
       query = query.where('email').lte('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -502,7 +502,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email <= :email)');
     });
 
-    it('should have less than clause', function() {
+    it('should have less than clause', function () {
       query = query.where('email').lt('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -510,7 +510,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email < :email)');
     });
 
-    it('should have greater than or equal clause', function() {
+    it('should have greater than or equal clause', function () {
       query = query.where('email').gte('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -518,7 +518,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email >= :email)');
     });
 
-    it('should have greater than clause', function() {
+    it('should have greater than clause', function () {
       query = query.where('email').gt('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -526,7 +526,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email > :email)');
     });
 
-    it('should have begins with clause', function() {
+    it('should have begins with clause', function () {
       query = query.where('email').beginsWith('foo');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -534,7 +534,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(begins_with(#email, :email))');
     });
 
-    it('should have between clause', function() {
+    it('should have between clause', function () {
       query = query.where('email').between('bob@bob.com', 'foo@foo.com');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -542,7 +542,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email BETWEEN :email AND :email_2)');
     });
 
-    it('should support multiple clauses on same attribute', function() {
+    it('should support multiple clauses on same attribute', function () {
       query = query.where('email').gt('foo@example.com').where('email').lt('moo@foo.com');
 
       query.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -572,7 +572,7 @@ describe('Query', function () {
       query = new Query('tim', table, serializer);
     });
 
-    it('should have equals clause', function() {
+    it('should have equals clause', function () {
       query = query.filter('age').equals(5);
 
       query.request.ExpressionAttributeNames.should.eql({'#age' : 'age'});
@@ -580,7 +580,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(#age = :age)');
     });
 
-    it('should have exists clause', function() {
+    it('should have exists clause', function () {
       query = query.filter('age').exists();
 
       query.request.ExpressionAttributeNames.should.eql({'#age' : 'age'});
@@ -588,7 +588,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(attribute_exists(#age))');
     });
 
-    it('should have not exists clause', function() {
+    it('should have not exists clause', function () {
       query = query.filter('age').exists(false);
 
       query.request.ExpressionAttributeNames.should.eql({'#age' : 'age'});
@@ -596,7 +596,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(attribute_not_exists(#age))');
     });
 
-    it('should have between clause', function() {
+    it('should have between clause', function () {
       query = query.filter('age').between(5, 7);
 
       query.request.ExpressionAttributeNames.should.eql({'#age' : 'age'});
@@ -604,7 +604,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(#age BETWEEN :age AND :age_2)');
     });
 
-    it('should have IN clause', function() {
+    it('should have IN clause', function () {
       query = query.filter('age').in([5, 7, 12]);
 
       query.request.ExpressionAttributeNames.should.eql({'#age' : 'age'});
@@ -612,7 +612,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(#age IN (:age,:age_2,:age_3))');
     });
 
-    it('should support multiple filters on same attribute', function() {
+    it('should support multiple filters on same attribute', function () {
       query = query.filter('age').gt(5).filter('age').lt(20).filter('age').ne(15);
 
       query.request.ExpressionAttributeNames.should.eql({'#age' : 'age'});

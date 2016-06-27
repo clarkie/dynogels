@@ -9,7 +9,7 @@ var vogels = require('../../index'),
 
 chai.should();
 
-describe('Create Tables Integration Tests', function() {
+describe('Create Tables Integration Tests', function () {
   this.timeout(0);
 
   before(function () {
@@ -357,7 +357,7 @@ describe('Create Tables Integration Tests', function() {
   });
 });
 
-describe('Update Tables Integration Tests', function() {
+describe('Update Tables Integration Tests', function () {
   this.timeout(0);
   var Tweet,
       tableName;

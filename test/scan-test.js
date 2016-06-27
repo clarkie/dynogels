@@ -226,7 +226,7 @@ describe('Scan', function () {
       scan = new Scan(table, serializer);
     });
 
-    it('should have equals clause', function() {
+    it('should have equals clause', function () {
       scan = scan.where('email').equals('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -234,7 +234,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email = :email)');
     });
 
-    it('should have not equals clause', function() {
+    it('should have not equals clause', function () {
       scan = scan.where('email').ne('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -242,7 +242,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email <> :email)');
     });
 
-    it('should have less than or equal clause', function() {
+    it('should have less than or equal clause', function () {
       scan = scan.where('email').lte('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -250,7 +250,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email <= :email)');
     });
 
-    it('should have less than clause', function() {
+    it('should have less than clause', function () {
       scan = scan.where('email').lt('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -258,7 +258,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email < :email)');
     });
 
-    it('should have greater than or equal clause', function() {
+    it('should have greater than or equal clause', function () {
       scan = scan.where('email').gte('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -266,7 +266,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email >= :email)');
     });
 
-    it('should have greater than clause', function() {
+    it('should have greater than clause', function () {
       scan = scan.where('email').gt('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -274,7 +274,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email > :email)');
     });
 
-    it('should have not null clause', function() {
+    it('should have not null clause', function () {
       scan = scan.where('email').notNull();
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -282,7 +282,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(attribute_exists(#email))');
     });
 
-    it('should have null clause', function() {
+    it('should have null clause', function () {
       scan = scan.where('email').null();
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -290,7 +290,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(attribute_not_exists(#email))');
     });
 
-    it('should have contains clause', function() {
+    it('should have contains clause', function () {
       scan = scan.where('email').contains('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -298,7 +298,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(contains(#email, :email))');
     });
 
-    it('should not pass a number set when making contains call', function() {
+    it('should not pass a number set when making contains call', function () {
       scan = scan.where('scores').contains(2);
 
       scan.request.ExpressionAttributeNames.should.eql({'#scores' : 'scores'});
@@ -306,7 +306,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(contains(#scores, :scores))');
     });
 
-    it('should have not contains clause', function() {
+    it('should have not contains clause', function () {
       scan = scan.where('email').notContains('foo@example.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -314,7 +314,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(NOT contains(#email, :email))');
     });
 
-    it('should have in clause', function() {
+    it('should have in clause', function () {
       scan = scan.where('email').in(['foo@example.com', 'test@example.com']);
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -322,7 +322,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email IN (:email,:email_2))');
     });
 
-    it('should have begins with clause', function() {
+    it('should have begins with clause', function () {
       scan = scan.where('email').beginsWith('foo');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -330,7 +330,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(begins_with(#email, :email))');
     });
 
-    it('should have between clause', function() {
+    it('should have between clause', function () {
       scan = scan.where('email').between('bob@bob.com', 'foo@foo.com');
 
       scan.request.ExpressionAttributeNames.should.eql({'#email' : 'email'});
@@ -338,7 +338,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email BETWEEN :email AND :email_2)');
     });
 
-    it('should have multiple filters', function() {
+    it('should have multiple filters', function () {
       scan = scan
         .where('name').equals('Tim')
         .where('email').beginsWith('foo');
@@ -348,7 +348,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#name = :name) AND (begins_with(#email, :email))');
     });
 
-    it('should have multiple filters on the same attribute', function() {
+    it('should have multiple filters on the same attribute', function () {
       scan = scan
         .where('email').gt('foo@example.com')
         .where('email').lt('moo@example.com');
@@ -358,7 +358,7 @@ describe('Scan', function () {
       scan.request.FilterExpression.should.eql('(#email > :email) AND (#email < :email_2)');
     });
 
-    it('should convert date to iso string', function() {
+    it('should convert date to iso string', function () {
       var d = new Date();
       scan = scan.where('created').equals(d);
 
@@ -407,7 +407,7 @@ describe('Scan', function () {
   describe('#projectionExpression', function () {
 
     it('should set projection expression', function () {
-      var scan = new Scan(table, serializer).projectionExpression( '#name, #email');
+      var scan = new Scan(table, serializer).projectionExpression('#name, #email');
       scan.request.ProjectionExpression.should.eql('#name, #email');
     });
   });

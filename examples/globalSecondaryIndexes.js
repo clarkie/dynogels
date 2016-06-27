@@ -52,7 +52,7 @@ var data = [
 var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
-  async.each(data, function(attrs, callback) {
+  async.each(data, function (attrs, callback) {
     GameScore.create(attrs, callback);
   }, callback);
 };

@@ -42,7 +42,7 @@ var printResults = function (err, data) {
 var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
-  async.times(10, function(n, next) {
+  async.times(10, function (n, next) {
     var director = { firstName : 'Steven', lastName : 'Spielberg the ' + n, titles : ['Producer', 'Writer', 'Director']};
     var actors = [
       { firstName : 'Tom', lastName : 'Hanks', titles : ['Producer', 'Actor', 'Soundtrack']}

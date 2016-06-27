@@ -40,7 +40,7 @@ var printInfo = function (err, resp) {
 var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
-  async.times(30, function(n, next) {
+  async.times(30, function (n, next) {
     var purchased = n %4 === 0 ? true : false;
     Product.create({accountId : n %5, purchased : purchased, price : n}, next);
   }, callback);

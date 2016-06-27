@@ -19,8 +19,6 @@
     "no-unused-expressions": [0],
     "no-undef": [0],
     "vars-on-top": [0],
-    "space-in-parens": [0],
-    "space-before-function-paren": [0],
     "max-len": [0],
     "no-param-reassign": [0],
     "no-shadow": [0],

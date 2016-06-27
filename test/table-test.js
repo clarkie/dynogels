@@ -30,7 +30,6 @@ describe('table', function () {
   });
 
   describe('#get', function () {
-
     it('should get item by hash key', function (done) {
       var config = {
         hashKey: 'email'
@@ -158,7 +157,6 @@ describe('table', function () {
     });
 
     it('should get item from dynamic table by hash key', function (done) {
-
       var config = {
         hashKey: 'email',
         tableName : function () {
@@ -207,11 +205,9 @@ describe('table', function () {
         done();
       });
     });
-
   });
 
   describe('#create', function () {
-
     it('should create valid item', function (done) {
       var config = {
         hashKey: 'email',
@@ -657,11 +653,9 @@ describe('table', function () {
         done();
       });
     });
-
   });
 
   describe('#update', function () {
-
     it('should update valid item', function (done) {
       var config = {
         hashKey: 'email',
@@ -906,11 +900,9 @@ describe('table', function () {
         done();
       });
     });
-
   });
 
   describe('#query', function () {
-
     it('should return query object', function () {
       var config = {
         hashKey: 'name',
@@ -930,7 +922,6 @@ describe('table', function () {
   });
 
   describe('#scan', function () {
-
     it('should return scan object', function () {
       var config = {
         hashKey: 'name',
@@ -950,7 +941,6 @@ describe('table', function () {
   });
 
   describe('#destroy', function () {
-
     it('should destroy valid item', function (done) {
       var config = {
         hashKey: 'email',
@@ -1316,7 +1306,6 @@ describe('table', function () {
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
       });
-
     });
 
     it('should create table with range key', function (done) {
@@ -1353,7 +1342,6 @@ describe('table', function () {
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
       });
-
     });
 
     it('should create table with secondary index', function (done) {
@@ -1526,7 +1514,6 @@ describe('table', function () {
   });
 
   describe('#describeTable', function () {
-
     it('should make describe table request', function (done) {
       var config = {
         hashKey: 'email',
@@ -1552,11 +1539,9 @@ describe('table', function () {
         done();
       });
     });
-
   });
 
   describe('#updateTable', function () {
-
     beforeEach(function () {
       var config = {
         hashKey: 'email',
@@ -1602,7 +1587,6 @@ describe('table', function () {
   });
 
   describe('#deleteTable', function () {
-
     beforeEach(function () {
       var config = {
         hashKey: 'email',
@@ -1645,7 +1629,6 @@ describe('table', function () {
   });
 
   describe('#tableName', function () {
-
     it('should return given name', function () {
       var config = {
         hashKey: 'email',
@@ -1702,15 +1685,11 @@ describe('table', function () {
 
       table.tableName().should.eql('accounts_' + dateString);
     });
-
   });
 
   describe('hooks', function () {
-
     describe('#create', function () {
-
       it('should call before hooks', function (done) {
-
         var config = {
           hashKey: 'email',
           schema : {
@@ -1808,7 +1787,6 @@ describe('table', function () {
     });
 
     describe('#update', function () {
-
       it('should call before hook', function (done) {
         var config = {
           hashKey: 'email',

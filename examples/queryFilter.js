@@ -27,7 +27,6 @@ var Account = vogels.define('example-query-filter', {
 
 var printResults = function (msg) {
   return function (err, resp) {
-
     console.log('----------------------------------------------------------------------');
     if (err) {
       console.log(msg + ' - Error running query', err);
@@ -49,13 +48,12 @@ var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
   async.times(30, function (n, next) {
-    var roles = n %3 === 0 ? ['admin', 'editor'] : ['user'];
-    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, roles : roles }, next);
+    var roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
+    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n % 3, age: n, roles : roles }, next);
   }, callback);
 };
 
 var runFilterQueries = function () {
-
   // Basic equals filter
   Account.query('Test 1').filter('age').equals(4).exec(printResults('Equals Filter'));
 

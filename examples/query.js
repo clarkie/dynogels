@@ -45,8 +45,8 @@ var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
   async.times(25, function (n, next) {
-    var prefix = n %5 === 0 ? 'foo' : 'test';
-    Account.create({ email: prefix + n + '@example.com', name : 'Test ' + n %3, age: n }, next);
+    var prefix = n % 5 === 0 ? 'foo' : 'test';
+    Account.create({ email: prefix + n + '@example.com', name : 'Test ' + n % 3, age: n }, next);
   }, callback);
 };
 
@@ -76,8 +76,6 @@ var runQueries = function () {
   .where('createdAt').lt(new Date().toISOString())
   .descending()
   .exec(printResults);
-
-
 };
 
 async.series([

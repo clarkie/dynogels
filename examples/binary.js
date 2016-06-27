@@ -38,6 +38,5 @@ vogels.createTables(function (err) {
     }
 
     BinModel.create({ name : 'basic.js', data: data }, printFileInfo);
-
   });
 });

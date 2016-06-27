@@ -50,12 +50,12 @@ var loadSeedData = function (callback) {
 
     var tags = ['tag ' + n];
 
-    if (n %3 === 0) {
+    if (n % 3 === 0) {
       actors.push({ firstName : 'Rex', lastName : 'Ryan', titles : ['Actor', 'Head Coach'] });
       tags.push('Action');
     }
 
-    if (n %5 === 0) {
+    if (n % 5 === 0) {
       actors.push({ firstName : 'Tom', lastName : 'Coughlin', titles : ['Writer', 'Head Coach'] });
       tags.push('Comedy');
     }
@@ -65,7 +65,6 @@ var loadSeedData = function (callback) {
 };
 
 var runExample = function () {
-
   Movie.create({
     title : 'Star Wars: Episode IV - A New Hope',
     releaseYear : 1977,

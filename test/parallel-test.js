@@ -40,7 +40,6 @@ describe('ParallelScan', function () {
 
       return done();
     });
-
   });
 
   it('should stream error', function (done) {
@@ -58,7 +57,5 @@ describe('ParallelScan', function () {
     stream.on('readable', function () {
       assert(false, 'readable should not be called');
     });
-
   });
-
 });

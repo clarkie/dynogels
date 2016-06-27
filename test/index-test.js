@@ -12,13 +12,11 @@ var vogels = require('../index'),
 chai.should();
 
 describe('vogels', function () {
-
   afterEach(function () {
     vogels.reset();
   });
 
   describe('#define', function () {
-
     it('should return model', function () {
       var config = {
         hashKey : 'name',
@@ -32,12 +30,10 @@ describe('vogels', function () {
     });
 
     it('should throw when using old api', function () {
-
       expect(function () {
         vogels.define('Account', function (schema) {
           schema.String('email', { hashKey: true });
         });
-
       }).to.throw(/define no longer accepts schema callback, migrate to new api/);
     });
 
@@ -61,11 +57,9 @@ describe('vogels', function () {
       var acc = new Account({ name: 'Test Acc' });
       acc.table.should.be.instanceof(Table);
     });
-
   });
 
   describe('#models', function () {
-
     it('should be empty', function () {
       vogels.models.should.be.empty;
     });
@@ -75,7 +69,6 @@ describe('vogels', function () {
 
       vogels.models.should.contain.keys('Account');
     });
-
   });
 
   describe('#model', function () {
@@ -88,7 +81,6 @@ describe('vogels', function () {
     it('should return null', function () {
       expect(vogels.model('Person')).to.be.null;
     });
-
   });
 
   describe('model config', function () {
@@ -139,7 +131,6 @@ describe('vogels', function () {
 
       Account.docClient.service.config.endpoint.should.eq(dynamodb.config.endpoint);
     });
-
   });
 
   describe('#createTables', function () {
@@ -256,7 +247,5 @@ describe('vogels', function () {
       clock.tick(1200);
       clock.tick(1200);
     });
-
   });
-
 });

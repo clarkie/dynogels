@@ -10,9 +10,7 @@ var Schema = require('../lib/schema'),
 chai.should();
 
 describe('schema', function () {
-
   describe('setup', function () {
-
     it('should set hash key', function () {
       var config = {
         hashKey: 'id'
@@ -169,7 +167,6 @@ describe('schema', function () {
       expect(function () {
         new Schema(config);
       }).to.throw(/hashKey is required/);
-
     });
 
     it('should setup local secondary index when both hash and range keys are given', function () {
@@ -297,7 +294,6 @@ describe('schema', function () {
         }
       });
     });
-
   });
 
   describe('#stringSet', function () {
@@ -383,13 +379,10 @@ describe('schema', function () {
 
       var s = new Schema(config);
       expect(s.applyDefaults({}).id).should.not.be.empty;
-
     });
-
   });
 
   describe('#validate', function () {
-
     it('should return no err for string', function () {
       var config = {
         hashKey : 'email',
@@ -416,7 +409,6 @@ describe('schema', function () {
       expect(s.validate({ created: new Date() }).error).to.be.null;
       expect(s.validate({ created: Date.now() }).error).to.be.null;
     });
-
   });
 
   describe('#applyDefaults', function () {
@@ -469,7 +461,5 @@ describe('schema', function () {
 
       clock.restore();
     });
-
   });
-
 });

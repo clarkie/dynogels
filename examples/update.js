@@ -43,5 +43,4 @@ vogels.createTables(function (err) {
   Account.update({ email : 'test@example.com', nested : { roles : ['guest'] } }, function (err, acc) {
     console.log('added nested data', acc.get('nested'));
   });
-
 });

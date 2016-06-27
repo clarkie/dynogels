@@ -57,7 +57,6 @@ vogels.createTables({
 
     DynamicModel.create(data, next);
   }, function () {
-
     DynamicModel.scan().loadAll().exec(printResults);
   });
 });

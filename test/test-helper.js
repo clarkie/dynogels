@@ -34,7 +34,7 @@ exports.realDynamoDB = function () {
 exports.mockDocClient = function () {
   var client = new AWS.DynamoDB.DocumentClient({ service : exports.mockDynamoDB() });
 
-  var operations= [
+  var operations = [
     'batchGet',
     'batchWrite',
     'put',

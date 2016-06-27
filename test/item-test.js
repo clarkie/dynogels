@@ -37,7 +37,6 @@ describe('item', function () {
   });
 
   describe('#save', function () {
-
     it('should return error', function (done) {
       table.docClient.put.yields(new Error('fail'));
 
@@ -50,9 +49,7 @@ describe('item', function () {
 
         return done();
       });
-
     });
-
   });
 
   describe('#update', function () {
@@ -83,7 +80,6 @@ describe('item', function () {
 
         return done();
       });
-
     });
 
     it('should return null', function (done) {
@@ -99,6 +95,5 @@ describe('item', function () {
         return done();
       });
     });
-
   });
 });

@@ -42,14 +42,13 @@ var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
   async.times(30, function (n, next) {
-    var scores = n %5 === 0 ? [3, 4, 5] : [1, 2];
-    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n, scores : scores }, next);
+    var scores = n % 5 === 0 ? [3, 4, 5] : [1, 2];
+    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n % 3, age: n, scores : scores }, next);
   }, callback);
 };
 
 
 var runScans = function () {
-
   // Basic scan against table
   Account.scan().exec(printResults);
 

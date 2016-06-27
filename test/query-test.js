@@ -26,7 +26,6 @@ describe('Query', function () {
   });
 
   describe('#exec', function () {
-
     it('should run query against table', function (done) {
       var config = {
         hashKey: 'name',
@@ -96,7 +95,6 @@ describe('Query', function () {
       stream.on('readable', function () {
         assert(false, 'readable should not be called');
       });
-
     });
 
     it('should stream data after handling retryable error', function (done) {
@@ -137,7 +135,6 @@ describe('Query', function () {
         expect(called).to.be.true;
         return done();
       });
-
     });
   });
 
@@ -167,11 +164,9 @@ describe('Query', function () {
         query.limit(0);
       }).to.throw('Limit must be greater than 0');
     });
-
   });
 
   describe('#filterExpression', function () {
-
     it('should set filter expression', function () {
       var config = {
         hashKey: 'name',
@@ -189,7 +184,6 @@ describe('Query', function () {
   });
 
   describe('#expressionAttributeValues', function () {
-
     it('should set expression attribute values', function () {
       var config = {
         hashKey: 'name',
@@ -207,7 +201,6 @@ describe('Query', function () {
   });
 
   describe('#expressionAttributeNames', function () {
-
     it('should set expression attribute names', function () {
       var config = {
         hashKey: 'name',
@@ -225,7 +218,6 @@ describe('Query', function () {
   });
 
   describe('#projectionExpression', function () {
-
     it('should set projection expression', function () {
       var config = {
         hashKey: 'name',
@@ -243,7 +235,6 @@ describe('Query', function () {
   });
 
   describe('#usingIndex', function () {
-
     it('should set the index name to use', function () {
       var config = {
         hashKey: 'name',
@@ -320,7 +311,6 @@ describe('Query', function () {
       var query = new Query('tim', table, serializer).consistentRead(false);
       query.request.ConsistentRead.should.be.false;
     });
-
   });
 
   describe('#attributes', function () {
@@ -350,7 +340,6 @@ describe('Query', function () {
       query.request.ProjectionExpression.should.eql('#email');
       query.request.ExpressionAttributeNames.should.eql({ '#email' : 'email' });
     });
-
   });
 
   describe('#order', function () {
@@ -378,7 +367,6 @@ describe('Query', function () {
       var query = new Query('tim', table, serializer).descending();
       query.request.ScanIndexForward.should.be.false;
     });
-
   });
 
   describe('#startKey', function () {
@@ -408,7 +396,6 @@ describe('Query', function () {
   });
 
   describe('#select', function () {
-
     it('should set select Key', function () {
       var config = {
         hashKey: 'name',
@@ -619,11 +606,9 @@ describe('Query', function () {
       query.request.ExpressionAttributeValues.should.eql({ ':age' : 5, ':age_2' : 20, ':age_3' : 15 });
       query.request.FilterExpression.should.eql('(#age > :age) AND (#age < :age_2) AND (#age <> :age_3)');
     });
-
   });
 
   describe('#loadAll', function () {
-
     it('should set load all option to true', function () {
       var config = {
         hashKey: 'name',
@@ -641,5 +626,4 @@ describe('Query', function () {
       query.options.loadAll.should.be.true;
     });
   });
-
 });

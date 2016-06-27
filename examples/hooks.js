@@ -53,7 +53,5 @@ vogels.createTables(function (err) {
     acc.update(function () {
       acc.destroy({ ReturnValues: 'ALL_OLD' });
     });
-
   });
-
 });

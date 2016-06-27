@@ -420,7 +420,5 @@ describe('Update Tables Integration Tests', function () {
         return done();
       });
     });
-
   });
-
 });

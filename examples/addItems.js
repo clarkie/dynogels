@@ -27,6 +27,6 @@ vogels.createTables({
   }
 
   async.times(25, function (n, next) {
-    Account.create({ name : 'Account ' + n, email : 'account' +n + '@gmail.com', age : n }, next);
+    Account.create({ name : 'Account ' + n, email : 'account' + n + '@gmail.com', age : n }, next);
   });
 });

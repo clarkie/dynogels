@@ -55,7 +55,6 @@ describe('Scan', function () {
   });
 
   describe('#exec', function () {
-
     it('should call run scan on table', function (done) {
       table.runScan.yields(null, { ConsumedCapacity: { CapacityUnits : 5, TableName: 'accounts' }, Count: 10, ScannedCount: 12 });
       serializer.serializeItem.returns({ name: { S: 'tim' } });
@@ -111,12 +110,9 @@ describe('Scan', function () {
         done();
       });
     });
-
-
   });
 
   describe('#limit', function () {
-
     it('should set the limit', function () {
       var scan = new Scan(table, serializer).limit(10);
 
@@ -130,11 +126,9 @@ describe('Scan', function () {
         scan.limit(0);
       }).to.throw('Limit must be greater than 0');
     });
-
   });
 
   describe('#attributes', function () {
-
     it('should set array attributes to get', function () {
       var scan = new Scan(table, serializer).attributes(['created', 'email']);
       scan.request.ProjectionExpression.should.eql('#created,#email');
@@ -146,7 +140,6 @@ describe('Scan', function () {
       scan.request.ProjectionExpression.should.eql('#email');
       scan.request.ExpressionAttributeNames.should.eql({ '#email' : 'email' });
     });
-
   });
 
   describe('#startKey', function () {
@@ -170,7 +163,6 @@ describe('Scan', function () {
   });
 
   describe('#select', function () {
-
     it('should set select Key', function () {
       var scan = new Scan(table, serializer).select('COUNT');
 
@@ -179,7 +171,6 @@ describe('Scan', function () {
   });
 
   describe('#ReturnConsumedCapacity', function () {
-
     it('should set return consumed capacity Key to passed in value', function () {
       var scan = new Scan(table, serializer).returnConsumedCapacity('TOTAL');
       scan.request.ReturnConsumedCapacity.should.eql('TOTAL');
@@ -193,7 +184,6 @@ describe('Scan', function () {
   });
 
   describe('#segment', function () {
-
     it('should set both segment and total segments keys', function () {
       var scan = new Scan(table, serializer).segments(0, 4);
 
@@ -207,7 +197,6 @@ describe('Scan', function () {
     var scan;
 
     beforeEach(function () {
-
       var config = {
         hashKey: 'name',
         rangeKey: 'email',
@@ -366,11 +355,9 @@ describe('Scan', function () {
       scan.request.ExpressionAttributeValues.should.eql({ ':created' : d.toISOString() });
       scan.request.FilterExpression.should.eql('(#created = :created)');
     });
-
   });
 
   describe('#loadAll', function () {
-
     it('should set load all option to true', function () {
       var scan = new Scan(table, serializer).loadAll();
 
@@ -380,7 +367,6 @@ describe('Scan', function () {
 
 
   describe('#filterExpression', function () {
-
     it('should set filter expression', function () {
       var scan = new Scan(table, serializer).filterExpression('Postedby = :val');
       scan.request.FilterExpression.should.equal('Postedby = :val');
@@ -388,16 +374,13 @@ describe('Scan', function () {
   });
 
   describe('#expressionAttributeValues', function () {
-
     it('should set expression attribute values', function () {
       var scan = new Scan(table, serializer).expressionAttributeValues({ ':val' : 'test' });
       scan.request.ExpressionAttributeValues.should.eql({ ':val' : 'test' });
     });
-
   });
 
   describe('#expressionAttributeNames', function () {
-
     it('should set expression attribute names', function () {
       var scan = new Scan(table, serializer).expressionAttributeNames({ '#name' : 'name' });
       scan.request.ExpressionAttributeNames.should.eql({ '#name' : 'name' });
@@ -405,11 +388,9 @@ describe('Scan', function () {
   });
 
   describe('#projectionExpression', function () {
-
     it('should set projection expression', function () {
       var scan = new Scan(table, serializer).projectionExpression('#name, #email');
       scan.request.ProjectionExpression.should.eql('#name, #email');
     });
   });
-
 });

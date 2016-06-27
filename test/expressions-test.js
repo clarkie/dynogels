@@ -9,9 +9,7 @@ var expressions = require('../lib/expressions'),
 chai.should();
 
 describe('expressions', function () {
-
   describe('#parse', function () {
-
     it('should parse single SET action', function () {
       var out = expressions.parse('SET foo = :x');
 
@@ -180,7 +178,7 @@ describe('expressions', function () {
     });
 
     it('should return SET and ADD actions', function () {
-      var updates ={
+      var updates = {
         id : 'foobar',
         email : 'test@test.com',
         age : { $add : 1 }
@@ -203,7 +201,6 @@ describe('expressions', function () {
         '#email' : 'email',
         '#age'   : 'age',
       });
-
     });
 
     it('should return single DELETE action', function () {
@@ -231,7 +228,6 @@ describe('expressions', function () {
       expect(result.attributeNames).to.eql({
         '#names' : 'names'
       });
-
     });
 
     it('should return single REMOVE action', function () {
@@ -254,7 +250,6 @@ describe('expressions', function () {
       expect(result.attributeNames).to.eql({
         '#email' : 'email'
       });
-
     });
 
     it('should return single REMOVE action when value is set to empty string', function () {
@@ -277,7 +272,6 @@ describe('expressions', function () {
       expect(result.attributeNames).to.eql({
         '#email' : 'email'
       });
-
     });
 
     it('should return empty actions when passed empty object', function () {
@@ -307,11 +301,9 @@ describe('expressions', function () {
       expect(result.values).to.eql({});
       expect(result.attributeNames).to.eql({});
     });
-
   });
 
   describe('#stringify', function () {
-
     it('should return single SET action', function () {
       var params = {
         SET : ['#email = :email']
@@ -415,7 +407,5 @@ describe('expressions', function () {
 
       expect(expressions.stringify(parsed)).to.eql(exp);
     });
-
   });
-
 });

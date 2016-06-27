@@ -13,7 +13,6 @@ describe('Serializer', function () {
   var docClient = helper.mockDocClient();
 
   describe('#buildKeys', function () {
-
     it('should handle string hash key', function () {
       var config = {
         hashKey: 'email',
@@ -179,7 +178,6 @@ describe('Serializer', function () {
 
       keys.should.eql({ email: 'test@example.com', adult: false });
     });
-
   });
 
   describe('#serializeItem', function () {
@@ -518,7 +516,6 @@ describe('Serializer', function () {
 
       item.should.eql({});
     });
-
   });
 
   describe('#deserializeItem', function () {
@@ -587,7 +584,6 @@ describe('Serializer', function () {
         }
       });
     });
-
   });
 
   describe('#serializeItemForUpdate', function () {
@@ -749,8 +745,6 @@ describe('Serializer', function () {
       item.ages.Action.should.eql('DELETE');
       item.ages.Value.type.should.eql('Number');
       item.ages.Value.values.should.eql(numberSet.values);
-
     });
-
   });
 });

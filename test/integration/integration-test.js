@@ -30,18 +30,18 @@ internals.loadSeedData = function (callback) {
       var roles = ['user'];
       if (n % 3 === 0) {
         roles = ['admin', 'editor'];
-      } else if (n %5 === 0) {
+      } else if (n % 5 === 0) {
         roles = ['qa', 'dev'];
       }
 
-      User.create({ id : internals.userId(n), email: 'test' + n + '@example.com', name : 'Test ' + n %3, age: n +10, roles : roles }, next);
+      User.create({ id : internals.userId(n), email: 'test' + n + '@example.com', name : 'Test ' + n % 3, age: n + 10, roles : roles }, next);
     }, callback);
   },
   function (callback) {
     async.times(15 * 5, function (n, next) {
-      var userId = internals.userId(n %5);
+      var userId = internals.userId(n % 5);
       var p = { UserId : userId, content: 'I love tweeting, in fact Ive tweeted ' + n + ' times', num : n };
-      if (n %3 === 0) {
+      if (n % 3 === 0) {
         p.tag = '#test';
       }
 
@@ -57,12 +57,12 @@ internals.loadSeedData = function (callback) {
 
       var tags = ['tag ' + n];
 
-      if (n %3 === 0) {
+      if (n % 3 === 0) {
         actors.push({ firstName : 'Rex', lastName : 'Ryan', titles : ['Actor', 'Head Coach'] });
         tags.push('Action');
       }
 
-      if (n %5 === 0) {
+      if (n % 5 === 0) {
         actors.push({ firstName : 'Tom', lastName : 'Coughlin', titles : ['Writer', 'Head Coach'] });
         tags.push('Comedy');
       }
@@ -312,8 +312,6 @@ describe('Vogels Integration Tests', function () {
         return done();
       });
     });
-
-
   });
 
   describe('#update', function () {
@@ -434,7 +432,6 @@ describe('Vogels Integration Tests', function () {
         return done();
       });
     });
-
   });
 
   describe('#getItems', function () {
@@ -516,7 +513,7 @@ describe('Vogels Integration Tests', function () {
     });
 
     it('should return tweets using secondaryIndex and date object', function (done) {
-      var oneMinAgo = new Date(new Date().getTime() - 60*1000);
+      var oneMinAgo = new Date(new Date().getTime() - 60 * 1000);
 
       Tweet.query('userid-1')
       .usingIndex('PublishedDateTimeIndex')
@@ -643,7 +640,6 @@ describe('Vogels Integration Tests', function () {
         return done();
       });
     });
-
   });
 
 
@@ -861,7 +857,6 @@ describe('Vogels Integration Tests', function () {
         return done();
       });
     });
-
   });
 
   describe('#parallelScan', function () {
@@ -872,7 +867,6 @@ describe('Vogels Integration Tests', function () {
 
         return done();
       });
-
     });
 
     it('should return users older than 18', function (done) {
@@ -908,7 +902,6 @@ describe('Vogels Integration Tests', function () {
         return done();
       });
     });
-
   });
 
 
@@ -951,7 +944,6 @@ describe('Vogels Integration Tests', function () {
 
           return done();
         });
-
       });
     });
 
@@ -967,7 +959,6 @@ describe('Vogels Integration Tests', function () {
 
           return done();
         });
-
       });
     });
 
@@ -998,10 +989,8 @@ describe('Vogels Integration Tests', function () {
 
           return done();
         });
-
       });
     });
-
   });
 
   describe('#destroy', function () {
@@ -1057,12 +1046,10 @@ describe('Vogels Integration Tests', function () {
         return done();
       });
     });
-
   });
 
 
   describe('model methods', function () {
-
     it('#save with passed in attributes', function (done) {
       var t = new Tweet({
         UserId : 'tester-1',
@@ -1111,7 +1098,6 @@ describe('Vogels Integration Tests', function () {
           expect(tweet.get('tag')).to.eql('update');
           return done();
         });
-
       });
     });
 
@@ -1158,5 +1144,4 @@ describe('Vogels Integration Tests', function () {
       });
     });
   });
-
 });

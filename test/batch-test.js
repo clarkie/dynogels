@@ -37,7 +37,6 @@ describe('Batch', function () {
   });
 
   describe('#getItems', function () {
-
     it('should get items by hash key', function (done) {
       var config = {
         hashKey: 'email',
@@ -134,7 +133,6 @@ describe('Batch', function () {
       table.initItem.returns(new Item(item1));
 
       batch(table, serializer).getItems(keys, function () {
-
         _.each(_.range(300), function (num) {
           var key = { email: 'test' + num + '@test.com', name : 'Test ' + num };
           keys[num].should.eql(key);
@@ -305,5 +303,4 @@ describe('Batch', function () {
       });
     });
   });
-
 });

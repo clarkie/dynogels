@@ -452,7 +452,7 @@ describe('Serializer', function () {
 
       var item = serializer.serializeItem(s, {name: 'Tim Tester'}, {expected : true});
 
-      item.should.eql({name: { 'Value' : 'Tim Tester'}});
+      item.should.eql({name: { Value : 'Tim Tester'}});
     });
 
     it('should serialize string attribute for expected exists false', function () {
@@ -467,7 +467,7 @@ describe('Serializer', function () {
 
       var item = serializer.serializeItem(s, {name: {Exists: false}}, {expected : true});
 
-      item.should.eql({name: { 'Exists' : false}});
+      item.should.eql({name: { Exists : false}});
     });
 
   it('should serialize nested attributes', function () {

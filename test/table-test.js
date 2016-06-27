@@ -1271,7 +1271,7 @@ describe('table', function () {
           email : 'test@test.com'
         },
         Expected : {
-          name : {'Value' : 'Foo Bar'}
+          name : {Value : 'Foo Bar'}
         }
       };
 

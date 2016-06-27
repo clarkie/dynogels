@@ -36,7 +36,7 @@ var GameScore = vogels.define('example-global-index', {
 });
 
 var data = [
-  {userId: '101', gameTitle : 'Galaxy Invaders', topScore: 5842, wins: 10, losses: 5 , topScoreDateTime: new Date(2012, 1, 3, 8, 30)},
+  {userId: '101', gameTitle : 'Galaxy Invaders', topScore: 5842, wins: 10, losses: 5, topScoreDateTime: new Date(2012, 1, 3, 8, 30)},
   {userId: '101', gameTitle : 'Meteor Blasters', topScore: 1000, wins: 12, losses: 3, topScoreDateTime: new Date(2013, 1, 3, 8, 30) },
   {userId: '101', gameTitle : 'Starship X', topScore: 24, wins: 4, losses: 9 },
 
@@ -53,7 +53,7 @@ var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
   async.each(data, function(attrs, callback) {
-    GameScore.create(attrs,callback);
+    GameScore.create(attrs, callback);
   }, callback);
 };
 

@@ -292,7 +292,7 @@ describe('Create Tables Integration Tests', function() {
         { hashKey : 'name', rangeKey : 'nick', type   : 'local', name        : 'NameNickIndex'},
         { hashKey : 'name', rangeKey : 'wins', type   : 'local', name        : 'NameWinsIndex'},
         { hashKey : 'nick', type     : 'global', name : 'GlobalNickIndex' },
-        { hashKey : 'age' , rangeKey : 'wins', type   : 'global', name       : 'GlobalAgeWinsIndex' }
+        { hashKey : 'age', rangeKey : 'wins', type   : 'global', name       : 'GlobalAgeWinsIndex' }
       ]
     });
 

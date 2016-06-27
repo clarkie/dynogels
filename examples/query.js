@@ -66,7 +66,7 @@ var runQueries = function () {
   // also returns consumed capacity query took
   Account.query('Test 2')
   .where('email').gte('a@example.com')
-  .attributes(['email','createdAt'])
+  .attributes(['email', 'createdAt'])
   .returnConsumedCapacity()
   .exec(printResults);
 

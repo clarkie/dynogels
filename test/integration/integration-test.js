@@ -295,7 +295,7 @@ describe('Vogels Integration Tests', function() {
     });
 
     it('should get return selected attributes AttributesToGet param', function(done) {
-      User.get({ id : '123456789'},{AttributesToGet : ['email', 'age']}, function (err, acc) {
+      User.get({ id : '123456789'}, {AttributesToGet : ['email', 'age']}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
         expect(acc.get()).to.have.keys(['email', 'age']);
@@ -304,7 +304,7 @@ describe('Vogels Integration Tests', function() {
     });
 
     it('should get return selected attributes using ProjectionExpression param', function(done) {
-      User.get({ id : '123456789'},{ProjectionExpression : 'email, age, settings.nickname'}, function (err, acc) {
+      User.get({ id : '123456789'}, {ProjectionExpression : 'email, age, settings.nickname'}, function (err, acc) {
         expect(err).to.not.exist;
         expect(acc).to.exist;
         expect(acc.get()).to.have.keys(['email', 'age', 'settings']);

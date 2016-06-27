@@ -33,7 +33,6 @@
     "no-underscore-dangle": [0],
     "keyword-spacing": [0],
     "newline-per-chained-call": [0],
-    "comma-spacing": [0],
     "new-cap": [0],
     "no-else-return": [0],
     "consistent-return": [0],

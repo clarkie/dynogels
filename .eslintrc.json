@@ -16,7 +16,6 @@
     "prefer-arrow-callback": [0],
     "space-infix-ops": [0],
     "prefer-template": [0],
-    "no-unused-expressions": [0],
     "vars-on-top": [0],
     "max-len": [0],
     "no-param-reassign": [0],

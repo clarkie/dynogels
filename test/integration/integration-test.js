@@ -28,7 +28,7 @@ internals.loadSeedData = function (callback) {
     function (callback) {
     async.times(15, function(n, next) {
       var roles = ['user'];
-      if(n % 3 === 0) {
+      if (n % 3 === 0) {
         roles = ['admin', 'editor'];
       } else if (n %5 === 0) {
         roles = ['qa', 'dev'];
@@ -41,7 +41,7 @@ internals.loadSeedData = function (callback) {
     async.times(15 * 5, function(n, next) {
       var userId = internals.userId( n %5);
       var p = {UserId : userId, content: 'I love tweeting, in fact Ive tweeted ' + n + ' times', num : n};
-      if(n %3 === 0 ) {
+      if (n %3 === 0 ) {
         p.tag = '#test';
       }
 
@@ -57,12 +57,12 @@ internals.loadSeedData = function (callback) {
 
       var tags = ['tag ' + n];
 
-      if(n %3 === 0) {
+      if (n %3 === 0) {
         actors.push({ firstName : 'Rex', lastName : 'Ryan', titles : ['Actor', 'Head Coach']});
         tags.push('Action');
       }
 
-      if(n %5 === 0) {
+      if (n %5 === 0) {
         actors.push({ firstName : 'Tom', lastName : 'Coughlin', titles : ['Writer', 'Head Coach']});
         tags.push('Comedy');
       }
@@ -504,7 +504,7 @@ describe('Vogels Integration Tests', function() {
 
           var published = t.get('PublishedDateTime');
 
-          if(prev) {
+          if (prev) {
             expect(published).to.be.at.most(prev);
           }
 
@@ -532,7 +532,7 @@ describe('Vogels Integration Tests', function() {
 
           var published = t.get('PublishedDateTime');
 
-          if(prev) {
+          if (prev) {
             expect(published).to.be.at.most(prev);
           }
 
@@ -743,7 +743,7 @@ describe('Vogels Integration Tests', function() {
       stream.on('readable', function () {
         called = true;
         var data = stream.read();
-        if(data) {
+        if (data) {
           expect(data.Items).to.have.length.above(0);
         }
       });
@@ -838,7 +838,7 @@ describe('Vogels Integration Tests', function() {
         called = true;
         var data = stream.read();
 
-        if(data) {
+        if (data) {
           expect(data.Items).to.have.length.within(0, 2);
         }
       });
@@ -898,7 +898,7 @@ describe('Vogels Integration Tests', function() {
         called = true;
         var data = stream.read();
 
-        if(data) {
+        if (data) {
           expect(data.Items).to.have.length.above(0);
         }
       });

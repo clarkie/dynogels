@@ -43,7 +43,7 @@ vogels.createTables({
   'example-Account'   : {readCapacity: 1, writeCapacity: 1},
   'example-GameScore' : {readCapacity: 1, writeCapacity: 1}
 }, function (err) {
-  if(err) {
+  if (err) {
     console.log('Error creating tables', err);
   } else {
     console.log('table are now created and active');

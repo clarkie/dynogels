@@ -61,7 +61,7 @@ async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
 ], function (err) {
-  if(err) {
+  if (err) {
     console.log('error', err);
     process.exit(1);
   }
@@ -73,7 +73,7 @@ async.series([
   .where('topScore').gt(0)
   .descending()
   .exec(function (err, data) {
-    if(err) {
+    if (err) {
       console.log(err);
     } else {
       console.log('Found', data.Count, 'items');

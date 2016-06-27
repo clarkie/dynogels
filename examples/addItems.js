@@ -21,7 +21,7 @@ var Account = vogels.define('example-Account', {
 vogels.createTables({
   'example-Account'  : {readCapacity: 1, writeCapacity: 10},
 }, function (err) {
-  if(err) {
+  if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }

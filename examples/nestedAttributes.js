@@ -31,7 +31,7 @@ var Movie = vogels.define('example-nested-attribute', {
 
 var printResults = function (err, data) {
   console.log('----------------------------------------------------------------------');
-  if(err) {
+  if (err) {
     console.log('Error - ', err);
   } else {
     console.log('Movie - ', util.inspect(data.get(), {depth : null}));
@@ -50,12 +50,12 @@ var loadSeedData = function (callback) {
 
     var tags = ['tag ' + n];
 
-    if(n %3 === 0) {
+    if (n %3 === 0) {
       actors.push({ firstName : 'Rex', lastName : 'Ryan', titles : ['Actor', 'Head Coach']});
       tags.push('Action');
     }
 
-    if(n %5 === 0) {
+    if (n %5 === 0) {
       actors.push({ firstName : 'Tom', lastName : 'Coughlin', titles : ['Writer', 'Head Coach']});
       tags.push('Comedy');
     }
@@ -103,7 +103,7 @@ async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
 ], function (err) {
-  if(err) {
+  if (err) {
     console.log('error', err);
     process.exit(1);
   }

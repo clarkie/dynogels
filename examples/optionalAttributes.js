@@ -15,7 +15,7 @@ var Person = vogels.define('example-optional-attribute', {
 });
 
 var printInfo = function (err, person) {
-  if(err) {
+  if (err) {
     console.log('got error', err);
   } else if (person) {
     console.log('got person', person.get());
@@ -25,7 +25,7 @@ var printInfo = function (err, person) {
 };
 
 vogels.createTables( function (err) {
-  if(err) {
+  if (err) {
     console.log('Failed to create table', err);
     process.exit(1);
   }

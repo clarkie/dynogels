@@ -128,7 +128,7 @@ describe('Query', function () {
         called = true;
 
         var data = stream.read();
-        if(data) {
+        if (data) {
           expect(data.Items).to.have.length.above(0);
         }
       });

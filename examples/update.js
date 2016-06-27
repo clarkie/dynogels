@@ -19,7 +19,7 @@ var Account = vogels.define('example-update', {
 });
 
 vogels.createTables(function (err) {
-  if(err) {
+  if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }

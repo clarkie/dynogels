@@ -17,7 +17,7 @@ var Account = vogels.define('example-hook', {
 });
 
 Account.before('create', function (data, next) {
-  if(!data.name) {
+  if (!data.name) {
     data.name = 'Foo Bar';
   }
 
@@ -42,7 +42,7 @@ Account.after('destroy', function (item) {
 });
 
 vogels.createTables(function (err) {
-  if(err) {
+  if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }

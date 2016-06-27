@@ -17,7 +17,7 @@ internals.assertScanFilter = function (scan, expected) {
     return c.format();
   });
 
-  if(!_.isArray(expected)) {
+  if (!_.isArray(expected)) {
     expected = [expected];
   }
 

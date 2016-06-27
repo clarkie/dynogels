@@ -20,7 +20,7 @@ var Account = vogels.define('example-batch-get-account', {
 });
 
 var printAccountInfo = function (err, acc) {
-  if(err) {
+  if (err) {
     console.log('got error', err);
   } else if (acc) {
     console.log('got account', acc.get());
@@ -42,7 +42,7 @@ async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
 ], function (err) {
-  if(err) {
+  if (err) {
     console.log('error', err);
     process.exit(1);
   }

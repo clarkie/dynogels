@@ -17,7 +17,7 @@ var BinModel = vogels.define('example-binary', {
 });
 
 var printFileInfo = function (err, file) {
-  if(err) {
+  if (err) {
     console.log('got error', err);
   } else if (file) {
     console.log('got file', file.get());
@@ -27,7 +27,7 @@ var printFileInfo = function (err, file) {
 };
 
 vogels.createTables(function (err) {
-  if(err) {
+  if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }

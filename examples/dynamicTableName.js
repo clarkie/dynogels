@@ -21,7 +21,7 @@ var Account = vogels.define('example-tablename', {
 });
 
 var printAccountInfo = function (err, acc) {
-  if(err) {
+  if (err) {
     console.log('got error', err);
   } else if (acc) {
     console.log('got account', acc.get());
@@ -31,7 +31,7 @@ var printAccountInfo = function (err, acc) {
 };
 
 vogels.createTables(function (err) {
-  if(err) {
+  if (err) {
     console.log('Failed to create tables', err);
   } else {
     console.log('tables created & active');

@@ -23,13 +23,13 @@ var Account = vogels.define('example-scan', {
 
 var printResults = function (err, resp) {
   console.log('----------------------------------------------------------------------');
-  if(err) {
+  if (err) {
     console.log('Error running scan', err);
   } else {
     console.log('Found', resp.Count, 'items');
     console.log(util.inspect(_.pluck(resp.Items, 'attrs')));
 
-    if(resp.ConsumedCapacity) {
+    if (resp.ConsumedCapacity) {
       console.log('----------------------------------------------------------------------');
       console.log('Scan consumed: ', resp.ConsumedCapacity);
     }
@@ -78,7 +78,7 @@ async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
 ], function (err) {
-  if(err) {
+  if (err) {
     console.log('error', err);
     process.exit(1);
   }

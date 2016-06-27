@@ -25,7 +25,7 @@ var Account = vogels.define('Foobar', {
 });
 
 var printAccountInfo = function (err, acc) {
-  if(err) {
+  if (err) {
     console.log('got error', err);
   } else if (acc) {
     console.log('got account', acc.get());
@@ -35,7 +35,7 @@ var printAccountInfo = function (err, acc) {
 };
 
 var printScanResults = function (err, data) {
-  if(err) {
+  if (err) {
     console.log('got scan error', err);
   } else if (data.Items) {
     var items = _.map(data.Items, function (d) { return d.get(); });
@@ -46,7 +46,7 @@ var printScanResults = function (err, data) {
 };
 
 vogels.createTables(function (err) {
-  if(err) {
+  if (err) {
     console.log('failed to create table', err);
   }
 

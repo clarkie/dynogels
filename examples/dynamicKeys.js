@@ -19,13 +19,13 @@ var DynamicModel = vogels.define('example-dynamic-key', {
 
 var printResults = function (err, resp) {
   console.log('----------------------------------------------------------------------');
-  if(err) {
+  if (err) {
     console.log('Error running scan', err);
   } else {
     console.log('Found', resp.Count, 'items');
     console.log(util.inspect(_.pluck(resp.Items, 'attrs')));
 
-    if(resp.ConsumedCapacity) {
+    if (resp.ConsumedCapacity) {
       console.log('----------------------------------------------------------------------');
       console.log('Scan consumed: ', resp.ConsumedCapacity);
     }
@@ -37,7 +37,7 @@ var printResults = function (err, resp) {
 vogels.createTables({
   'example-Account'  : {readCapacity: 1, writeCapacity: 10},
 }, function (err) {
-  if(err) {
+  if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }
@@ -45,12 +45,12 @@ vogels.createTables({
   async.times(25, function(n, next) {
     var data = {id : 'Model ' + n};
 
-    if(n % 3 === 0) {
+    if (n % 3 === 0) {
       data.name = 'Dynamic Model the 3rd';
       data.age = 33;
     }
 
-    if(n % 5 === 0) {
+    if (n % 5 === 0) {
       data.email = 'model_' + n + '@test.com';
       data.settings = { nickname : 'Model the 5th' };
     }

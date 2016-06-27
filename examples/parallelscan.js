@@ -20,7 +20,7 @@ var Product = vogels.define('example-parallel-scan', {
 });
 
 var printInfo = function (err, resp) {
-  if(err) {
+  if (err) {
     console.log(err);
     return;
   }
@@ -60,7 +60,7 @@ async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
 ], function (err) {
-  if(err) {
+  if (err) {
     console.log('error', err);
     process.exit(1);
   }

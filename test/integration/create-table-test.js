@@ -34,7 +34,7 @@ describe('Create Tables Integration Tests', function() {
 
       var desc = result.TableDescription;
       expect(desc).to.exist;
-      expect(desc.KeySchema).to.eql([{ AttributeName: 'id', KeyType: 'HASH' } ]);
+      expect(desc.KeySchema).to.eql([{ AttributeName: 'id', KeyType: 'HASH' }]);
 
       expect(desc.AttributeDefinitions).to.eql([
         { AttributeName: 'id', AttributeType: 'S' },
@@ -241,7 +241,7 @@ describe('Create Tables Integration Tests', function() {
         hashKey       : 'nick',
         type          : 'global',
         name          : 'GlobalNickIndex',
-        projection    : { NonKeyAttributes : [ 'wins' ], ProjectionType : 'INCLUDE' },
+        projection    : { NonKeyAttributes : ['wins'], ProjectionType : 'INCLUDE' },
         readCapacity  : 10,
         writeCapacity : 5
       }]
@@ -267,7 +267,7 @@ describe('Create Tables Integration Tests', function() {
 
       var nickIndex = _.find(desc.GlobalSecondaryIndexes, { IndexName: 'GlobalNickIndex' });
       expect(nickIndex.IndexName).to.eql('GlobalNickIndex');
-      expect(nickIndex.Projection).to.eql({ ProjectionType: 'INCLUDE', NonKeyAttributes : [ 'wins' ] });
+      expect(nickIndex.Projection).to.eql({ ProjectionType: 'INCLUDE', NonKeyAttributes : ['wins'] });
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);

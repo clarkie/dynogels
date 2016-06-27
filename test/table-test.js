@@ -1474,7 +1474,7 @@ describe('table', function () {
           type : 'global',
           readCapacity : 10,
           writeCapacity : 5,
-          projection: { NonKeyAttributes: [ 'wins' ], ProjectionType: 'INCLUDE' }
+          projection: { NonKeyAttributes: ['wins'], ProjectionType: 'INCLUDE' }
         }],
         schema : {
           userId  : Joi.string(),
@@ -1506,7 +1506,7 @@ describe('table', function () {
               { AttributeName: 'topScore', KeyType: 'RANGE' }
             ],
             Projection: {
-              NonKeyAttributes: [ 'wins' ],
+              NonKeyAttributes: ['wins'],
               ProjectionType: 'INCLUDE'
             },
             ProvisionedThroughput: { ReadCapacityUnits: 10, WriteCapacityUnits: 5 }

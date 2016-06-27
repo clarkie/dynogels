@@ -118,7 +118,7 @@ describe('Query', function () {
 
       t.docClient.query
         .onCall(0).yields(err)
-        .onCall(1).yields(null, {Items : [ { name : 'Tim Tester', email : 'test@test.com'} ]});
+        .onCall(1).yields(null, {Items : [{ name : 'Tim Tester', email : 'test@test.com'}]});
 
       var stream = new Query('tim', t, Serializer).exec();
 

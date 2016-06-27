@@ -29,7 +29,7 @@ var GameScore = vogels.define('example-global-index', {
     rangeKey : 'topScore',
     name : 'GameTitleIndex',
     type : 'global',
-    projection: { NonKeyAttributes: [ 'wins' ], ProjectionType: 'INCLUDE' }
+    projection: { NonKeyAttributes: ['wins'], ProjectionType: 'INCLUDE' }
   },
   { hashKey : 'gameTitle', rangeKey : 'losses', name : 'GameLosersIndex', type : 'global'}
   ]

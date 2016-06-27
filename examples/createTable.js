@@ -35,7 +35,7 @@ vogels.define('example-GameScore', {
     rangeKey   : 'topScore',
     type       : 'global',
     name       : 'GameTitleIndex',
-    projection : { NonKeyAttributes : [ 'wins' ], ProjectionType : 'INCLUDE' }
+    projection : { NonKeyAttributes : ['wins'], ProjectionType : 'INCLUDE' }
   }]
 });
 

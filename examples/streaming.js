@@ -7,13 +7,13 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Product = vogels.define('example-streaming-Product', {
-  hashKey : 'ProductId',
-  timestamps : true,
-  schema : {
-    ProductId : Joi.string(),
-    host      : Joi.string(),
-    url       : Joi.string(),
-    title     : Joi.string()
+  hashKey: 'ProductId',
+  timestamps: true,
+  schema: {
+    ProductId: Joi.string(),
+    host: Joi.string(),
+    url: Joi.string(),
+    title: Joi.string()
   }
 });
 

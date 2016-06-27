@@ -7,14 +7,14 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Account = vogels.define('example-tablename', {
-  hashKey : 'email',
-  timestamps : true,
-  schema : {
-    email : Joi.string(),
-    name : Joi.string(),
-    age : Joi.number()
+  hashKey: 'email',
+  timestamps: true,
+  schema: {
+    email: Joi.string(),
+    name: Joi.string(),
+    age: Joi.number()
   },
-  tableName : function () {
+  tableName: function () {
     var d = new Date();
     return ['example-dynamic-tablename', d.getFullYear(), d.getMonth() + 1].join('_');
   }
@@ -38,6 +38,6 @@ vogels.createTables(function (err) {
     Account.get('test@example.com', printAccountInfo);
     Account.get('foo@example.com', { ConsistentRead: true }, printAccountInfo);
 
-    Account.create({ email: 'test@example.com', name : 'test', age: 21 }, printAccountInfo);
+    Account.create({ email: 'test@example.com', name: 'test', age: 21 }, printAccountInfo);
   }
 });

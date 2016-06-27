@@ -7,7 +7,7 @@ var sinon = require('sinon'),
     bunyan = require('bunyan');
 
 exports.mockDynamoDB = function () {
-  var opts = { endpoint : 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };
+  var opts = { endpoint: 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };
   var db = new AWS.DynamoDB(opts);
 
   db.scan = sinon.stub();
@@ -27,12 +27,12 @@ exports.mockDynamoDB = function () {
 };
 
 exports.realDynamoDB = function () {
-  var opts = { endpoint : 'http://localhost:8000', apiVersion: '2012-08-10', region: 'eu-west-1' };
+  var opts = { endpoint: 'http://localhost:8000', apiVersion: '2012-08-10', region: 'eu-west-1' };
   return new AWS.DynamoDB(opts);
 };
 
 exports.mockDocClient = function () {
-  var client = new AWS.DynamoDB.DocumentClient({ service : exports.mockDynamoDB() });
+  var client = new AWS.DynamoDB.DocumentClient({ service: exports.mockDynamoDB() });
 
   var operations = [
     'batchGet',
@@ -67,10 +67,10 @@ exports.mockDocClient = function () {
 
 exports.mockSerializer = function () {
   var serializer = {
-    buildKey               : sinon.stub(),
-    deserializeItem        : sinon.stub(),
-    serializeItem          : sinon.stub(),
-    serializeItemForUpdate : sinon.stub()
+    buildKey: sinon.stub(),
+    deserializeItem: sinon.stub(),
+    serializeItem: sinon.stub(),
+    serializeItemForUpdate: sinon.stub()
   };
 
   return serializer;
@@ -96,7 +96,7 @@ exports.randomName = function (prefix) {
 exports.testLogger = function () {
   return bunyan.createLogger({
     name: 'vogels-tests',
-    serializers : { err: bunyan.stdSerializers.err },
-    level : bunyan.FATAL
+    serializers: { err: bunyan.stdSerializers.err },
+    level: bunyan.FATAL
   });
 };

@@ -9,17 +9,17 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Account = vogels.define('Foobar', {
-  hashKey : 'email',
-  schema : {
-    email   : Joi.string(),
-    name    : Joi.string(),
-    age     : Joi.number(),
-    scores  : vogels.types.numberSet(),
-    created : Joi.date().default(Date.now),
-    list    : Joi.array(),
-    settings : {
-      nickname    : Joi.string(),
-      luckyNumber : Joi.number().min(1).default(7)
+  hashKey: 'email',
+  schema: {
+    email: Joi.string(),
+    name: Joi.string(),
+    age: Joi.number(),
+    scores: vogels.types.numberSet(),
+    created: Joi.date().default(Date.now),
+    list: Joi.array(),
+    settings: {
+      nickname: Joi.string(),
+      luckyNumber: Joi.number().min(1).default(7)
     }
   }
 });
@@ -56,9 +56,9 @@ vogels.createTables(function (err) {
 
   // Create an account
   var params = {
-    email: 'test11@example.com', name : 'test 11', age: 21, scores : [22, 55, 44],
-    list : ['a', 'b', 'c', 1, 2, 3],
-    settings : { nickname : 'tester' }
+    email: 'test11@example.com', name: 'test 11', age: 21, scores: [22, 55, 44],
+    list: ['a', 'b', 'c', 1, 2, 3],
+    settings: { nickname: 'tester' }
   };
 
   Account.create(params, function (err, acc) {

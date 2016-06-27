@@ -10,10 +10,10 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var DynamicModel = vogels.define('example-dynamic-key', {
-  hashKey    : 'id',
-  timestamps : true,
-  schema : Joi.object().keys({
-    id : Joi.string()
+  hashKey: 'id',
+  timestamps: true,
+  schema: Joi.object().keys({
+    id: Joi.string()
   }).unknown()
 });
 
@@ -35,7 +35,7 @@ var printResults = function (err, resp) {
 };
 
 vogels.createTables({
-  'example-Account'  : { readCapacity: 1, writeCapacity: 10 },
+  'example-Account': { readCapacity: 1, writeCapacity: 10 },
 }, function (err) {
   if (err) {
     console.log('Error creating tables', err);
@@ -43,7 +43,7 @@ vogels.createTables({
   }
 
   async.times(25, function (n, next) {
-    var data = { id : 'Model ' + n };
+    var data = { id: 'Model ' + n };
 
     if (n % 3 === 0) {
       data.name = 'Dynamic Model the 3rd';
@@ -52,7 +52,7 @@ vogels.createTables({
 
     if (n % 5 === 0) {
       data.email = 'model_' + n + '@test.com';
-      data.settings = { nickname : 'Model the 5th' };
+      data.settings = { nickname: 'Model the 5th' };
     }
 
     DynamicModel.create(data, next);

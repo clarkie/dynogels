@@ -10,18 +10,18 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Account = vogels.define('example-query-filter', {
-  hashKey : 'name',
-  rangeKey : 'email',
-  timestamps : true,
-  schema : {
-    name  : Joi.string(),
-    email : Joi.string().email(),
-    age   : Joi.number(),
-    roles : vogels.types.stringSet(),
+  hashKey: 'name',
+  rangeKey: 'email',
+  timestamps: true,
+  schema: {
+    name: Joi.string(),
+    email: Joi.string().email(),
+    age: Joi.number(),
+    roles: vogels.types.stringSet(),
   },
 
-  indexes : [
-    { hashKey : 'name', rangeKey : 'createdAt', type : 'local', name : 'CreatedAtIndex' }
+  indexes: [
+    { hashKey: 'name', rangeKey: 'createdAt', type: 'local', name: 'CreatedAtIndex' }
   ]
 });
 
@@ -49,7 +49,7 @@ var loadSeedData = function (callback) {
 
   async.times(30, function (n, next) {
     var roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
-    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n % 3, age: n, roles : roles }, next);
+    Account.create({ email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n, roles: roles }, next);
   }, callback);
 };
 

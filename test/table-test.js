@@ -41,11 +41,11 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : { email : 'test@test.com' }
+        Key: { email: 'test@test.com' }
       };
 
       var resp = {
-        Item : { email: 'test@test.com', name: 'test dude' }
+        Item: { email: 'test@test.com', name: 'test dude' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
@@ -71,14 +71,14 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          name  : 'Tim Tester',
-          email : 'test@test.com'
+        Key: {
+          name: 'Tim Tester',
+          email: 'test@test.com'
         }
       };
 
       var resp = {
-        Item : { email: 'test@test.com', name: 'Tim Tester' }
+        Item: { email: 'test@test.com', name: 'Tim Tester' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
@@ -103,12 +103,12 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : { email : 'test@test.com' },
+        Key: { email: 'test@test.com' },
         ConsistentRead: true
       };
 
       var resp = {
-        Item : { email: 'test@test.com', name: 'test dude' }
+        Item: { email: 'test@test.com', name: 'test dude' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
@@ -134,15 +134,15 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          name  : 'Tim Tester',
-          email : 'test@test.com'
+        Key: {
+          name: 'Tim Tester',
+          email: 'test@test.com'
         },
         ConsistentRead: true
       };
 
       var resp = {
-        Item : { email: 'test@test.com', name: 'Tim Tester' }
+        Item: { email: 'test@test.com', name: 'Tim Tester' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
@@ -159,7 +159,7 @@ describe('table', function () {
     it('should get item from dynamic table by hash key', function (done) {
       var config = {
         hashKey: 'email',
-        tableName : function () {
+        tableName: function () {
           return 'accounts_2014';
         }
       };
@@ -170,11 +170,11 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts_2014',
-        Key : { email : 'test@test.com' }
+        Key: { email: 'test@test.com' }
       };
 
       var resp = {
-        Item : { email: 'test@test.com', name: 'test dude' }
+        Item: { email: 'test@test.com', name: 'test dude' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
@@ -211,10 +211,10 @@ describe('table', function () {
     it('should create valid item', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string(),
-          age   : Joi.number()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -224,10 +224,10 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          name  : 'Tim Test',
-          age   : 23
+        Item: {
+          email: 'test@test.com',
+          name: 'Tim Test',
+          age: 23
         }
       };
 
@@ -247,10 +247,10 @@ describe('table', function () {
     it('should call apply defaults', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string().default('Foo'),
-          age   : Joi.number()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string().default('Foo'),
+          age: Joi.number()
         }
       };
 
@@ -260,16 +260,16 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          name  : 'Foo',
-          age   : 23
+        Item: {
+          email: 'test@test.com',
+          name: 'Foo',
+          age: 23
         }
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com', age: 23 }, function (err, account) {
+      table.create({ email: 'test@test.com', age: 23 }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -283,12 +283,12 @@ describe('table', function () {
     it('should omit null values', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string(),
-          age   : Joi.number().allow(null),
-          favoriteNumbers : Schema.types.numberSet().allow(null),
-          luckyNumbers : Schema.types.numberSet().allow(null)
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number().allow(null),
+          favoriteNumbers: Schema.types.numberSet().allow(null),
+          luckyNumbers: Schema.types.numberSet().allow(null)
         }
       };
 
@@ -307,16 +307,16 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          name  : 'Tim Test',
+        Item: {
+          email: 'test@test.com',
+          name: 'Tim Test',
           luckyNumbers: numberSet
         }
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      var item = { email : 'test@test.com', name : 'Tim Test', age : null, favoriteNumbers: [], luckyNumbers: [1, 2, 3] };
+      var item = { email: 'test@test.com', name: 'Tim Test', age: null, favoriteNumbers: [], luckyNumbers: [1, 2, 3] };
       table.create(item, function (err, account) {
         account.should.be.instanceof(Item);
 
@@ -333,10 +333,10 @@ describe('table', function () {
     it('should omit empty values', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string().allow(''),
-          age   : Joi.number()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string().allow(''),
+          age: Joi.number()
         }
       };
 
@@ -346,9 +346,9 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          age   : 2
+        Item: {
+          email: 'test@test.com',
+          age: 2
         }
       };
 
@@ -368,9 +368,9 @@ describe('table', function () {
     it('should create item with createdAt timestamp', function (done) {
       var config = {
         hashKey: 'email',
-        timestamps : true,
-        schema : {
-          email : Joi.string(),
+        timestamps: true,
+        schema: {
+          email: Joi.string(),
         }
       };
 
@@ -380,15 +380,15 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          createdAt : sinon.match.string
+        Item: {
+          email: 'test@test.com',
+          createdAt: sinon.match.string
         }
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com' }, function (err, account) {
+      table.create({ email: 'test@test.com' }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -401,10 +401,10 @@ describe('table', function () {
     it('should create item with custom createdAt attribute name', function (done) {
       var config = {
         hashKey: 'email',
-        timestamps : true,
-        createdAt : 'created',
-        schema : {
-          email : Joi.string(),
+        timestamps: true,
+        createdAt: 'created',
+        schema: {
+          email: Joi.string(),
         }
       };
 
@@ -414,15 +414,15 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          created : sinon.match.string
+        Item: {
+          email: 'test@test.com',
+          created: sinon.match.string
         }
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com' }, function (err, account) {
+      table.create({ email: 'test@test.com' }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -436,10 +436,10 @@ describe('table', function () {
     it('should create item without createdAt param', function (done) {
       var config = {
         hashKey: 'email',
-        timestamps : true,
-        createdAt : false,
-        schema : {
-          email : Joi.string(),
+        timestamps: true,
+        createdAt: false,
+        schema: {
+          email: Joi.string(),
         }
       };
 
@@ -449,14 +449,14 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com'
+        Item: {
+          email: 'test@test.com'
         }
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com' }, function (err, account) {
+      table.create({ email: 'test@test.com' }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -469,9 +469,9 @@ describe('table', function () {
     it('should create item with expected option', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name : Joi.string()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string()
         }
       };
 
@@ -481,17 +481,17 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
+        Item: {
+          email: 'test@test.com',
         },
         ExpressionAttributeNames: { '#name': 'name' },
         ExpressionAttributeValues: { ':name': 'Foo Bar' },
-        ConditionExpression : '(#name = :name)'
+        ConditionExpression: '(#name = :name)'
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com' }, { expected: { name: 'Foo Bar' } }, function (err, account) {
+      table.create({ email: 'test@test.com' }, { expected: { name: 'Foo Bar' } }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -503,9 +503,9 @@ describe('table', function () {
     it('should create item with no callback', function (done) {
       var config = {
         hashKey: 'email',
-        timestamps : true,
-        schema : {
-          email : Joi.string(),
+        timestamps: true,
+        schema: {
+          email: Joi.string(),
         }
       };
 
@@ -515,14 +515,14 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
+        Item: {
+          email: 'test@test.com',
         }
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com' });
+      table.create({ email: 'test@test.com' });
 
       docClient.put.calledWith(request);
       return done();
@@ -531,9 +531,9 @@ describe('table', function () {
     it('should return validation error', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name : Joi.string()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string()
         }
       };
 
@@ -541,7 +541,7 @@ describe('table', function () {
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      table.create({ email : 'test@test.com', name : [1, 2, 3] }, function (err, account) {
+      table.create({ email: 'test@test.com', name: [1, 2, 3] }, function (err, account) {
         expect(err).to.exist;
         expect(err).to.match(/ValidationError/);
         expect(account).to.not.exist;
@@ -554,9 +554,9 @@ describe('table', function () {
     it('should create item with condition expression on hashkey when overwrite flag is false', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name : Joi.string()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string()
         }
       };
 
@@ -566,18 +566,18 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          name : 'Bob Tester'
+        Item: {
+          email: 'test@test.com',
+          name: 'Bob Tester'
         },
         ExpressionAttributeNames: { '#email': 'email' },
         ExpressionAttributeValues: { ':email': 'test@test.com' },
-        ConditionExpression : '(#email <> :email)'
+        ConditionExpression: '(#email <> :email)'
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com', name : 'Bob Tester' }, { overwrite: false }, function (err, account) {
+      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: false }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -590,9 +590,9 @@ describe('table', function () {
       var config = {
         hashKey: 'email',
         rangeKey: 'name',
-        schema : {
-          email : Joi.string(),
-          name : Joi.string()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string()
         }
       };
 
@@ -602,18 +602,18 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          name : 'Bob Tester'
+        Item: {
+          email: 'test@test.com',
+          name: 'Bob Tester'
         },
-        ExpressionAttributeNames: { '#email': 'email', '#name' : 'name' },
-        ExpressionAttributeValues: { ':email': 'test@test.com', ':name' : 'Bob Tester' },
-        ConditionExpression : '(#email <> :email) AND (#name <> :name)'
+        ExpressionAttributeNames: { '#email': 'email', '#name': 'name' },
+        ExpressionAttributeValues: { ':email': 'test@test.com', ':name': 'Bob Tester' },
+        ConditionExpression: '(#email <> :email) AND (#name <> :name)'
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com', name : 'Bob Tester' }, { overwrite: false }, function (err, account) {
+      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: false }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -625,9 +625,9 @@ describe('table', function () {
     it('should create item without condition expression when overwrite flag is true', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name : Joi.string()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string()
         }
       };
 
@@ -637,15 +637,15 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Item : {
-          email : 'test@test.com',
-          name : 'Bob Tester'
+        Item: {
+          email: 'test@test.com',
+          name: 'Bob Tester'
         }
       };
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email : 'test@test.com', name : 'Bob Tester' }, { overwrite: true }, function (err, account) {
+      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: true }, function (err, account) {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -659,10 +659,10 @@ describe('table', function () {
     it('should update valid item', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string(),
-          age   : Joi.number(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number(),
         }
       };
 
@@ -672,23 +672,23 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : { email : 'test@test.com' },
+        Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_NEW',
-        UpdateExpression : 'SET #name = :name, #age = :age',
-        ExpressionAttributeValues : { ':name' : 'Tim Test', ':age' : 23 },
-        ExpressionAttributeNames : { '#name' : 'name', '#age' : 'age' }
+        UpdateExpression: 'SET #name = :name, #age = :age',
+        ExpressionAttributeValues: { ':name': 'Tim Test', ':age': 23 },
+        ExpressionAttributeNames: { '#name': 'name', '#age': 'age' }
       };
 
       var returnedAttributes = {
-        email  : 'test@test.com',
-        name   : 'Tim Test',
-        age    : 23,
-        scores : [97, 86]
+        email: 'test@test.com',
+        name: 'Tim Test',
+        age: 23,
+        scores: [97, 86]
       };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
       table.update(item, function (err, account) {
         account.should.be.instanceof(Item);
 
@@ -705,9 +705,9 @@ describe('table', function () {
       var config = {
           hashKey: 'userId',
           rangeKey: 'timeOffset',
-          schema : {
-              hashKey  : Joi.number(),
-              rangeKey : Joi.number()
+          schema: {
+              hashKey: Joi.number(),
+              rangeKey: Joi.number()
           }
       };
 
@@ -717,15 +717,15 @@ describe('table', function () {
 
       var request = {
           TableName: 'users',
-          Key : { userId : 0, timeOffset : 0 },
+          Key: { userId: 0, timeOffset: 0 },
           ReturnValues: 'ALL_NEW'
       };
 
-      var returnedAttributes = { userId : 0, timeOffset : 0 };
+      var returnedAttributes = { userId: 0, timeOffset: 0 };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      var item = { userId : 0, timeOffset : 0 };
+      var item = { userId: 0, timeOffset: 0 };
       table.update(item, function (err, user) {
           user.should.be.instanceof(Item);
 
@@ -739,10 +739,10 @@ describe('table', function () {
     it('should update with passed in options', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string(),
-          age   : Joi.number(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number(),
         }
       };
 
@@ -752,22 +752,22 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : { email : 'test@test.com' },
+        Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_OLD',
-        UpdateExpression : 'SET #name = :name, #age = :age',
-        ExpressionAttributeValues : { ':name_2' : 'Foo Bar', ':name' : 'Tim Test', ':age' : 23 },
-        ExpressionAttributeNames : { '#name' : 'name', '#age' : 'age' },
-        ConditionExpression : '(#name = :name_2)'
+        UpdateExpression: 'SET #name = :name, #age = :age',
+        ExpressionAttributeValues: { ':name_2': 'Foo Bar', ':name': 'Tim Test', ':age': 23 },
+        ExpressionAttributeNames: { '#name': 'name', '#age': 'age' },
+        ConditionExpression: '(#name = :name_2)'
       };
 
       var returnedAttributes = {
-        email  : 'test@test.com',
-        name   : 'Tim Test',
-        age    : 23,
-        scores : [97, 86]
+        email: 'test@test.com',
+        name: 'Tim Test',
+        age: 23,
+        scores: [97, 86]
       };
 
-      var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
@@ -786,10 +786,10 @@ describe('table', function () {
     it('should update merge update expressions when passed in as options', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string(),
-          age   : Joi.number(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number(),
         }
       };
 
@@ -799,29 +799,29 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : { email : 'test@test.com' },
+        Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_NEW',
-        UpdateExpression : 'SET #name = :name, #age = :age ADD #color :c',
-        ExpressionAttributeValues : { ':name' : 'Tim Test', ':age' : 23, ':c' : 'red' },
-        ExpressionAttributeNames : { '#name' : 'name', '#age' : 'age', '#color' : 'color' }
+        UpdateExpression: 'SET #name = :name, #age = :age ADD #color :c',
+        ExpressionAttributeValues: { ':name': 'Tim Test', ':age': 23, ':c': 'red' },
+        ExpressionAttributeNames: { '#name': 'name', '#age': 'age', '#color': 'color' }
       };
 
       var returnedAttributes = {
-        email  : 'test@test.com',
-        name   : 'Tim Test',
-        age    : 23,
-        scores : [97, 86],
-        color  : 'red'
+        email: 'test@test.com',
+        name: 'Tim Test',
+        age: 23,
+        scores: [97, 86],
+        color: 'red'
       };
 
-      var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
       var options = {
-        UpdateExpression : 'ADD #color :c',
-        ExpressionAttributeValues : { ':c' : 'red' },
-        ExpressionAttributeNames : { '#color' : 'color' }
+        UpdateExpression: 'ADD #color :c',
+        ExpressionAttributeValues: { ':c': 'red' },
+        ExpressionAttributeNames: { '#color': 'color' }
       };
 
       table.update(item, options, function (err, account) {
@@ -840,10 +840,10 @@ describe('table', function () {
     it('should update valid item without a callback', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string(),
-          age   : Joi.number(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number(),
         }
       };
 
@@ -853,23 +853,23 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : { email : 'test@test.com' },
+        Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_NEW',
-        UpdateExpression : 'SET #name = :name, #age = :age',
-        ExpressionAttributeValues : { ':name' : 'Tim Test', ':age' : 23 },
-        ExpressionAttributeNames : { '#name' : 'name', '#age' : 'age' }
+        UpdateExpression: 'SET #name = :name, #age = :age',
+        ExpressionAttributeValues: { ':name': 'Tim Test', ':age': 23 },
+        ExpressionAttributeNames: { '#name': 'name', '#age': 'age' }
       };
 
       var returnedAttributes = {
-        email  : 'test@test.com',
-        name   : 'Tim Test',
-        age    : 23,
-        scores : [97, 86]
+        email: 'test@test.com',
+        name: 'Tim Test',
+        age: 23,
+        scores: [97, 86]
       };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
       table.update(item);
 
       docClient.update.calledWith(request);
@@ -879,10 +879,10 @@ describe('table', function () {
     it('should return error', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name  : Joi.string(),
-          age   : Joi.number(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number(),
         }
       };
 
@@ -892,7 +892,7 @@ describe('table', function () {
 
       docClient.update.yields(new Error('Fail'));
 
-      var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
 
       table.update(item, function (err, account) {
         expect(err).to.exist;
@@ -907,9 +907,9 @@ describe('table', function () {
       var config = {
         hashKey: 'name',
         rangeKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string()
         }
       };
 
@@ -926,9 +926,9 @@ describe('table', function () {
       var config = {
         hashKey: 'name',
         rangeKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string()
         }
       };
 
@@ -944,10 +944,10 @@ describe('table', function () {
     it('should destroy valid item', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -957,8 +957,8 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          email : 'test@test.com'
+        Key: {
+          email: 'test@test.com'
         }
       };
 
@@ -978,9 +978,9 @@ describe('table', function () {
       var config = {
         hashKey: 'userId',
         rangeKey: 'timeOffset',
-        schema : {
-          hashKey  : Joi.number(),
-          rangeKey : Joi.number()
+        schema: {
+          hashKey: Joi.number(),
+          rangeKey: Joi.number()
         }
       };
 
@@ -990,9 +990,9 @@ describe('table', function () {
 
       var request = {
         TableName: 'users',
-        Key : {
-          userId : 0,
-          timeOffset : 0
+        Key: {
+          userId: 0,
+          timeOffset: 0
         }
       };
 
@@ -1011,10 +1011,10 @@ describe('table', function () {
     it('should take optional params', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1024,10 +1024,10 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          email : { S : 'test@test.com' }
+        Key: {
+          email: { S: 'test@test.com' }
         },
-        ReturnValues : 'ALL_OLD'
+        ReturnValues: 'ALL_OLD'
       };
 
       docClient.delete.yields(null, {});
@@ -1045,10 +1045,10 @@ describe('table', function () {
     it('should parse and return attributes', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1058,20 +1058,20 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : { email : 'test@test.com' },
-        ReturnValues : 'ALL_OLD'
+        Key: { email: 'test@test.com' },
+        ReturnValues: 'ALL_OLD'
       };
 
       var returnedAttributes = {
-        email : 'test@test.com',
-        name  : 'Foo Bar'
+        email: 'test@test.com',
+        name: 'Foo Bar'
       };
 
       docClient.delete.yields(null, { Attributes: returnedAttributes });
 
       serializer.buildKey.returns(request.Key);
       serializer.deserializeItem.withArgs(returnedAttributes).returns(
-        { email : 'test@test.com', name: 'Foo Bar'
+        { email: 'test@test.com', name: 'Foo Bar'
       });
 
       table.destroy('test@test.com', { ReturnValues: 'ALL_OLD' }, function (err, item) {
@@ -1088,10 +1088,10 @@ describe('table', function () {
       var config = {
         hashKey: 'email',
         rangeKey: 'name',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1101,22 +1101,22 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          email : 'test@test.com',
-          name : 'Foo Bar'
+        Key: {
+          email: 'test@test.com',
+          name: 'Foo Bar'
         }
       };
 
       var returnedAttributes = {
-        email : 'test@test.com',
-        name  : 'Foo Bar'
+        email: 'test@test.com',
+        name: 'Foo Bar'
       };
 
       docClient.delete.yields(null, { Attributes: returnedAttributes });
 
       serializer.buildKey.returns(request.Key);
       serializer.deserializeItem.withArgs(returnedAttributes).returns(
-        { email : 'test@test.com', name: 'Foo Bar'
+        { email: 'test@test.com', name: 'Foo Bar'
       });
 
       table.destroy('test@test.com', 'Foo Bar', function (err, item) {
@@ -1133,10 +1133,10 @@ describe('table', function () {
       var config = {
         hashKey: 'email',
         rangeKey: 'name',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1146,23 +1146,23 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          email : 'test@test.com',
-          name  : 'Foo Bar'
+        Key: {
+          email: 'test@test.com',
+          name: 'Foo Bar'
         },
-        ReturnValues : 'ALL_OLD'
+        ReturnValues: 'ALL_OLD'
       };
 
       var returnedAttributes = {
-        email : 'test@test.com',
-        name  : 'Foo Bar'
+        email: 'test@test.com',
+        name: 'Foo Bar'
       };
 
       docClient.delete.yields(null, { Attributes: returnedAttributes });
 
       serializer.buildKey.returns(request.Key);
       serializer.deserializeItem.withArgs(returnedAttributes).returns(
-        { email : 'test@test.com', name: 'Foo Bar'
+        { email: 'test@test.com', name: 'Foo Bar'
       });
 
       table.destroy('test@test.com', 'Foo Bar', { ReturnValues: 'ALL_OLD' }, function (err, item) {
@@ -1178,10 +1178,10 @@ describe('table', function () {
     it('should serialize expected option', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1191,20 +1191,20 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          email : 'test@test.com'
+        Key: {
+          email: 'test@test.com'
         },
         ExpressionAttributeNames: { '#name': 'name' },
         ExpressionAttributeValues: { ':name': 'Foo Bar' },
-        ConditionExpression : '(#name = :name)'
+        ConditionExpression: '(#name = :name)'
       };
 
       docClient.delete.yields(null, {});
 
-      serializer.serializeItem.withArgs(s, { name: 'Foo Bar' }, { expected : true }).returns(request.Expected);
+      serializer.serializeItem.withArgs(s, { name: 'Foo Bar' }, { expected: true }).returns(request.Expected);
       serializer.buildKey.returns(request.Key);
 
-      table.destroy('test@test.com', { expected: { name : 'Foo Bar' } }, function () {
+      table.destroy('test@test.com', { expected: { name: 'Foo Bar' } }, function () {
         serializer.buildKey.calledWith('test@test.com', null, s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -1215,10 +1215,10 @@ describe('table', function () {
     it('should call delete item without callback', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1228,8 +1228,8 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          email : 'test@test.com'
+        Key: {
+          email: 'test@test.com'
         }
       };
 
@@ -1244,10 +1244,10 @@ describe('table', function () {
     it('should call delete item with hash key, options and no callback', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1257,16 +1257,16 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        Key : {
-          email : 'test@test.com'
+        Key: {
+          email: 'test@test.com'
         },
-        Expected : {
-          name : { Value : 'Foo Bar' }
+        Expected: {
+          name: { Value: 'Foo Bar' }
         }
       };
 
       docClient.delete.yields(null, {});
-      table.destroy('test@test.com', { expected: { name : 'Foo Bar' } });
+      table.destroy('test@test.com', { expected: { name: 'Foo Bar' } });
 
       docClient.delete.calledWith(request);
 
@@ -1278,9 +1278,9 @@ describe('table', function () {
     it('should create table with hash key', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
         }
       };
 
@@ -1290,7 +1290,7 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        AttributeDefinitions : [
+        AttributeDefinitions: [
           { AttributeName: 'email', AttributeType: 'S' }
         ],
         KeySchema: [
@@ -1301,7 +1301,7 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity : 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
@@ -1312,9 +1312,9 @@ describe('table', function () {
       var config = {
         hashKey: 'name',
         rangeKey: 'email',
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
         }
       };
 
@@ -1324,7 +1324,7 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        AttributeDefinitions : [
+        AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
           { AttributeName: 'email', AttributeType: 'S' }
         ],
@@ -1337,7 +1337,7 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity : 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
@@ -1348,13 +1348,13 @@ describe('table', function () {
       var config = {
         hashKey: 'name',
         rangeKey: 'email',
-        indexes : [
-          { hashKey : 'name', rangeKey : 'age', name : 'ageIndex', type : 'local' }
+        indexes: [
+          { hashKey: 'name', rangeKey: 'age', name: 'ageIndex', type: 'local' }
         ],
-        schema : {
-          name  : Joi.string(),
-          email : Joi.string(),
-          age   : Joi.number()
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
         }
       };
 
@@ -1364,7 +1364,7 @@ describe('table', function () {
 
       var request = {
         TableName: 'accounts',
-        AttributeDefinitions : [
+        AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
           { AttributeName: 'email', AttributeType: 'S' },
           { AttributeName: 'age', AttributeType: 'N' }
@@ -1373,15 +1373,15 @@ describe('table', function () {
           { AttributeName: 'name', KeyType: 'HASH' },
           { AttributeName: 'email', KeyType: 'RANGE' }
         ],
-        LocalSecondaryIndexes : [
+        LocalSecondaryIndexes: [
           {
-            IndexName : 'ageIndex',
+            IndexName: 'ageIndex',
             KeySchema: [
               { AttributeName: 'name', KeyType: 'HASH' },
               { AttributeName: 'age', KeyType: 'RANGE' }
             ],
-            Projection : {
-              ProjectionType : 'ALL'
+            Projection: {
+              ProjectionType: 'ALL'
             }
           }
         ],
@@ -1390,7 +1390,7 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity : 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
@@ -1401,13 +1401,13 @@ describe('table', function () {
       var config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
-        indexes : [
-          { hashKey : 'gameTitle', rangeKey : 'topScore', name : 'GameTitleIndex', type : 'global' }
+        indexes: [
+          { hashKey: 'gameTitle', rangeKey: 'topScore', name: 'GameTitleIndex', type: 'global' }
         ],
-        schema : {
-          userId  : Joi.string(),
-          gameTitle : Joi.string(),
-          topScore  : Joi.number()
+        schema: {
+          userId: Joi.string(),
+          gameTitle: Joi.string(),
+          topScore: Joi.number()
         }
       };
 
@@ -1417,7 +1417,7 @@ describe('table', function () {
 
       var request = {
         TableName: 'gameScores',
-        AttributeDefinitions : [
+        AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
           { AttributeName: 'gameTitle', AttributeType: 'S' },
           { AttributeName: 'topScore', AttributeType: 'N' }
@@ -1426,15 +1426,15 @@ describe('table', function () {
           { AttributeName: 'userId', KeyType: 'HASH' },
           { AttributeName: 'gameTitle', KeyType: 'RANGE' }
         ],
-        GlobalSecondaryIndexes : [
+        GlobalSecondaryIndexes: [
           {
-            IndexName : 'GameTitleIndex',
+            IndexName: 'GameTitleIndex',
             KeySchema: [
               { AttributeName: 'gameTitle', KeyType: 'HASH' },
               { AttributeName: 'topScore', KeyType: 'RANGE' }
             ],
-            Projection : {
-              ProjectionType : 'ALL'
+            Projection: {
+              ProjectionType: 'ALL'
             },
             ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 }
           }
@@ -1444,7 +1444,7 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity : 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
@@ -1455,19 +1455,19 @@ describe('table', function () {
       var config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
-        indexes : [{
-          hashKey : 'gameTitle',
-          rangeKey : 'topScore',
-          name : 'GameTitleIndex',
-          type : 'global',
-          readCapacity : 10,
-          writeCapacity : 5,
+        indexes: [{
+          hashKey: 'gameTitle',
+          rangeKey: 'topScore',
+          name: 'GameTitleIndex',
+          type: 'global',
+          readCapacity: 10,
+          writeCapacity: 5,
           projection: { NonKeyAttributes: ['wins'], ProjectionType: 'INCLUDE' }
         }],
-        schema : {
-          userId  : Joi.string(),
-          gameTitle : Joi.string(),
-          topScore  : Joi.number()
+        schema: {
+          userId: Joi.string(),
+          gameTitle: Joi.string(),
+          topScore: Joi.number()
         }
       };
 
@@ -1477,7 +1477,7 @@ describe('table', function () {
 
       var request = {
         TableName: 'gameScores',
-        AttributeDefinitions : [
+        AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
           { AttributeName: 'gameTitle', AttributeType: 'S' },
           { AttributeName: 'topScore', AttributeType: 'N' }
@@ -1486,9 +1486,9 @@ describe('table', function () {
           { AttributeName: 'userId', KeyType: 'HASH' },
           { AttributeName: 'gameTitle', KeyType: 'RANGE' }
         ],
-        GlobalSecondaryIndexes : [
+        GlobalSecondaryIndexes: [
           {
-            IndexName : 'GameTitleIndex',
+            IndexName: 'GameTitleIndex',
             KeySchema: [
               { AttributeName: 'gameTitle', KeyType: 'HASH' },
               { AttributeName: 'topScore', KeyType: 'RANGE' }
@@ -1505,7 +1505,7 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity : 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
@@ -1517,9 +1517,9 @@ describe('table', function () {
     it('should make describe table request', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email  : Joi.string(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -1545,9 +1545,9 @@ describe('table', function () {
     beforeEach(function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email  : Joi.string(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -1590,9 +1590,9 @@ describe('table', function () {
     beforeEach(function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email  : Joi.string(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -1632,9 +1632,9 @@ describe('table', function () {
     it('should return given name', function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email  : Joi.string(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -1648,10 +1648,10 @@ describe('table', function () {
     it('should return table name set on schema', function () {
       var config = {
         hashKey: 'email',
-        tableName : 'accounts-2014-03',
-        schema : {
-          email  : Joi.string(),
-          name : Joi.string(),
+        tableName: 'accounts-2014-03',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -1672,10 +1672,10 @@ describe('table', function () {
 
       var config = {
         hashKey: 'email',
-        tableName : nameFunc,
-        schema : {
-          email  : Joi.string(),
-          name : Joi.string(),
+        tableName: nameFunc,
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -1692,10 +1692,10 @@ describe('table', function () {
       it('should call before hooks', function (done) {
         var config = {
           hashKey: 'email',
-          schema : {
-            email  : Joi.string(),
-            name : Joi.string(),
-            age : Joi.number()
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
           }
         };
 
@@ -1703,10 +1703,10 @@ describe('table', function () {
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.put.yields(null, {});
 
-        serializer.serializeItem.withArgs(s, { email : 'test@test.com', name : 'Tommy', age : 23 }).returns({});
+        serializer.serializeItem.withArgs(s, { email: 'test@test.com', name: 'Tommy', age: 23 }).returns({});
 
         table.before('create', function (data, next) {
           expect(data).to.exist;
@@ -1734,10 +1734,10 @@ describe('table', function () {
       it('should return error when before hook returns error', function (done) {
         var config = {
           hashKey: 'email',
-          schema : {
-            email  : Joi.string(),
-            name : Joi.string(),
-            age : Joi.number()
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
           }
         };
 
@@ -1749,7 +1749,7 @@ describe('table', function () {
           return next(new Error('fail'));
         });
 
-        table.create({ email : 'foo@bar.com' }, function (err, item) {
+        table.create({ email: 'foo@bar.com' }, function (err, item) {
           expect(err).to.exist;
           expect(item).to.not.exist;
 
@@ -1760,10 +1760,10 @@ describe('table', function () {
       it('should call after hook', function (done) {
         var config = {
           hashKey: 'email',
-          schema : {
-            email  : Joi.string(),
-            name : Joi.string(),
-            age : Joi.number()
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
           }
         };
 
@@ -1771,7 +1771,7 @@ describe('table', function () {
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.put.yields(null, {});
 
         serializer.serializeItem.withArgs(s, item).returns({});
@@ -1790,10 +1790,10 @@ describe('table', function () {
       it('should call before hook', function (done) {
         var config = {
           hashKey: 'email',
-          schema : {
-            email  : Joi.string(),
-            name : Joi.string(),
-            age : Joi.number()
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
           }
         };
 
@@ -1801,13 +1801,13 @@ describe('table', function () {
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.update.yields(null, {});
 
         serializer.serializeItem.withArgs(s, item).returns({});
 
         serializer.buildKey.returns({ email: { S: 'test@test.com' } });
-        var modified = { email : 'test@test.com', name : 'Tim Test', age : 44 };
+        var modified = { email: 'test@test.com', name: 'Tim Test', age: 44 };
         serializer.serializeItemForUpdate.withArgs(s, 'PUT', modified).returns({});
 
         serializer.deserializeItem.returns(modified);
@@ -1831,10 +1831,10 @@ describe('table', function () {
       it('should return error when before hook returns error', function (done) {
         var config = {
           hashKey: 'email',
-          schema : {
-            email  : Joi.string(),
-            name : Joi.string(),
-            age : Joi.number()
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
           }
         };
 
@@ -1857,10 +1857,10 @@ describe('table', function () {
       it('should call after hook', function (done) {
         var config = {
           hashKey: 'email',
-          schema : {
-            email  : Joi.string(),
-            name : Joi.string(),
-            age : Joi.number()
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
           }
         };
 
@@ -1868,7 +1868,7 @@ describe('table', function () {
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email : 'test@test.com', name : 'Tim Test', age : 23 };
+        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.update.yields(null, {});
 
         serializer.serializeItem.withArgs(s, item).returns({});
@@ -1890,10 +1890,10 @@ describe('table', function () {
     it('#destroy should call after hook', function (done) {
       var config = {
         hashKey: 'email',
-        schema : {
-          email  : Joi.string(),
-          name : Joi.string(),
-          age : Joi.number()
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number()
         }
       };
 

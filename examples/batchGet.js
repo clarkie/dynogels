@@ -9,13 +9,13 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Account = vogels.define('example-batch-get-account', {
-  hashKey : 'email',
-  timestamps : true,
-  schema : {
-    email : Joi.string().email(),
-    name  : Joi.string(),
-    age   : Joi.number(),
-    roles : vogels.types.stringSet()
+  hashKey: 'email',
+  timestamps: true,
+  schema: {
+    email: Joi.string().email(),
+    name: Joi.string(),
+    age: Joi.number(),
+    roles: vogels.types.stringSet()
   }
 });
 
@@ -34,7 +34,7 @@ var loadSeedData = function (callback) {
 
   async.times(15, function (n, next) {
     var roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
-    Account.create({ email: 'test' + n + '@example.com', name : 'Test ' + n % 3, age: n, roles : roles }, next);
+    Account.create({ email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n, roles: roles }, next);
   }, callback);
 };
 
@@ -62,7 +62,7 @@ async.series([
   });
 
   // Get two accounts, but only fetching the age attribute
-  Account.getItems(['test5@example.com', 'test6@example.com'], { AttributesToGet : ['age'] }, function (err, accounts) {
+  Account.getItems(['test5@example.com', 'test6@example.com'], { AttributesToGet: ['age'] }, function (err, accounts) {
     accounts.forEach(function (acc) {
       printAccountInfo(null, acc);
     });

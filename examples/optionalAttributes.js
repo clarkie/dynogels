@@ -7,10 +7,10 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Person = vogels.define('example-optional-attribute', {
-  hashKey : 'id',
-  schema : {
-    id : vogels.types.uuid(),
-    name : Joi.string().allow(null)
+  hashKey: 'id',
+  schema: {
+    id: vogels.types.uuid(),
+    name: Joi.string().allow(null)
   }
 });
 
@@ -30,9 +30,9 @@ vogels.createTables(function (err) {
     process.exit(1);
   }
 
-  Person.create({ name : 'Nick' }, printInfo);
-  Person.create({ name : null }, printInfo);
+  Person.create({ name: 'Nick' }, printInfo);
+  Person.create({ name: null }, printInfo);
 
-  var p = new Person({ name : null });
+  var p = new Person({ name: null });
   p.save(printInfo);
 });

@@ -9,13 +9,13 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Product = vogels.define('example-parallel-scan', {
-  hashKey : 'id',
-  timestamps : true,
-  schema : {
-    id        : vogels.types.uuid(),
-    accountId : Joi.number(),
-    purchased : Joi.boolean().default(false),
-    price     : Joi.number()
+  hashKey: 'id',
+  timestamps: true,
+  schema: {
+    id: vogels.types.uuid(),
+    accountId: Joi.number(),
+    purchased: Joi.boolean().default(false),
+    price: Joi.number()
   },
 });
 
@@ -42,7 +42,7 @@ var loadSeedData = function (callback) {
 
   async.times(30, function (n, next) {
     var purchased = n % 4 === 0 ? true : false;
-    Product.create({ accountId : n % 5, purchased : purchased, price : n }, next);
+    Product.create({ accountId: n % 5, purchased: purchased, price: n }, next);
   }, callback);
 };
 

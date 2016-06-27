@@ -8,11 +8,11 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var BinModel = vogels.define('example-binary', {
-  hashKey : 'name',
-  timestamps : true,
-  schema : {
-    name : Joi.string(),
-    data : Joi.binary()
+  hashKey: 'name',
+  timestamps: true,
+  schema: {
+    name: Joi.string(),
+    data: Joi.binary()
   }
 });
 
@@ -37,6 +37,6 @@ vogels.createTables(function (err) {
       throw err;
     }
 
-    BinModel.create({ name : 'basic.js', data: data }, printFileInfo);
+    BinModel.create({ name: 'basic.js', data: data }, printFileInfo);
   });
 });

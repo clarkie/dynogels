@@ -7,7 +7,6 @@
     "comma-dangle": [0],
     "func-names": [0],
     "strict": [0],
-    "key-spacing": [0],
     "no-var": [0],
     "one-var": [0],
     "indent": [0],

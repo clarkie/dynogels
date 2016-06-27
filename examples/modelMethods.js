@@ -7,12 +7,12 @@ var vogels = require('../index'),
 AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
 
 var Account = vogels.define('example-model-methods-Account', {
-  hashKey : 'email',
-  timestamps : true,
-  schema : {
-    email : Joi.string(),
-    name : Joi.string(),
-    age : Joi.number(),
+  hashKey: 'email',
+  timestamps: true,
+  schema: {
+    email: Joi.string(),
+    name: Joi.string(),
+    age: Joi.number(),
   }
 });
 

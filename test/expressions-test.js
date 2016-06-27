@@ -14,10 +14,10 @@ describe('expressions', function () {
       var out = expressions.parse('SET foo = :x');
 
       expect(out).to.eql({
-        SET : ['foo = :x'],
-        ADD : null,
-        REMOVE : null,
-        DELETE : null
+        SET: ['foo = :x'],
+        ADD: null,
+        REMOVE: null,
+        DELETE: null
       });
     });
 
@@ -25,10 +25,10 @@ describe('expressions', function () {
       var out = expressions.parse('SET num = num + :n,Price = if_not_exists(Price, 100), #pr.FiveStar = list_append(#pr.FiveStar, :r)');
 
       expect(out).to.eql({
-        SET : ['num = num + :n', 'Price = if_not_exists(Price, 100)', '#pr.FiveStar = list_append(#pr.FiveStar, :r)'],
-        ADD : null,
-        REMOVE : null,
-        DELETE : null
+        SET: ['num = num + :n', 'Price = if_not_exists(Price, 100)', '#pr.FiveStar = list_append(#pr.FiveStar, :r)'],
+        ADD: null,
+        REMOVE: null,
+        DELETE: null
       });
     });
 
@@ -36,10 +36,10 @@ describe('expressions', function () {
       var out = expressions.parse('ADD num :y');
 
       expect(out).to.eql({
-        SET : null,
-        ADD : ['num :y'],
-        REMOVE : null,
-        DELETE : null
+        SET: null,
+        ADD: ['num :y'],
+        REMOVE: null,
+        DELETE: null
       });
     });
 
@@ -47,10 +47,10 @@ describe('expressions', function () {
       var out = expressions.parse('REMOVE Title, RelatedItems[2], Pictures.RearView');
 
       expect(out).to.eql({
-        SET : null,
-        ADD : null,
-        REMOVE : ['Title', 'RelatedItems[2]', 'Pictures.RearView'],
-        DELETE : null
+        SET: null,
+        ADD: null,
+        REMOVE: ['Title', 'RelatedItems[2]', 'Pictures.RearView'],
+        DELETE: null
       });
     });
 
@@ -59,10 +59,10 @@ describe('expressions', function () {
       var out = expressions.parse('DELETE color :c');
 
       expect(out).to.eql({
-        SET : null,
-        ADD : null,
-        REMOVE : null,
-        DELETE : ['color :c']
+        SET: null,
+        ADD: null,
+        REMOVE: null,
+        DELETE: ['color :c']
       });
     });
 
@@ -70,10 +70,10 @@ describe('expressions', function () {
       var out = expressions.parse('ADD num :y SET name = :n');
 
       expect(out).to.eql({
-        SET : ['name = :n'],
-        ADD : ['num :y'],
-        REMOVE : null,
-        DELETE : null
+        SET: ['name = :n'],
+        ADD: ['num :y'],
+        REMOVE: null,
+        DELETE: null
       });
     });
 
@@ -81,10 +81,10 @@ describe('expressions', function () {
       var out = expressions.parse('SET list[0] = :val1 REMOVE #m.nestedField1, #m.nestedField2 ADD aNumber :val2, anotherNumber :val3 DELETE aSet :val4');
 
       expect(out).to.eql({
-        SET : ['list[0] = :val1'],
-        ADD : ['aNumber :val2', 'anotherNumber :val3'],
-        REMOVE : ['#m.nestedField1', '#m.nestedField2'],
-        DELETE : ['aSet :val4']
+        SET: ['list[0] = :val1'],
+        ADD: ['aNumber :val2', 'anotherNumber :val3'],
+        REMOVE: ['#m.nestedField1', '#m.nestedField2'],
+        DELETE: ['aSet :val4']
       });
     });
 
@@ -92,10 +92,10 @@ describe('expressions', function () {
       var out = expressions.parse(null);
 
       expect(out).to.eql({
-        SET : null,
-        ADD : null,
-        REMOVE : null,
-        DELETE : null
+        SET: null,
+        ADD: null,
+        REMOVE: null,
+        DELETE: null
       });
     });
 
@@ -103,10 +103,10 @@ describe('expressions', function () {
       var out = expressions.parse('');
 
       expect(out).to.eql({
-        SET : null,
-        ADD : null,
-        REMOVE : null,
-        DELETE : null
+        SET: null,
+        ADD: null,
+        REMOVE: null,
+        DELETE: null
       });
     });
   });
@@ -117,11 +117,11 @@ describe('expressions', function () {
     beforeEach(function () {
       var config = {
         hashKey: 'id',
-        schema : {
-          id    : Joi.string(),
-          email : Joi.string(),
-          age   : Joi.number(),
-          names : Schema.types.stringSet()
+        schema: {
+          id: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number(),
+          names: Schema.types.stringSet()
         }
       };
 
@@ -130,92 +130,92 @@ describe('expressions', function () {
 
     it('should return single SET action', function () {
       var updates = {
-        id : 'foobar',
-        email : 'test@test.com',
+        id: 'foobar',
+        email: 'test@test.com',
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);
 
       expect(result.expressions).to.eql({
-        SET    : ['#email = :email'],
-        ADD    : [],
-        REMOVE : [],
-        DELETE : [],
+        SET: ['#email = :email'],
+        ADD: [],
+        REMOVE: [],
+        DELETE: [],
       });
 
-      expect(result.values).to.eql({ ':email' : 'test@test.com' });
-      expect(result.attributeNames).to.eql({ '#email' : 'email' });
+      expect(result.values).to.eql({ ':email': 'test@test.com' });
+      expect(result.attributeNames).to.eql({ '#email': 'email' });
     });
 
     it('should return multiple SET actions', function () {
       var updates = {
-        id : 'foobar',
-        email : 'test@test.com',
-        age : 33,
-        name : 'Steve'
+        id: 'foobar',
+        email: 'test@test.com',
+        age: 33,
+        name: 'Steve'
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);
 
       expect(result.expressions).to.eql({
-        SET    : ['#email = :email', '#age = :age', '#name = :name'],
-        ADD    : [],
-        REMOVE : [],
-        DELETE : [],
+        SET: ['#email = :email', '#age = :age', '#name = :name'],
+        ADD: [],
+        REMOVE: [],
+        DELETE: [],
       });
 
       expect(result.values).to.eql({
-        ':email' : 'test@test.com',
-        ':age'   : 33,
-        ':name'  : 'Steve'
+        ':email': 'test@test.com',
+        ':age': 33,
+        ':name': 'Steve'
       });
 
       expect(result.attributeNames).to.eql({
-        '#email' : 'email',
-        '#age'   : 'age',
-        '#name'  : 'name',
+        '#email': 'email',
+        '#age': 'age',
+        '#name': 'name',
       });
     });
 
     it('should return SET and ADD actions', function () {
       var updates = {
-        id : 'foobar',
-        email : 'test@test.com',
-        age : { $add : 1 }
+        id: 'foobar',
+        email: 'test@test.com',
+        age: { $add: 1 }
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);
       expect(result.expressions).to.eql({
-        SET    : ['#email = :email'],
-        ADD    : ['#age :age'],
-        REMOVE : [],
-        DELETE : [],
+        SET: ['#email = :email'],
+        ADD: ['#age :age'],
+        REMOVE: [],
+        DELETE: [],
       });
 
       expect(result.values).to.eql({
-        ':email' : 'test@test.com',
-        ':age'   : 1
+        ':email': 'test@test.com',
+        ':age': 1
       });
 
       expect(result.attributeNames).to.eql({
-        '#email' : 'email',
-        '#age'   : 'age',
+        '#email': 'email',
+        '#age': 'age',
       });
     });
 
     it('should return single DELETE action', function () {
       var updates = {
-        id : 'foobar',
-        names : { $del : 'tester' },
+        id: 'foobar',
+        names: { $del: 'tester' },
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);
 
       expect(result.expressions).to.eql({
-        SET    : [],
-        ADD    : [],
-        REMOVE : [],
-        DELETE : ['#names :names'],
+        SET: [],
+        ADD: [],
+        REMOVE: [],
+        DELETE: ['#names :names'],
       });
 
       var stringSet = result.values[':names'];
@@ -226,51 +226,51 @@ describe('expressions', function () {
       expect(stringSet.type).to.eql('String');
 
       expect(result.attributeNames).to.eql({
-        '#names' : 'names'
+        '#names': 'names'
       });
     });
 
     it('should return single REMOVE action', function () {
       var updates = {
-        id : 'foobar',
-        email : null,
+        id: 'foobar',
+        email: null,
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);
 
       expect(result.expressions).to.eql({
-        SET    : [],
-        ADD    : [],
-        REMOVE : ['#email'],
-        DELETE : [],
+        SET: [],
+        ADD: [],
+        REMOVE: ['#email'],
+        DELETE: [],
       });
 
       expect(result.values).to.eql({});
 
       expect(result.attributeNames).to.eql({
-        '#email' : 'email'
+        '#email': 'email'
       });
     });
 
     it('should return single REMOVE action when value is set to empty string', function () {
       var updates = {
-        id : 'foobar',
-        email : '',
+        id: 'foobar',
+        email: '',
       };
 
       var result = expressions.serializeUpdateExpression(schema, updates);
 
       expect(result.expressions).to.eql({
-        SET    : [],
-        ADD    : [],
-        REMOVE : ['#email'],
-        DELETE : [],
+        SET: [],
+        ADD: [],
+        REMOVE: ['#email'],
+        DELETE: [],
       });
 
       expect(result.values).to.eql({});
 
       expect(result.attributeNames).to.eql({
-        '#email' : 'email'
+        '#email': 'email'
       });
     });
 
@@ -278,10 +278,10 @@ describe('expressions', function () {
       var result = expressions.serializeUpdateExpression(schema, {});
 
       expect(result.expressions).to.eql({
-        SET    : [],
-        ADD    : [],
-        REMOVE : [],
-        DELETE : [],
+        SET: [],
+        ADD: [],
+        REMOVE: [],
+        DELETE: [],
       });
 
       expect(result.values).to.eql({});
@@ -292,10 +292,10 @@ describe('expressions', function () {
       var result = expressions.serializeUpdateExpression(schema, null);
 
       expect(result.expressions).to.eql({
-        SET    : [],
-        ADD    : [],
-        REMOVE : [],
-        DELETE : [],
+        SET: [],
+        ADD: [],
+        REMOVE: [],
+        DELETE: [],
       });
 
       expect(result.values).to.eql({});
@@ -306,7 +306,7 @@ describe('expressions', function () {
   describe('#stringify', function () {
     it('should return single SET action', function () {
       var params = {
-        SET : ['#email = :email']
+        SET: ['#email = :email']
       };
 
       var out = expressions.stringify(params);
@@ -315,7 +315,7 @@ describe('expressions', function () {
 
     it('should return single SET action when param is a string', function () {
       var params = {
-        SET : '#email = :email'
+        SET: '#email = :email'
       };
 
       var out = expressions.stringify(params);
@@ -324,10 +324,10 @@ describe('expressions', function () {
 
     it('should return single SET action when other actions are null', function () {
       var params = {
-        SET    : ['#email = :email'],
-        ADD    : null,
-        REMOVE : null,
-        DELETE : null
+        SET: ['#email = :email'],
+        ADD: null,
+        REMOVE: null,
+        DELETE: null
       };
 
       var out = expressions.stringify(params);
@@ -336,7 +336,7 @@ describe('expressions', function () {
 
     it('should return multiple SET actions', function () {
       var params = {
-        SET : ['#email = :email', '#age = :n', '#name = :name']
+        SET: ['#email = :email', '#age = :n', '#name = :name']
       };
 
       var out = expressions.stringify(params);
@@ -345,8 +345,8 @@ describe('expressions', function () {
 
     it('should return SET and ADD actions', function () {
       var params = {
-        SET : ['#email = :email'],
-        ADD : ['#age :n', '#foo :bar']
+        SET: ['#email = :email'],
+        ADD: ['#age :n', '#foo :bar']
       };
 
       var out = expressions.stringify(params);
@@ -355,10 +355,10 @@ describe('expressions', function () {
 
     it('should return stringified ALL actions', function () {
       var params = {
-        SET : ['#email = :email'],
-        ADD : ['#age :n', '#foo :bar'],
-        REMOVE : ['#title', '#picture', '#settings'],
-        DELETE : ['#color :c']
+        SET: ['#email = :email'],
+        ADD: ['#age :n', '#foo :bar'],
+        REMOVE: ['#title', '#picture', '#settings'],
+        DELETE: ['#color :c']
       };
 
       var out = expressions.stringify(params);
@@ -367,10 +367,10 @@ describe('expressions', function () {
 
     it('should return empty string when passed empty actions', function () {
       var params = {
-        SET : [],
-        ADD : [],
-        REMOVE : [],
-        DELETE : []
+        SET: [],
+        ADD: [],
+        REMOVE: [],
+        DELETE: []
       };
 
       var out = expressions.stringify(params);
@@ -379,10 +379,10 @@ describe('expressions', function () {
 
     it('should return empty string when passed null actions', function () {
       var params = {
-        SET : null,
-        ADD : null,
-        REMOVE : null,
-        DELETE : null
+        SET: null,
+        ADD: null,
+        REMOVE: null,
+        DELETE: null
       };
 
       var out = expressions.stringify(params);

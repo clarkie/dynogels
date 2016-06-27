@@ -18,9 +18,9 @@ describe('ParallelScan', function () {
   beforeEach(function () {
     var config = {
       hashKey: 'num',
-      schema : {
-        num : Joi.number(),
-        name : Joi.string()
+      schema: {
+        num: Joi.number(),
+        name: Joi.string()
       }
     };
 

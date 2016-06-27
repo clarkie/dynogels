@@ -17,9 +17,9 @@ describe('item', function () {
   beforeEach(function () {
     var config = {
       hashKey: 'num',
-      schema : {
-        num : Joi.number(),
-        name : Joi.string()
+      schema: {
+        num: Joi.number(),
+        name: Joi.string()
       }
     };
 
@@ -54,14 +54,14 @@ describe('item', function () {
 
   describe('#update', function () {
     it('should return item', function (done) {
-      table.docClient.update.yields(null, { Attributes : { num : 1, name : 'foo' } });
+      table.docClient.update.yields(null, { Attributes: { num: 1, name: 'foo' } });
 
       var attrs = { num: 1, name: 'foo' };
       var item = new Item(attrs, table);
 
       item.update(function (err, data) {
         expect(err).to.not.exist;
-        expect(data.get()).to.eql({ num : 1, name : 'foo' });
+        expect(data.get()).to.eql({ num: 1, name: 'foo' });
 
         return done();
       });

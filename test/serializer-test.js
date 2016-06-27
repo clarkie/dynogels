@@ -16,8 +16,8 @@ describe('Serializer', function () {
     it('should handle string hash key', function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string()
+        schema: {
+          email: Joi.string()
         }
       };
 
@@ -31,8 +31,8 @@ describe('Serializer', function () {
     it('should handle number hash key', function () {
       var config = {
         hashKey: 'year',
-        schema : {
-          year : Joi.number()
+        schema: {
+          year: Joi.number()
         }
       };
 
@@ -46,8 +46,8 @@ describe('Serializer', function () {
     it('should handle date hash key', function () {
       var config = {
         hashKey: 'timestamp',
-        schema : {
-          timestamp : Joi.date()
+        schema: {
+          timestamp: Joi.date()
         }
       };
 
@@ -63,10 +63,10 @@ describe('Serializer', function () {
       var config = {
         hashKey: 'name',
         rangeKey: 'email',
-        schema : {
-          name : Joi.string(),
-          email : Joi.string(),
-          slug : Joi.string(),
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          slug: Joi.string(),
         }
       };
 
@@ -81,9 +81,9 @@ describe('Serializer', function () {
       var config = {
         hashKey: 'year',
         rangeKey: 'num',
-        schema : {
-          year : Joi.number(),
-          num : Joi.number(),
+        schema: {
+          year: Joi.number(),
+          num: Joi.number(),
         }
       };
 
@@ -98,16 +98,16 @@ describe('Serializer', function () {
       var config = {
         hashKey: 'year',
         rangeKey: 'name',
-        schema : {
-          year : Joi.number(),
-          name : Joi.string(),
-          slug : Joi.string(),
+        schema: {
+          year: Joi.number(),
+          name: Joi.string(),
+          slug: Joi.string(),
         }
       };
 
       var s = new Schema(config);
 
-      var keys = serializer.buildKey({ year: 1988, name : 'Joe' }, null, s);
+      var keys = serializer.buildKey({ year: 1988, name: 'Joe' }, null, s);
 
       keys.should.eql({ year: 1988, name: 'Joe' });
     });
@@ -116,19 +116,19 @@ describe('Serializer', function () {
       var config = {
         hashKey: 'email',
         rangeKey: 'age',
-        schema : {
-          email : Joi.string(),
-          age : Joi.number(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          age: Joi.number(),
+          name: Joi.string(),
         },
-        indexes : [{
-          hashKey : 'email', rangeKey : 'name', type : 'local', name : 'NameIndex'
+        indexes: [{
+          hashKey: 'email', rangeKey: 'name', type: 'local', name: 'NameIndex'
         }]
       };
 
       var s = new Schema(config);
 
-      var data = { email : 'test@example.com', age: 22, name: 'Foo Bar' };
+      var data = { email: 'test@example.com', age: 22, name: 'Foo Bar' };
       var keys = serializer.buildKey(data, null, s);
 
       keys.should.eql({ email: 'test@example.com', age: 22, name: 'Foo Bar' });
@@ -138,19 +138,19 @@ describe('Serializer', function () {
       var config = {
         hashKey: 'email',
         rangeKey: 'age',
-        schema : {
-          email : Joi.string(),
-          age : Joi.number(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          age: Joi.number(),
+          name: Joi.string(),
         },
-        indexes : [{
-          hashKey : 'age', rangeKey : 'name', type : 'global', name : 'AgeNameIndex'
+        indexes: [{
+          hashKey: 'age', rangeKey: 'name', type: 'global', name: 'AgeNameIndex'
         }]
       };
 
       var s = new Schema(config);
 
-      var data = { email : 'test@example.com', age: 22, name: 'Foo Bar' };
+      var data = { email: 'test@example.com', age: 22, name: 'Foo Bar' };
       var keys = serializer.buildKey(data, null, s);
 
       keys.should.eql({ email: 'test@example.com', age: 22, name: 'Foo Bar' });
@@ -160,20 +160,20 @@ describe('Serializer', function () {
       var config = {
         hashKey: 'email',
         rangeKey: 'age',
-        schema : {
-          email : Joi.string(),
-          age : Joi.number(),
-          name : Joi.string(),
-          adult : Joi.boolean(),
+        schema: {
+          email: Joi.string(),
+          age: Joi.number(),
+          name: Joi.string(),
+          adult: Joi.boolean(),
         },
-        indexes : [{
-          hashKey : 'adult', rangeKey : 'email', type : 'global', name : 'AdultEmailIndex'
+        indexes: [{
+          hashKey: 'adult', rangeKey: 'email', type: 'global', name: 'AdultEmailIndex'
         }]
       };
 
       var s = new Schema(config);
 
-      var data = { email : 'test@example.com', adult: false };
+      var data = { email: 'test@example.com', adult: false };
       var keys = serializer.buildKey(data, null, s);
 
       keys.should.eql({ email: 'test@example.com', adult: false });
@@ -184,8 +184,8 @@ describe('Serializer', function () {
     it('should serialize string attribute', function () {
       var config = {
         hashKey: 'name',
-        schema : {
-          name : Joi.string(),
+        schema: {
+          name: Joi.string(),
         }
       };
 
@@ -199,8 +199,8 @@ describe('Serializer', function () {
     it('should serialize number attribute', function () {
       var config = {
         hashKey: 'age',
-        schema : {
-          age : Joi.number(),
+        schema: {
+          age: Joi.number(),
         }
       };
 
@@ -214,24 +214,24 @@ describe('Serializer', function () {
     it('should serialize binary attribute', function () {
       var config = {
         hashKey: 'data',
-        schema : {
-          data : Joi.binary(),
-          bin  : Joi.binary()
+        schema: {
+          data: Joi.binary(),
+          bin: Joi.binary()
         }
       };
 
       var s = new Schema(config);
 
-      var item = serializer.serializeItem(s, { data: 'hello', bin : new Buffer('binary') });
+      var item = serializer.serializeItem(s, { data: 'hello', bin: new Buffer('binary') });
 
-      item.should.eql({ data: new Buffer('hello'), bin : new Buffer('binary') });
+      item.should.eql({ data: new Buffer('hello'), bin: new Buffer('binary') });
     });
 
     it('should serialize number attribute with value zero', function () {
       var config = {
         hashKey: 'age',
-        schema : {
-          age : Joi.number(),
+        schema: {
+          age: Joi.number(),
         }
       };
 
@@ -246,8 +246,8 @@ describe('Serializer', function () {
     it('should serialize boolean attribute', function () {
       var config = {
         hashKey: 'agree',
-        schema : {
-          agree : Joi.boolean(),
+        schema: {
+          agree: Joi.boolean(),
         }
       };
 
@@ -265,8 +265,8 @@ describe('Serializer', function () {
     it('should serialize date attribute', function () {
       var config = {
         hashKey: 'time',
-        schema : {
-          time : Joi.date(),
+        schema: {
+          time: Joi.date(),
         }
       };
 
@@ -284,9 +284,9 @@ describe('Serializer', function () {
     it('should serialize string set attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          names : Schema.types.stringSet(),
+        schema: {
+          foo: Joi.string(),
+          names: Schema.types.stringSet(),
         }
       };
 
@@ -303,9 +303,9 @@ describe('Serializer', function () {
     it('should serialize single string set attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          names : Schema.types.stringSet(),
+        schema: {
+          foo: Joi.string(),
+          names: Schema.types.stringSet(),
         }
       };
 
@@ -321,9 +321,9 @@ describe('Serializer', function () {
     it('should number set attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          scores : Schema.types.numberSet(),
+        schema: {
+          foo: Joi.string(),
+          scores: Schema.types.numberSet(),
         }
       };
 
@@ -339,9 +339,9 @@ describe('Serializer', function () {
     it('should single number set attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          scores : Schema.types.numberSet(),
+        schema: {
+          foo: Joi.string(),
+          scores: Schema.types.numberSet(),
         }
       };
 
@@ -357,9 +357,9 @@ describe('Serializer', function () {
     it('should serialize binary set attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          data : Schema.types.binarySet(),
+        schema: {
+          foo: Joi.string(),
+          data: Schema.types.binarySet(),
         }
       };
 
@@ -375,9 +375,9 @@ describe('Serializer', function () {
     it('should serialize single binary set attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          data : Schema.types.binarySet(),
+        schema: {
+          foo: Joi.string(),
+          data: Schema.types.binarySet(),
         }
       };
 
@@ -393,8 +393,8 @@ describe('Serializer', function () {
     it('should serialize uuid attribute', function () {
       var config = {
         hashKey: 'id',
-        schema : {
-          id : Schema.types.uuid(),
+        schema: {
+          id: Schema.types.uuid(),
         }
       };
 
@@ -409,8 +409,8 @@ describe('Serializer', function () {
     it('should serialize TimeUUId attribute', function () {
       var config = {
         hashKey: 'timeid',
-        schema : {
-          timeid : Schema.types.timeUUID(),
+        schema: {
+          timeid: Schema.types.timeUUID(),
         }
       };
 
@@ -425,9 +425,9 @@ describe('Serializer', function () {
     it('should return null', function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          scores : Schema.types.numberSet(),
+        schema: {
+          email: Joi.string(),
+          scores: Schema.types.numberSet(),
         }
       };
 
@@ -441,42 +441,42 @@ describe('Serializer', function () {
     it('should serialize string attribute for expected', function () {
       var config = {
         hashKey: 'name',
-        schema : {
-          name : Joi.string(),
+        schema: {
+          name: Joi.string(),
         }
       };
 
       var s = new Schema(config);
 
-      var item = serializer.serializeItem(s, { name: 'Tim Tester' }, { expected : true });
+      var item = serializer.serializeItem(s, { name: 'Tim Tester' }, { expected: true });
 
-      item.should.eql({ name: { Value : 'Tim Tester' } });
+      item.should.eql({ name: { Value: 'Tim Tester' } });
     });
 
     it('should serialize string attribute for expected exists false', function () {
       var config = {
         hashKey: 'name',
-        schema : {
-          name : Joi.string(),
+        schema: {
+          name: Joi.string(),
         }
       };
 
       var s = new Schema(config);
 
-      var item = serializer.serializeItem(s, { name: { Exists: false } }, { expected : true });
+      var item = serializer.serializeItem(s, { name: { Exists: false } }, { expected: true });
 
-      item.should.eql({ name: { Exists : false } });
+      item.should.eql({ name: { Exists: false } });
     });
 
   it('should serialize nested attributes', function () {
       var config = {
         hashKey: 'name',
-        schema : {
-          name : Joi.string(),
-          data : {
-            first : Joi.string(),
-            flag : Joi.boolean(),
-            nicks : Schema.types.stringSet(),
+        schema: {
+          name: Joi.string(),
+          data: {
+            first: Joi.string(),
+            flag: Joi.boolean(),
+            nicks: Schema.types.stringSet(),
           },
         }
       };
@@ -485,7 +485,7 @@ describe('Serializer', function () {
 
       var d = {
         name: 'Foo Bar',
-        data : { first : 'Test', flag : true, nicks : ['a', 'b', 'c'] }
+        data: { first: 'Test', flag: true, nicks: ['a', 'b', 'c'] }
       };
 
       var item = serializer.serializeItem(s, d);
@@ -504,9 +504,9 @@ describe('Serializer', function () {
     it('should return empty when serializing null value', function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          names : Schema.types.stringSet(),
+        schema: {
+          email: Joi.string(),
+          names: Schema.types.stringSet(),
         }
       };
 
@@ -520,7 +520,7 @@ describe('Serializer', function () {
 
   describe('#deserializeItem', function () {
     it('should return string value', function () {
-      var itemResp = { name : 'Tim Tester' };
+      var itemResp = { name: 'Tim Tester' };
 
       var item = serializer.deserializeItem(itemResp);
 
@@ -528,7 +528,7 @@ describe('Serializer', function () {
     });
 
     it('should return values in StringSet', function () {
-      var itemResp = { names : docClient.createSet(['a', 'b', 'c']) };
+      var itemResp = { names: docClient.createSet(['a', 'b', 'c']) };
 
       var item = serializer.deserializeItem(itemResp);
 
@@ -536,7 +536,7 @@ describe('Serializer', function () {
     });
 
     it('should return values in NumberSet', function () {
-      var itemResp = { scores : docClient.createSet([1, 2, 3]) };
+      var itemResp = { scores: docClient.createSet([1, 2, 3]) };
 
       var item = serializer.deserializeItem(itemResp);
 
@@ -551,36 +551,36 @@ describe('Serializer', function () {
 
     it('should return nested values', function () {
       var itemResp = {
-        name : 'foo bar',
-        scores : docClient.createSet([1, 2, 3]),
-        things : [{
-          title : 'item 1',
-          letters : docClient.createSet(['a', 'b', 'c'])
+        name: 'foo bar',
+        scores: docClient.createSet([1, 2, 3]),
+        things: [{
+          title: 'item 1',
+          letters: docClient.createSet(['a', 'b', 'c'])
         }, {
-          title : 'item 2',
-          letters : docClient.createSet(['x', 'y', 'z'])
+          title: 'item 2',
+          letters: docClient.createSet(['x', 'y', 'z'])
         }],
-        info : {
-          name : 'baz',
-          ages : docClient.createSet([20, 21, 22])
+        info: {
+          name: 'baz',
+          ages: docClient.createSet([20, 21, 22])
         }
       };
 
       var item = serializer.deserializeItem(itemResp);
 
       item.should.eql({
-        name : 'foo bar',
-        scores : [1, 2, 3],
-        things : [{
-          title : 'item 1',
-          letters : ['a', 'b', 'c']
+        name: 'foo bar',
+        scores: [1, 2, 3],
+        things: [{
+          title: 'item 1',
+          letters: ['a', 'b', 'c']
         }, {
-          title : 'item 2',
-          letters : ['x', 'y', 'z']
+          title: 'item 2',
+          letters: ['x', 'y', 'z']
         }],
-        info : {
-          name : 'baz',
-          ages : [20, 21, 22]
+        info: {
+          name: 'baz',
+          ages: [20, 21, 22]
         }
       });
     });
@@ -590,9 +590,9 @@ describe('Serializer', function () {
     it('should serialize string attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          name : Joi.string(),
+        schema: {
+          foo: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -606,9 +606,9 @@ describe('Serializer', function () {
     it('should serialize number attribute', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          age : Joi.number(),
+        schema: {
+          foo: Joi.string(),
+          age: Joi.number(),
         }
       };
 
@@ -622,11 +622,11 @@ describe('Serializer', function () {
     it('should serialize three attributes', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          name : Joi.string(),
-          age : Joi.number(),
-          scores : Schema.types.numberSet(),
+        schema: {
+          foo: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number(),
+          scores: Schema.types.numberSet(),
         }
       };
 
@@ -635,8 +635,8 @@ describe('Serializer', function () {
       var attr = { name: 'Tim Test', age: 25, scores: [94, 92, 100] };
       var item = serializer.serializeItemForUpdate(s, 'PUT', attr);
 
-      item.name.should.eql({ Action : 'PUT', Value : 'Tim Test' });
-      item.age.should.eql({ Action : 'PUT', Value : 25 });
+      item.name.should.eql({ Action: 'PUT', Value: 'Tim Test' });
+      item.age.should.eql({ Action: 'PUT', Value: 25 });
 
       var numberSet = docClient.createSet([94, 92, 100]);
       item.scores.Action.should.eql('PUT');
@@ -647,29 +647,29 @@ describe('Serializer', function () {
     it('should serialize null value to a DELETE action', function () {
       var config = {
         hashKey: 'foo',
-        schema : {
-          foo : Joi.string(),
-          name : Joi.string(),
-          age : Joi.number(),
+        schema: {
+          foo: Joi.string(),
+          name: Joi.string(),
+          age: Joi.number(),
         }
       };
 
       var s = new Schema(config);
 
-      var item = serializer.serializeItemForUpdate(s, 'PUT', { age: null, name : 'Foo Bar' });
+      var item = serializer.serializeItemForUpdate(s, 'PUT', { age: null, name: 'Foo Bar' });
 
       item.should.eql({
         name: { Action: 'PUT', Value: 'Foo Bar' },
-        age:  { Action: 'DELETE' }
+        age: { Action: 'DELETE' }
       });
     });
 
     it('should not serialize hashkey attribute', function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -684,10 +684,10 @@ describe('Serializer', function () {
       var config = {
         hashKey: 'email',
         rangeKey: 'range',
-        schema : {
-          email : Joi.string(),
-          range : Joi.string(),
-          name : Joi.string(),
+        schema: {
+          email: Joi.string(),
+          range: Joi.string(),
+          name: Joi.string(),
         }
       };
 
@@ -701,16 +701,16 @@ describe('Serializer', function () {
     it('should serialize add operations', function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          age : Joi.number(),
-          names : Schema.types.stringSet(),
+        schema: {
+          email: Joi.string(),
+          age: Joi.number(),
+          names: Schema.types.stringSet(),
         }
       };
 
       var s = new Schema(config);
 
-      var update = { email: 'test@test.com', age: { $add : 1 }, names : { $add: ['foo', 'bar'] } };
+      var update = { email: 'test@test.com', age: { $add: 1 }, names: { $add: ['foo', 'bar'] } };
       var item = serializer.serializeItemForUpdate(s, 'PUT', update);
 
       item.age.should.eql({ Action: 'ADD', Value: 1 });
@@ -724,16 +724,16 @@ describe('Serializer', function () {
     it('should serialize delete operations', function () {
       var config = {
         hashKey: 'email',
-        schema : {
-          email : Joi.string(),
-          names : Schema.types.stringSet(),
-          ages : Schema.types.numberSet(),
+        schema: {
+          email: Joi.string(),
+          names: Schema.types.stringSet(),
+          ages: Schema.types.numberSet(),
         }
       };
 
       var s = new Schema(config);
 
-      var update = { email: 'test@test.com', ages: { $del : [2, 3] }, names : { $del: ['foo', 'bar'] } };
+      var update = { email: 'test@test.com', ages: { $del: [2, 3] }, names: { $del: ['foo', 'bar'] } };
       var item = serializer.serializeItemForUpdate(s, 'PUT', update);
 
       var stringSet = docClient.createSet(['foo', 'bar']);

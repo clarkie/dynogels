@@ -41,8 +41,6 @@
     "consistent-return": [0],
     "space-before-blocks": [0],
     "prefer-rest-params": [0],
-    "no-unneeded-ternary": [0],
-    "no-return-assign": [0],
-    "no-multiple-empty-lines": [0]
+    "no-unneeded-ternary": [0]
   }
 }

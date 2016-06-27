@@ -31,5 +31,3 @@ Account.findByAgeRange = function (low, high) {
     });
   });
 };
-
-

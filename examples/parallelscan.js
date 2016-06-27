@@ -29,7 +29,8 @@ var printInfo = function (err, resp) {
   console.log('Scanned Count', resp.ScannedCount);
 
   var totalPrices = resp.Items.reduce(function (total, item) {
-    return total += item.get('price');
+    total += item.get('price');
+    return total;
   }, 0);
 
   console.log('Total purchased', totalPrices);

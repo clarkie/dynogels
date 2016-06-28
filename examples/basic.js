@@ -15,7 +15,7 @@ var Account = vogels.define('Foobar', {
     name: Joi.string(),
     age: Joi.number(),
     scores: vogels.types.numberSet(),
-    created: Joi.date().default(Date.now),
+    created: Joi.date().default(Date.now, 'now'),
     list: Joi.array(),
     settings: {
       nickname: Joi.string(),

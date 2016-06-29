@@ -23,14 +23,14 @@
     "nosql"
   ],
   "engines": {
-    "node": ">=0.10.30"
+    "node": ">=4"
   },
   "license": "MIT",
   "dependencies": {
     "async": "1.5.x",
     "aws-sdk": "^2.4.2",
     "bunyan": "^1.8.1",
-    "joi": "^6.10.1",
+    "joi": "^7.3.0",
     "lodash": "4.x.x",
     "node-uuid": "1.4.x"
   },

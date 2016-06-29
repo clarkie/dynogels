@@ -30,7 +30,7 @@
     "async": "1.5.x",
     "aws-sdk": "^2.4.2",
     "bunyan": "^1.8.1",
-    "joi": "5.x.x",
+    "joi": "^6.10.1",
     "lodash": "4.x.x",
     "node-uuid": "1.4.x"
   },

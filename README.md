@@ -1069,10 +1069,10 @@ See the [examples][0] for more working sample code.
 
 Dynogels is provided as-is, free of charge. For support, you have a few choices:
 
-- Ask your support question on [Stackoverflow.com](http://stackoverflow.com), and tag your question with **vogels**.
-- If you believe you have found a bug in vogels, please submit a support ticket on the [Github Issues page for vogels](http://github.com/ryanfitz/vogels/issues). We'll get to them as soon as we can.
-- For general feedback message me on [twitter](https://twitter.com/theryanfitz)
-- For more personal or immediate support, I’m available for hire to consult on your project. [Contact](mailto:ryan.fitz1@gmail.com) me for more detals.
+- Ask your support question on [Stackoverflow.com](http://stackoverflow.com), and tag your question with **dynogels**.
+- If you believe you have found a bug in vogels, please submit a support ticket on the [Github Issues page for vogels](http://github.com/clarkie/dynogels/issues). We'll get to them as soon as we can.
+- For general feedback message me on [twitter](https://twitter.com/clarkieclarkie)
+- For more personal or immediate support, I’m available for hire to consult on your project. [Contact](mailto:andrew.t.clarke@gmail.com) me for more detals.
 
 ### Maintainers
 

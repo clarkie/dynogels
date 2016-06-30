@@ -12,7 +12,6 @@
     "no-param-reassign": [0],
     "no-shadow": [0],
     "object-shorthand": [0],
-    "no-new": [0],
     "no-underscore-dangle": [0],
     "newline-per-chained-call": [0],
     "new-cap": [0],

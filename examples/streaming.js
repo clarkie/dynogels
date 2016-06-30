@@ -4,7 +4,7 @@ var vogels = require('../index');
 var Joi = require('joi');
 var AWS = vogels.AWS;
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Product = vogels.define('example-streaming-Product', {
   hashKey: 'ProductId',
@@ -20,18 +20,18 @@ var Product = vogels.define('example-streaming-Product', {
 var printStream = function (msg, stream) {
   var count = 0;
   stream.on('error', function (err) {
-    console.log('error ' + msg, err);
+    console.log(`error ${msg}`, err);
   });
 
   stream.on('readable', function () {
     count++;
-    console.log('----------------------' + count + '--------------------------');
-    console.log('Scanned ' + stream.read().Count + ' products - ' + msg);
+    console.log(`----------------------${count}--------------------------`);
+    console.log(`Scanned ${stream.read().Count} products - ${msg}`);
   });
 
   stream.on('end', function () {
     console.log('-------------------------------------------------');
-    console.log('Finished ' + msg);
+    console.log(`Finished ${msg}`);
     console.log('-------------------------------------------------');
   });
 };

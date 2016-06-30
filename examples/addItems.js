@@ -5,7 +5,7 @@ var AWS = vogels.AWS;
 var Joi = require('joi');
 var async = require('async');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Account = vogels.define('example-Account', {
   hashKey: 'AccountId',
@@ -27,6 +27,6 @@ vogels.createTables({
   }
 
   async.times(25, function (n, next) {
-    Account.create({ name: 'Account ' + n, email: 'account' + n + '@gmail.com', age: n }, next);
+    Account.create({ name: `Account ${n}`, email: `account${n}@gmail.com`, age: n }, next);
   });
 });

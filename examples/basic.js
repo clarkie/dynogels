@@ -6,7 +6,7 @@ var util = require('util');
 var AWS = vogels.AWS;
 var Joi = require('joi');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Account = vogels.define('Foobar', {
   hashKey: 'email',

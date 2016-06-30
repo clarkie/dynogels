@@ -4,7 +4,7 @@ var vogels = require('../index');
 var Joi = require('joi');
 var AWS = vogels.AWS;
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Account = vogels.define('example-model-methods-Account', {
   hashKey: 'email',
@@ -17,7 +17,7 @@ var Account = vogels.define('example-model-methods-Account', {
 });
 
 Account.prototype.sayHello = function () {
-  console.log('Hello my name is ' + this.get('name') + ' I\'m ' + this.get('age') + ' years old');
+  console.log(`Hello my name is ${this.get('name')} I\'m ${this.get('age')} years old`);
 };
 
 Account.findByAgeRange = function (low, high) {

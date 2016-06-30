@@ -6,7 +6,7 @@ var _ = require('lodash');
 var Joi = require('joi');
 var async = require('async');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Product = vogels.define('example-parallel-scan', {
   hashKey: 'id',

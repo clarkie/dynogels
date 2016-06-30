@@ -90,7 +90,7 @@ exports.fakeUUID = function () {
 };
 
 exports.randomName = function (prefix) {
-  return prefix + '_' + Date.now() + '.' + _.random(1000);
+  return `${prefix}_${Date.now()}.${_.random(1000)}`;
 };
 
 exports.testLogger = function () {

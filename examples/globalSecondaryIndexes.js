@@ -7,7 +7,7 @@ var AWS = vogels.AWS;
 var Joi = require('joi');
 var async = require('async');
 
-// AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+// AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 // http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html
 

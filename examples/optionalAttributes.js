@@ -4,7 +4,7 @@ var vogels = require('../index');
 var AWS = vogels.AWS;
 var Joi = require('joi');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Person = vogels.define('example-optional-attribute', {
   hashKey: 'id',

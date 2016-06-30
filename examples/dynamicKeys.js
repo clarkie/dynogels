@@ -7,7 +7,7 @@ var async = require('async');
 var util = require('util');
 var _ = require('lodash');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var DynamicModel = vogels.define('example-dynamic-key', {
   hashKey: 'id',
@@ -43,7 +43,7 @@ vogels.createTables({
   }
 
   async.times(25, function (n, next) {
-    var data = { id: 'Model ' + n };
+    var data = { id: `Model ${n}` };
 
     if (n % 3 === 0) {
       data.name = 'Dynamic Model the 3rd';
@@ -51,7 +51,7 @@ vogels.createTables({
     }
 
     if (n % 5 === 0) {
-      data.email = 'model_' + n + '@test.com';
+      data.email = `model_${n}@test.com`;
       data.settings = { nickname: 'Model the 5th' };
     }
 

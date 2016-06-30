@@ -5,7 +5,7 @@ var fs = require('fs');
 var AWS = vogels.AWS;
 var Joi = require('joi');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var BinModel = vogels.define('example-binary', {
   hashKey: 'name',
@@ -32,7 +32,7 @@ vogels.createTables(function (err) {
     process.exit(1);
   }
 
-  fs.readFile(__dirname + '/basic.js', function (err, data) {
+  fs.readFile(`${__dirname}/basic.js`, function (err, data) {
     if (err) {
       throw err;
     }

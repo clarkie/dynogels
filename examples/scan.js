@@ -7,7 +7,7 @@ var AWS = vogels.AWS;
 var async = require('async');
 var Joi = require('joi');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Account = vogels.define('example-scan', {
   hashKey: 'name',
@@ -43,7 +43,7 @@ var loadSeedData = function (callback) {
 
   async.times(30, function (n, next) {
     var scores = n % 5 === 0 ? [3, 4, 5] : [1, 2];
-    Account.create({ email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n, scores: scores }, next);
+    Account.create({ email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n, scores: scores }, next);
   }, callback);
 };
 

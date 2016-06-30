@@ -18,7 +18,7 @@ var DynamicKeyModel;
 var internals = {};
 
 internals.userId = function (n) {
-  return 'userid-' + n;
+  return `userid-${n}`;
 };
 
 internals.loadSeedData = function (callback) {
@@ -34,13 +34,13 @@ internals.loadSeedData = function (callback) {
           roles = ['qa', 'dev'];
         }
 
-        User.create({ id: internals.userId(n), email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n + 10, roles: roles }, next);
+        User.create({ id: internals.userId(n), email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n + 10, roles: roles }, next);
       }, callback);
     },
     function (callback) {
       async.times(15 * 5, function (n, next) {
         var userId = internals.userId(n % 5);
-        var p = { UserId: userId, content: 'I love tweeting, in fact Ive tweeted ' + n + ' times', num: n };
+        var p = { UserId: userId, content: `I love tweeting, in fact Ive tweeted ${n} times`, num: n };
         if (n % 3 === 0) {
           p.tag = '#test';
         }
@@ -50,12 +50,12 @@ internals.loadSeedData = function (callback) {
     },
     function (callback) {
       async.times(10, function (n, next) {
-        var director = { firstName: 'Steven', lastName: 'Spielberg the ' + n, titles: ['Producer', 'Writer', 'Director'] };
+        var director = { firstName: 'Steven', lastName: `Spielberg the ${n}`, titles: ['Producer', 'Writer', 'Director'] };
         var actors = [
         { firstName: 'Tom', lastName: 'Hanks', titles: ['Producer', 'Actor', 'Soundtrack'] }
         ];
 
-        var tags = ['tag ' + n];
+        var tags = [`tag ${n}`];
 
         if (n % 3 === 0) {
           actors.push({ firstName: 'Rex', lastName: 'Ryan', titles: ['Actor', 'Head Coach'] });
@@ -67,7 +67,7 @@ internals.loadSeedData = function (callback) {
           tags.push('Comedy');
         }
 
-        Movie.create({ title: 'Movie ' + n, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
+        Movie.create({ title: `Movie ${n}`, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
       }, callback);
     },
   ], callback);

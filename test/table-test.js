@@ -1667,7 +1667,7 @@ describe('table', function () {
       var dateString = [d.getFullYear(), d.getMonth() + 1].join('_');
 
       var nameFunc = function () {
-        return 'accounts_' + dateString;
+        return `accounts_${dateString}`;
       };
 
       var config = {
@@ -1683,7 +1683,7 @@ describe('table', function () {
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      table.tableName().should.eql('accounts_' + dateString);
+      table.tableName().should.eql(`accounts_${dateString}`);
     });
   });
 

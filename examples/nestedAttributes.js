@@ -7,7 +7,7 @@ var async = require('async');
 var Joi = require('joi');
 var AWS = vogels.AWS;
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Movie = vogels.define('example-nested-attribute', {
   hashKey: 'title',
@@ -43,12 +43,12 @@ var loadSeedData = function (callback) {
   callback = callback || _.noop;
 
   async.times(10, function (n, next) {
-    var director = { firstName: 'Steven', lastName: 'Spielberg the ' + n, titles: ['Producer', 'Writer', 'Director'] };
+    var director = { firstName: 'Steven', lastName: `Spielberg the ${n}`, titles: ['Producer', 'Writer', 'Director'] };
     var actors = [
       { firstName: 'Tom', lastName: 'Hanks', titles: ['Producer', 'Actor', 'Soundtrack'] }
     ];
 
-    var tags = ['tag ' + n];
+    var tags = [`tag ${n}`];
 
     if (n % 3 === 0) {
       actors.push({ firstName: 'Rex', lastName: 'Ryan', titles: ['Actor', 'Head Coach'] });
@@ -60,7 +60,7 @@ var loadSeedData = function (callback) {
       tags.push('Comedy');
     }
 
-    Movie.create({ title: 'Movie ' + n, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
+    Movie.create({ title: `Movie ${n}`, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
   }, callback);
 };
 

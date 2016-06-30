@@ -120,7 +120,7 @@ describe('Batch', function () {
 
     it('should not modify passed in keys', function (done) {
       var keys = _.map(_.range(300), function (num) {
-        var key = { email: 'test' + num + '@test.com', name: 'Test ' + num };
+        var key = { email: `test${num}@test.com`, name: `Test ${num}` };
         serializer.buildKey.withArgs(key).returns({ email: { S: key.email }, name: { S: key.name } });
 
         return key;
@@ -134,7 +134,7 @@ describe('Batch', function () {
 
       batch(table, serializer).getItems(keys, function () {
         _.each(_.range(300), function (num) {
-          var key = { email: 'test' + num + '@test.com', name: 'Test ' + num };
+          var key = { email: `test${num}@test.com`, name: `Test ${num}` };
           keys[num].should.eql(key);
         });
 

@@ -6,7 +6,7 @@ var _ = require('lodash');
 var AWS = vogels.AWS;
 var Joi = require('joi');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Account = vogels.define('example-batch-get-account', {
   hashKey: 'email',
@@ -34,7 +34,7 @@ var loadSeedData = function (callback) {
 
   async.times(15, function (n, next) {
     var roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
-    Account.create({ email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n, roles: roles }, next);
+    Account.create({ email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n, roles: roles }, next);
   }, callback);
 };
 

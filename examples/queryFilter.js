@@ -7,7 +7,7 @@ var Joi = require('joi');
 var async = require('async');
 var AWS = vogels.AWS;
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 var Account = vogels.define('example-query-filter', {
   hashKey: 'name',
@@ -29,9 +29,9 @@ var printResults = function (msg) {
   return function (err, resp) {
     console.log('----------------------------------------------------------------------');
     if (err) {
-      console.log(msg + ' - Error running query', err);
+      console.log(`${msg} - Error running query`, err);
     } else {
-      console.log(msg + ' - Found', resp.Count, 'items');
+      console.log(`${msg} - Found`, resp.Count, 'items');
       console.log(util.inspect(_.pluck(resp.Items, 'attrs')));
 
       if (resp.ConsumedCapacity) {
@@ -49,7 +49,7 @@ var loadSeedData = function (callback) {
 
   async.times(30, function (n, next) {
     var roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
-    Account.create({ email: 'test' + n + '@example.com', name: 'Test ' + n % 3, age: n, roles: roles }, next);
+    Account.create({ email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n, roles: roles }, next);
   }, callback);
 };
 

@@ -1,15 +1,15 @@
 'use strict';
 
-var vogels = require('../index');
-var util = require('util');
-var _ = require('lodash');
-var Joi = require('joi');
-var async = require('async');
-var AWS = vogels.AWS;
+const vogels = require('../index');
+const util = require('util');
+const _ = require('lodash');
+const Joi = require('joi');
+const async = require('async');
+const AWS = vogels.AWS;
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('example-query-filter', {
+const Account = vogels.define('example-query-filter', {
   hashKey: 'name',
   rangeKey: 'email',
   timestamps: true,
@@ -25,35 +25,33 @@ var Account = vogels.define('example-query-filter', {
   ]
 });
 
-var printResults = function (msg) {
-  return function (err, resp) {
-    console.log('----------------------------------------------------------------------');
-    if (err) {
-      console.log(`${msg} - Error running query`, err);
-    } else {
-      console.log(`${msg} - Found`, resp.Count, 'items');
-      console.log(util.inspect(_.pluck(resp.Items, 'attrs')));
+const printResults = msg => (err, resp) => {
+  console.log('----------------------------------------------------------------------');
+  if (err) {
+    console.log(`${msg} - Error running query`, err);
+  } else {
+    console.log(`${msg} - Found`, resp.Count, 'items');
+    console.log(util.inspect(_.pluck(resp.Items, 'attrs')));
 
-      if (resp.ConsumedCapacity) {
-        console.log('----------------------------------------------------------------------');
-        console.log('Query consumed: ', resp.ConsumedCapacity);
-      }
+    if (resp.ConsumedCapacity) {
+      console.log('----------------------------------------------------------------------');
+      console.log('Query consumed: ', resp.ConsumedCapacity);
     }
+  }
 
-    console.log('----------------------------------------------------------------------');
-  };
+  console.log('----------------------------------------------------------------------');
 };
 
-var loadSeedData = function (callback) {
+const loadSeedData = callback => {
   callback = callback || _.noop;
 
-  async.times(30, function (n, next) {
-    var roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
+  async.times(30, (n, next) => {
+    const roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
     Account.create({ email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n, roles: roles }, next);
   }, callback);
 };
 
-var runFilterQueries = function () {
+const runFilterQueries = () => {
   // Basic equals filter
   Account.query('Test 1').filter('age').equals(4).exec(printResults('Equals Filter'));
 
@@ -78,7 +76,7 @@ var runFilterQueries = function () {
 async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
-], function (err) {
+], err => {
   if (err) {
     console.log('error', err);
     process.exit(1);

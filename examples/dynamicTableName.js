@@ -1,12 +1,12 @@
 'use strict';
 
-var vogels = require('../index');
-var AWS = vogels.AWS;
-var Joi = require('joi');
+const vogels = require('../index');
+const AWS = vogels.AWS;
+const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('example-tablename', {
+const Account = vogels.define('example-tablename', {
   hashKey: 'email',
   timestamps: true,
   schema: {
@@ -15,12 +15,12 @@ var Account = vogels.define('example-tablename', {
     age: Joi.number()
   },
   tableName: function () {
-    var d = new Date();
+    const d = new Date();
     return ['example-dynamic-tablename', d.getFullYear(), d.getMonth() + 1].join('_');
   }
 });
 
-var printAccountInfo = function (err, acc) {
+const printAccountInfo = (err, acc) => {
   if (err) {
     console.log('got error', err);
   } else if (acc) {
@@ -30,7 +30,7 @@ var printAccountInfo = function (err, acc) {
   }
 };
 
-vogels.createTables(function (err) {
+vogels.createTables(err => {
   if (err) {
     console.log('Failed to create tables', err);
   } else {

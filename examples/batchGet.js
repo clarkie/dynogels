@@ -1,14 +1,14 @@
 'use strict';
 
-var vogels = require('../index');
-var async = require('async');
-var _ = require('lodash');
-var AWS = vogels.AWS;
-var Joi = require('joi');
+const vogels = require('../index');
+const async = require('async');
+const _ = require('lodash');
+const AWS = vogels.AWS;
+const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('example-batch-get-account', {
+const Account = vogels.define('example-batch-get-account', {
   hashKey: 'email',
   timestamps: true,
   schema: {
@@ -19,7 +19,7 @@ var Account = vogels.define('example-batch-get-account', {
   }
 });
 
-var printAccountInfo = function (err, acc) {
+const printAccountInfo = (err, acc) => {
   if (err) {
     console.log('got error', err);
   } else if (acc) {
@@ -29,11 +29,11 @@ var printAccountInfo = function (err, acc) {
   }
 };
 
-var loadSeedData = function (callback) {
+const loadSeedData = callback => {
   callback = callback || _.noop;
 
-  async.times(15, function (n, next) {
-    var roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
+  async.times(15, (n, next) => {
+    const roles = n % 3 === 0 ? ['admin', 'editor'] : ['user'];
     Account.create({ email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n, roles: roles }, next);
   }, callback);
 };
@@ -41,29 +41,29 @@ var loadSeedData = function (callback) {
 async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
-], function (err) {
+], err => {
   if (err) {
     console.log('error', err);
     process.exit(1);
   }
 
   // Get two accounts at once
-  Account.getItems(['test1@example.com', 'test2@example.com'], function (err, accounts) {
-    accounts.forEach(function (acc) {
+  Account.getItems(['test1@example.com', 'test2@example.com'], (err, accounts) => {
+    accounts.forEach(acc => {
       printAccountInfo(null, acc);
     });
   });
 
   // Same as above but a strongly consistent read is used
-  Account.getItems(['test3@example.com', 'test4@example.com'], { ConsistentRead: true }, function (err, accounts) {
-    accounts.forEach(function (acc) {
+  Account.getItems(['test3@example.com', 'test4@example.com'], { ConsistentRead: true }, (err, accounts) => {
+    accounts.forEach(acc => {
       printAccountInfo(null, acc);
     });
   });
 
   // Get two accounts, but only fetching the age attribute
-  Account.getItems(['test5@example.com', 'test6@example.com'], { AttributesToGet: ['age'] }, function (err, accounts) {
-    accounts.forEach(function (acc) {
+  Account.getItems(['test5@example.com', 'test6@example.com'], { AttributesToGet: ['age'] }, (err, accounts) => {
+    accounts.forEach(acc => {
       printAccountInfo(null, acc);
     });
   });

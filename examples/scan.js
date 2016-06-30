@@ -1,15 +1,15 @@
 'use strict';
 
-var vogels = require('../index');
-var util = require('util');
-var _ = require('lodash');
-var AWS = vogels.AWS;
-var async = require('async');
-var Joi = require('joi');
+const vogels = require('../index');
+const util = require('util');
+const _ = require('lodash');
+const AWS = vogels.AWS;
+const async = require('async');
+const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('example-scan', {
+const Account = vogels.define('example-scan', {
   hashKey: 'name',
   rangeKey: 'email',
   timestamps: true,
@@ -21,7 +21,7 @@ var Account = vogels.define('example-scan', {
   },
 });
 
-var printResults = function (err, resp) {
+const printResults = (err, resp) => {
   console.log('----------------------------------------------------------------------');
   if (err) {
     console.log('Error running scan', err);
@@ -38,17 +38,17 @@ var printResults = function (err, resp) {
   console.log('----------------------------------------------------------------------');
 };
 
-var loadSeedData = function (callback) {
+const loadSeedData = callback => {
   callback = callback || _.noop;
 
-  async.times(30, function (n, next) {
-    var scores = n % 5 === 0 ? [3, 4, 5] : [1, 2];
+  async.times(30, (n, next) => {
+    const scores = n % 5 === 0 ? [3, 4, 5] : [1, 2];
     Account.create({ email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n, scores: scores }, next);
   }, callback);
 };
 
 
-var runScans = function () {
+const runScans = () => {
   // Basic scan against table
   Account.scan().exec(printResults);
 
@@ -76,7 +76,7 @@ var runScans = function () {
 async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
-], function (err) {
+], err => {
   if (err) {
     console.log('error', err);
     process.exit(1);

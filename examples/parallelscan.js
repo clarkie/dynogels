@@ -1,14 +1,14 @@
 'use strict';
 
-var vogels = require('../index');
-var AWS = vogels.AWS;
-var _ = require('lodash');
-var Joi = require('joi');
-var async = require('async');
+const vogels = require('../index');
+const AWS = vogels.AWS;
+const _ = require('lodash');
+const Joi = require('joi');
+const async = require('async');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Product = vogels.define('example-parallel-scan', {
+const Product = vogels.define('example-parallel-scan', {
   hashKey: 'id',
   timestamps: true,
   schema: {
@@ -19,7 +19,7 @@ var Product = vogels.define('example-parallel-scan', {
   },
 });
 
-var printInfo = function (err, resp) {
+const printInfo = (err, resp) => {
   if (err) {
     console.log(err);
     return;
@@ -28,7 +28,7 @@ var printInfo = function (err, resp) {
   console.log('Count', resp.Count);
   console.log('Scanned Count', resp.ScannedCount);
 
-  var totalPrices = resp.Items.reduce(function (total, item) {
+  const totalPrices = resp.Items.reduce((total, item) => {
     total += item.get('price');
     return total;
   }, 0);
@@ -37,17 +37,17 @@ var printInfo = function (err, resp) {
   console.log('Average purchased price', totalPrices / resp.Count);
 };
 
-var loadSeedData = function (callback) {
+const loadSeedData = callback => {
   callback = callback || _.noop;
 
-  async.times(30, function (n, next) {
-    var purchased = n % 4 === 0;
+  async.times(30, (n, next) => {
+    const purchased = n % 4 === 0;
     Product.create({ accountId: n % 5, purchased: purchased, price: n }, next);
   }, callback);
 };
 
-var runParallelScan = function () {
-  var totalSegments = 8;
+const runParallelScan = () => {
+  const totalSegments = 8;
 
   Product.parallelScan(totalSegments)
   .where('purchased').equals(true)
@@ -58,7 +58,7 @@ var runParallelScan = function () {
 async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
-], function (err) {
+], err => {
   if (err) {
     console.log('error', err);
     process.exit(1);

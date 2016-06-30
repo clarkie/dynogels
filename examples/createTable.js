@@ -1,8 +1,8 @@
 'use strict';
 
-var vogels = require('../index');
-var AWS = vogels.AWS;
-var Joi = require('joi');
+const vogels = require('../index');
+const AWS = vogels.AWS;
+const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
@@ -42,7 +42,7 @@ vogels.define('example-GameScore', {
 vogels.createTables({
   'example-Account': { readCapacity: 1, writeCapacity: 1 },
   'example-GameScore': { readCapacity: 1, writeCapacity: 1 }
-}, function (err) {
+}, err => {
   if (err) {
     console.log('Error creating tables', err);
   } else {

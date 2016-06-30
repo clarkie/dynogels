@@ -1,14 +1,14 @@
 'use strict';
 
-var vogels = require('../index');
-var _ = require('lodash');
-var util = require('util');
-var AWS = vogels.AWS;
-var Joi = require('joi');
+const vogels = require('../index');
+const _ = require('lodash');
+const util = require('util');
+const AWS = vogels.AWS;
+const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('Foobar', {
+const Account = vogels.define('Foobar', {
   hashKey: 'email',
   schema: {
     email: Joi.string(),
@@ -24,7 +24,7 @@ var Account = vogels.define('Foobar', {
   }
 });
 
-var printAccountInfo = function (err, acc) {
+const printAccountInfo = (err, acc) => {
   if (err) {
     console.log('got error', err);
   } else if (acc) {
@@ -34,18 +34,18 @@ var printAccountInfo = function (err, acc) {
   }
 };
 
-var printScanResults = function (err, data) {
+const printScanResults = (err, data) => {
   if (err) {
     console.log('got scan error', err);
   } else if (data.Items) {
-    var items = _.map(data.Items, function (d) { return d.get(); });
+    const items = _.map(data.Items, d => d.get());
     console.log('scan finished, got ', util.inspect(items, { showHidden: false, depth: null }));
   } else {
     console.log('scan returned empty result set');
   }
 };
 
-vogels.createTables(function (err) {
+vogels.createTables(err => {
   if (err) {
     console.log('failed to create table', err);
   }
@@ -55,16 +55,16 @@ vogels.createTables(function (err) {
   Account.get('test@test.com', printAccountInfo);
 
   // Create an account
-  var params = {
+  const params = {
     email: 'test11@example.com', name: 'test 11', age: 21, scores: [22, 55, 44],
     list: ['a', 'b', 'c', 1, 2, 3],
     settings: { nickname: 'tester' }
   };
 
-  Account.create(params, function (err, acc) {
+  Account.create(params, (err, acc) => {
     printAccountInfo(err, acc);
 
-    acc.set({ name: 'Test 11', age: 25 }).update(function (err) {
+    acc.set({ name: 'Test 11', age: 25 }).update(err => {
       console.log('account updated', err, acc.get());
     });
   });

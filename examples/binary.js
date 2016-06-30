@@ -1,13 +1,13 @@
 'use strict';
 
-var vogels = require('../index');
-var fs = require('fs');
-var AWS = vogels.AWS;
-var Joi = require('joi');
+const vogels = require('../index');
+const fs = require('fs');
+const AWS = vogels.AWS;
+const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var BinModel = vogels.define('example-binary', {
+const BinModel = vogels.define('example-binary', {
   hashKey: 'name',
   timestamps: true,
   schema: {
@@ -16,7 +16,7 @@ var BinModel = vogels.define('example-binary', {
   }
 });
 
-var printFileInfo = function (err, file) {
+const printFileInfo = (err, file) => {
   if (err) {
     console.log('got error', err);
   } else if (file) {
@@ -26,13 +26,13 @@ var printFileInfo = function (err, file) {
   }
 };
 
-vogels.createTables(function (err) {
+vogels.createTables(err => {
   if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }
 
-  fs.readFile(`${__dirname}/basic.js`, function (err, data) {
+  fs.readFile(`${__dirname}/basic.js`, (err, data) => {
     if (err) {
       throw err;
     }

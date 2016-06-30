@@ -1,56 +1,56 @@
 'use strict';
 
-var helper = require('./test-helper');
-var _ = require('lodash');
-var Joi = require('joi');
-var Table = require('../lib/table');
-var Schema = require('../lib/schema');
-var Query = require('../lib//query');
-var Scan = require('../lib//scan');
-var Item = require('../lib/item');
-var realSerializer = require('../lib/serializer');
-var chai = require('chai');
-var expect = chai.expect;
-var sinon = require('sinon');
+const helper = require('./test-helper');
+const _ = require('lodash');
+const Joi = require('joi');
+const Table = require('../lib/table');
+const Schema = require('../lib/schema');
+const Query = require('../lib//query');
+const Scan = require('../lib//scan');
+const Item = require('../lib/item');
+const realSerializer = require('../lib/serializer');
+const chai = require('chai');
+const expect = chai.expect;
+const sinon = require('sinon');
 
 chai.should();
 
-describe('table', function () {
-  var table;
-  var serializer;
-  var docClient;
-  var dynamodb;
-  var logger;
+describe('table', () => {
+  let table;
+  let serializer;
+  let docClient;
+  let dynamodb;
+  let logger;
 
-  beforeEach(function () {
+  beforeEach(() => {
     serializer = helper.mockSerializer();
     docClient = helper.mockDocClient();
     dynamodb = docClient.service;
     logger = helper.testLogger();
   });
 
-  describe('#get', function () {
-    it('should get item by hash key', function (done) {
-      var config = {
+  describe('#get', () => {
+    it('should get item by hash key', done => {
+      const config = {
         hashKey: 'email'
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' }
       };
 
-      var resp = {
+      const resp = {
         Item: { email: 'test@test.com', name: 'test dude' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
 
-      table.get('test@test.com', function (err, account) {
+      table.get('test@test.com', (err, account) => {
         account.should.be.instanceof(Item);
         account.get('email').should.equal('test@test.com');
         account.get('name').should.equal('test dude');
@@ -59,17 +59,17 @@ describe('table', function () {
       });
     });
 
-    it('should get item by hash and range key', function (done) {
-      var config = {
+    it('should get item by hash and range key', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email'
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           name: 'Tim Tester',
@@ -77,13 +77,13 @@ describe('table', function () {
         }
       };
 
-      var resp = {
+      const resp = {
         Item: { email: 'test@test.com', name: 'Tim Tester' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
 
-      table.get('Tim Tester', 'test@test.com', function (err, account) {
+      table.get('Tim Tester', 'test@test.com', (err, account) => {
         account.should.be.instanceof(Item);
         account.get('email').should.equal('test@test.com');
         account.get('name').should.equal('Tim Tester');
@@ -92,28 +92,28 @@ describe('table', function () {
       });
     });
 
-    it('should get item by hash key and options', function (done) {
-      var config = {
+    it('should get item by hash key and options', done => {
+      const config = {
         hashKey: 'email',
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' },
         ConsistentRead: true
       };
 
-      var resp = {
+      const resp = {
         Item: { email: 'test@test.com', name: 'test dude' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
 
-      table.get('test@test.com', { ConsistentRead: true }, function (err, account) {
+      table.get('test@test.com', { ConsistentRead: true }, (err, account) => {
         account.should.be.instanceof(Item);
         account.get('email').should.equal('test@test.com');
         account.get('name').should.equal('test dude');
@@ -122,17 +122,17 @@ describe('table', function () {
       });
     });
 
-    it('should get item by hashkey, range key and options', function (done) {
-      var config = {
+    it('should get item by hashkey, range key and options', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           name: 'Tim Tester',
@@ -141,13 +141,13 @@ describe('table', function () {
         ConsistentRead: true
       };
 
-      var resp = {
+      const resp = {
         Item: { email: 'test@test.com', name: 'Tim Tester' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
 
-      table.get('Tim Tester', 'test@test.com', { ConsistentRead: true }, function (err, account) {
+      table.get('Tim Tester', 'test@test.com', { ConsistentRead: true }, (err, account) => {
         account.should.be.instanceof(Item);
         account.get('email').should.equal('test@test.com');
         account.get('name').should.equal('Tim Tester');
@@ -156,30 +156,30 @@ describe('table', function () {
       });
     });
 
-    it('should get item from dynamic table by hash key', function (done) {
-      var config = {
+    it('should get item from dynamic table by hash key', done => {
+      const config = {
         hashKey: 'email',
         tableName: function () {
           return 'accounts_2014';
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts_2014',
         Key: { email: 'test@test.com' }
       };
 
-      var resp = {
+      const resp = {
         Item: { email: 'test@test.com', name: 'test dude' }
       };
 
       docClient.get.withArgs(request).yields(null, resp);
 
-      table.get('test@test.com', function (err, account) {
+      table.get('test@test.com', (err, account) => {
         account.should.be.instanceof(Item);
         account.get('email').should.equal('test@test.com');
         account.get('name').should.equal('test dude');
@@ -188,18 +188,18 @@ describe('table', function () {
       });
     });
 
-    it('should return error', function (done) {
-      var config = {
+    it('should return error', done => {
+      const config = {
         hashKey: 'email',
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
       docClient.get.yields(new Error('Fail'));
 
-      table.get('test@test.com', function (err, account) {
+      table.get('test@test.com', (err, account) => {
         expect(err).to.exist;
         expect(account).to.not.exist;
         done();
@@ -207,9 +207,9 @@ describe('table', function () {
     });
   });
 
-  describe('#create', function () {
-    it('should create valid item', function (done) {
-      var config = {
+  describe('#create', () => {
+    it('should create valid item', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -218,11 +218,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -233,7 +233,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create(request.Item, function (err, account) {
+      table.create(request.Item, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -244,8 +244,8 @@ describe('table', function () {
       });
     });
 
-    it('should call apply defaults', function (done) {
-      var config = {
+    it('should call apply defaults', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -254,11 +254,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -269,7 +269,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com', age: 23 }, function (err, account) {
+      table.create({ email: 'test@test.com', age: 23 }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -280,8 +280,8 @@ describe('table', function () {
       });
     });
 
-    it('should omit null values', function (done) {
-      var config = {
+    it('should omit null values', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -292,12 +292,12 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var numberSet = sinon.match(function (value) {
-        var s = docClient.createSet([1, 2, 3]);
+      const numberSet = sinon.match(value => {
+        const s = docClient.createSet([1, 2, 3]);
 
         value.type.should.eql('Number');
         value.values.should.eql(s.values);
@@ -305,7 +305,7 @@ describe('table', function () {
         return true;
       }, 'NumberSet');
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -316,8 +316,8 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      var item = { email: 'test@test.com', name: 'Tim Test', age: null, favoriteNumbers: [], luckyNumbers: [1, 2, 3] };
-      table.create(item, function (err, account) {
+      const item = { email: 'test@test.com', name: 'Tim Test', age: null, favoriteNumbers: [], luckyNumbers: [1, 2, 3] };
+      table.create(item, (err, account) => {
         account.should.be.instanceof(Item);
 
         account.get('email').should.equal('test@test.com');
@@ -330,8 +330,8 @@ describe('table', function () {
       });
     });
 
-    it('should omit empty values', function (done) {
-      var config = {
+    it('should omit empty values', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -340,11 +340,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -354,7 +354,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com', name: '', age: 2 }, function (err, account) {
+      table.create({ email: 'test@test.com', name: '', age: 2 }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -365,8 +365,8 @@ describe('table', function () {
       });
     });
 
-    it('should create item with createdAt timestamp', function (done) {
-      var config = {
+    it('should create item with createdAt timestamp', done => {
+      const config = {
         hashKey: 'email',
         timestamps: true,
         schema: {
@@ -374,11 +374,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -388,7 +388,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com' }, function (err, account) {
+      table.create({ email: 'test@test.com' }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -398,8 +398,8 @@ describe('table', function () {
       });
     });
 
-    it('should create item with custom createdAt attribute name', function (done) {
-      var config = {
+    it('should create item with custom createdAt attribute name', done => {
+      const config = {
         hashKey: 'email',
         timestamps: true,
         createdAt: 'created',
@@ -408,11 +408,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -422,7 +422,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com' }, function (err, account) {
+      table.create({ email: 'test@test.com' }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -433,8 +433,8 @@ describe('table', function () {
     });
 
 
-    it('should create item without createdAt param', function (done) {
-      var config = {
+    it('should create item without createdAt param', done => {
+      const config = {
         hashKey: 'email',
         timestamps: true,
         createdAt: false,
@@ -443,11 +443,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com'
@@ -456,7 +456,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com' }, function (err, account) {
+      table.create({ email: 'test@test.com' }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -466,8 +466,8 @@ describe('table', function () {
       });
     });
 
-    it('should create item with expected option', function (done) {
-      var config = {
+    it('should create item with expected option', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -475,11 +475,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -491,7 +491,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com' }, { expected: { name: 'Foo Bar' } }, function (err, account) {
+      table.create({ email: 'test@test.com' }, { expected: { name: 'Foo Bar' } }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -500,8 +500,8 @@ describe('table', function () {
       });
     });
 
-    it('should create item with no callback', function (done) {
-      var config = {
+    it('should create item with no callback', done => {
+      const config = {
         hashKey: 'email',
         timestamps: true,
         schema: {
@@ -509,11 +509,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -528,8 +528,8 @@ describe('table', function () {
       return done();
     });
 
-    it('should return validation error', function (done) {
-      var config = {
+    it('should return validation error', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -537,11 +537,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      table.create({ email: 'test@test.com', name: [1, 2, 3] }, function (err, account) {
+      table.create({ email: 'test@test.com', name: [1, 2, 3] }, (err, account) => {
         expect(err).to.exist;
         expect(err).to.match(/ValidationError/);
         expect(account).to.not.exist;
@@ -551,8 +551,8 @@ describe('table', function () {
       });
     });
 
-    it('should create item with condition expression on hashkey when overwrite flag is false', function (done) {
-      var config = {
+    it('should create item with condition expression on hashkey when overwrite flag is false', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -560,11 +560,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -577,7 +577,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: false }, function (err, account) {
+      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: false }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -586,8 +586,8 @@ describe('table', function () {
       });
     });
 
-    it('should create item with condition expression on hash and range key when overwrite flag is false', function (done) {
-      var config = {
+    it('should create item with condition expression on hash and range key when overwrite flag is false', done => {
+      const config = {
         hashKey: 'email',
         rangeKey: 'name',
         schema: {
@@ -596,11 +596,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -613,7 +613,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: false }, function (err, account) {
+      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: false }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -622,8 +622,8 @@ describe('table', function () {
       });
     });
 
-    it('should create item without condition expression when overwrite flag is true', function (done) {
-      var config = {
+    it('should create item without condition expression when overwrite flag is true', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -631,11 +631,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Item: {
           email: 'test@test.com',
@@ -645,7 +645,7 @@ describe('table', function () {
 
       docClient.put.withArgs(request).yields(null, {});
 
-      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: true }, function (err, account) {
+      table.create({ email: 'test@test.com', name: 'Bob Tester' }, { overwrite: true }, (err, account) => {
         expect(err).to.not.exist;
         account.should.be.instanceof(Item);
 
@@ -655,9 +655,9 @@ describe('table', function () {
     });
   });
 
-  describe('#update', function () {
-    it('should update valid item', function (done) {
-      var config = {
+  describe('#update', () => {
+    it('should update valid item', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -666,11 +666,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_NEW',
@@ -679,7 +679,7 @@ describe('table', function () {
         ExpressionAttributeNames: { '#name': 'name', '#age': 'age' }
       };
 
-      var returnedAttributes = {
+      const returnedAttributes = {
         email: 'test@test.com',
         name: 'Tim Test',
         age: 23,
@@ -688,8 +688,8 @@ describe('table', function () {
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
-      table.update(item, function (err, account) {
+      const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+      table.update(item, (err, account) => {
         account.should.be.instanceof(Item);
 
         account.get('email').should.equal('test@test.com');
@@ -701,8 +701,8 @@ describe('table', function () {
       });
     });
 
-    it('should accept falsy key and range values', function (done) {
-      var config = {
+    it('should accept falsy key and range values', done => {
+      const config = {
         hashKey: 'userId',
         rangeKey: 'timeOffset',
         schema: {
@@ -711,22 +711,22 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('users', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'users',
         Key: { userId: 0, timeOffset: 0 },
         ReturnValues: 'ALL_NEW'
       };
 
-      var returnedAttributes = { userId: 0, timeOffset: 0 };
+      const returnedAttributes = { userId: 0, timeOffset: 0 };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      var item = { userId: 0, timeOffset: 0 };
-      table.update(item, function (err, user) {
+      const item = { userId: 0, timeOffset: 0 };
+      table.update(item, (err, user) => {
         user.should.be.instanceof(Item);
 
         user.get('userId').should.equal(0);
@@ -736,8 +736,8 @@ describe('table', function () {
       });
     });
 
-    it('should update with passed in options', function (done) {
-      var config = {
+    it('should update with passed in options', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -746,11 +746,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_OLD',
@@ -760,18 +760,18 @@ describe('table', function () {
         ConditionExpression: '(#name = :name_2)'
       };
 
-      var returnedAttributes = {
+      const returnedAttributes = {
         email: 'test@test.com',
         name: 'Tim Test',
         age: 23,
         scores: [97, 86]
       };
 
-      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+      const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      table.update(item, { ReturnValues: 'ALL_OLD', expected: { name: 'Foo Bar' } }, function (err, account) {
+      table.update(item, { ReturnValues: 'ALL_OLD', expected: { name: 'Foo Bar' } }, (err, account) => {
         account.should.be.instanceof(Item);
 
         account.get('email').should.equal('test@test.com');
@@ -783,8 +783,8 @@ describe('table', function () {
       });
     });
 
-    it('should update merge update expressions when passed in as options', function (done) {
-      var config = {
+    it('should update merge update expressions when passed in as options', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -793,11 +793,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_NEW',
@@ -806,7 +806,7 @@ describe('table', function () {
         ExpressionAttributeNames: { '#name': 'name', '#age': 'age', '#color': 'color' }
       };
 
-      var returnedAttributes = {
+      const returnedAttributes = {
         email: 'test@test.com',
         name: 'Tim Test',
         age: 23,
@@ -814,17 +814,17 @@ describe('table', function () {
         color: 'red'
       };
 
-      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+      const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      var options = {
+      const options = {
         UpdateExpression: 'ADD #color :c',
         ExpressionAttributeValues: { ':c': 'red' },
         ExpressionAttributeNames: { '#color': 'color' }
       };
 
-      table.update(item, options, function (err, account) {
+      table.update(item, options, (err, account) => {
         account.should.be.instanceof(Item);
 
         account.get('email').should.equal('test@test.com');
@@ -837,8 +837,8 @@ describe('table', function () {
       });
     });
 
-    it('should update valid item without a callback', function (done) {
-      var config = {
+    it('should update valid item without a callback', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -847,11 +847,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_NEW',
@@ -860,7 +860,7 @@ describe('table', function () {
         ExpressionAttributeNames: { '#name': 'name', '#age': 'age' }
       };
 
-      var returnedAttributes = {
+      const returnedAttributes = {
         email: 'test@test.com',
         name: 'Tim Test',
         age: 23,
@@ -869,15 +869,15 @@ describe('table', function () {
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+      const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
       table.update(item);
 
       docClient.update.calledWith(request);
       return done();
     });
 
-    it('should return error', function (done) {
-      var config = {
+    it('should return error', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -886,15 +886,15 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
       docClient.update.yields(new Error('Fail'));
 
-      var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+      const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
 
-      table.update(item, function (err, account) {
+      table.update(item, (err, account) => {
         expect(err).to.exist;
         expect(account).to.not.exist;
         done();
@@ -902,9 +902,9 @@ describe('table', function () {
     });
   });
 
-  describe('#query', function () {
-    it('should return query object', function () {
-      var config = {
+  describe('#query', () => {
+    it('should return query object', () => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -913,7 +913,7 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
@@ -921,9 +921,9 @@ describe('table', function () {
     });
   });
 
-  describe('#scan', function () {
-    it('should return scan object', function () {
-      var config = {
+  describe('#scan', () => {
+    it('should return scan object', () => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -932,7 +932,7 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
@@ -940,9 +940,9 @@ describe('table', function () {
     });
   });
 
-  describe('#destroy', function () {
-    it('should destroy valid item', function (done) {
-      var config = {
+  describe('#destroy', () => {
+    it('should destroy valid item', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           name: Joi.string(),
@@ -951,11 +951,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           email: 'test@test.com'
@@ -966,7 +966,7 @@ describe('table', function () {
 
       serializer.buildKey.returns(request.Key);
 
-      table.destroy('test@test.com', function () {
+      table.destroy('test@test.com', () => {
         serializer.buildKey.calledWith('test@test.com', null, s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -974,8 +974,8 @@ describe('table', function () {
       });
     });
 
-    it('should destroy valid item with falsy hash and range keys', function (done) {
-      var config = {
+    it('should destroy valid item with falsy hash and range keys', done => {
+      const config = {
         hashKey: 'userId',
         rangeKey: 'timeOffset',
         schema: {
@@ -984,11 +984,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('users', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'users',
         Key: {
           userId: 0,
@@ -1000,7 +1000,7 @@ describe('table', function () {
 
       serializer.buildKey.returns(request.Key);
 
-      table.destroy({ userId: 0, timeOffset: 0 }, function () {
+      table.destroy({ userId: 0, timeOffset: 0 }, () => {
         serializer.buildKey.calledWith(0, 0, s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -1008,8 +1008,8 @@ describe('table', function () {
       });
     });
 
-    it('should take optional params', function (done) {
-      var config = {
+    it('should take optional params', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           name: Joi.string(),
@@ -1018,11 +1018,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           email: { S: 'test@test.com' }
@@ -1034,7 +1034,7 @@ describe('table', function () {
 
       serializer.buildKey.returns(request.Key);
 
-      table.destroy('test@test.com', { ReturnValues: 'ALL_OLD' }, function () {
+      table.destroy('test@test.com', { ReturnValues: 'ALL_OLD' }, () => {
         serializer.buildKey.calledWith('test@test.com', null, s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -1042,8 +1042,8 @@ describe('table', function () {
       });
     });
 
-    it('should parse and return attributes', function (done) {
-      var config = {
+    it('should parse and return attributes', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           name: Joi.string(),
@@ -1052,17 +1052,17 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' },
         ReturnValues: 'ALL_OLD'
       };
 
-      var returnedAttributes = {
+      const returnedAttributes = {
         email: 'test@test.com',
         name: 'Foo Bar'
       };
@@ -1074,7 +1074,7 @@ describe('table', function () {
         { email: 'test@test.com', name: 'Foo Bar'
       });
 
-      table.destroy('test@test.com', { ReturnValues: 'ALL_OLD' }, function (err, item) {
+      table.destroy('test@test.com', { ReturnValues: 'ALL_OLD' }, (err, item) => {
         serializer.buildKey.calledWith('test@test.com', null, s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -1084,8 +1084,8 @@ describe('table', function () {
       });
     });
 
-    it('should accept hash and range key', function (done) {
-      var config = {
+    it('should accept hash and range key', done => {
+      const config = {
         hashKey: 'email',
         rangeKey: 'name',
         schema: {
@@ -1095,11 +1095,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           email: 'test@test.com',
@@ -1107,7 +1107,7 @@ describe('table', function () {
         }
       };
 
-      var returnedAttributes = {
+      const returnedAttributes = {
         email: 'test@test.com',
         name: 'Foo Bar'
       };
@@ -1119,7 +1119,7 @@ describe('table', function () {
         { email: 'test@test.com', name: 'Foo Bar'
       });
 
-      table.destroy('test@test.com', 'Foo Bar', function (err, item) {
+      table.destroy('test@test.com', 'Foo Bar', (err, item) => {
         serializer.buildKey.calledWith('test@test.com', 'Foo Bar', s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -1129,8 +1129,8 @@ describe('table', function () {
       });
     });
 
-    it('should accept hashkey rangekey and options', function (done) {
-      var config = {
+    it('should accept hashkey rangekey and options', done => {
+      const config = {
         hashKey: 'email',
         rangeKey: 'name',
         schema: {
@@ -1140,11 +1140,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           email: 'test@test.com',
@@ -1153,7 +1153,7 @@ describe('table', function () {
         ReturnValues: 'ALL_OLD'
       };
 
-      var returnedAttributes = {
+      const returnedAttributes = {
         email: 'test@test.com',
         name: 'Foo Bar'
       };
@@ -1165,7 +1165,7 @@ describe('table', function () {
         { email: 'test@test.com', name: 'Foo Bar'
       });
 
-      table.destroy('test@test.com', 'Foo Bar', { ReturnValues: 'ALL_OLD' }, function (err, item) {
+      table.destroy('test@test.com', 'Foo Bar', { ReturnValues: 'ALL_OLD' }, (err, item) => {
         serializer.buildKey.calledWith('test@test.com', 'Foo Bar', s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -1175,8 +1175,8 @@ describe('table', function () {
       });
     });
 
-    it('should serialize expected option', function (done) {
-      var config = {
+    it('should serialize expected option', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           name: Joi.string(),
@@ -1185,11 +1185,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           email: 'test@test.com'
@@ -1204,7 +1204,7 @@ describe('table', function () {
       serializer.serializeItem.withArgs(s, { name: 'Foo Bar' }, { expected: true }).returns(request.Expected);
       serializer.buildKey.returns(request.Key);
 
-      table.destroy('test@test.com', { expected: { name: 'Foo Bar' } }, function () {
+      table.destroy('test@test.com', { expected: { name: 'Foo Bar' } }, () => {
         serializer.buildKey.calledWith('test@test.com', null, s).should.be.true;
         docClient.delete.calledWith(request).should.be.true;
 
@@ -1212,8 +1212,8 @@ describe('table', function () {
       });
     });
 
-    it('should call delete item without callback', function (done) {
-      var config = {
+    it('should call delete item without callback', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           name: Joi.string(),
@@ -1222,11 +1222,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           email: 'test@test.com'
@@ -1241,8 +1241,8 @@ describe('table', function () {
       return done();
     });
 
-    it('should call delete item with hash key, options and no callback', function (done) {
-      var config = {
+    it('should call delete item with hash key, options and no callback', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           name: Joi.string(),
@@ -1251,11 +1251,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         Key: {
           email: 'test@test.com'
@@ -1274,9 +1274,9 @@ describe('table', function () {
     });
   });
 
-  describe('#createTable', function () {
-    it('should create table with hash key', function (done) {
-      var config = {
+  describe('#createTable', () => {
+    it('should create table with hash key', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           name: Joi.string(),
@@ -1284,11 +1284,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'email', AttributeType: 'S' }
@@ -1301,15 +1301,15 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should create table with range key', function (done) {
-      var config = {
+    it('should create table with range key', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -1318,11 +1318,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1337,15 +1337,15 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should create table with secondary index', function (done) {
-      var config = {
+    it('should create table with secondary index', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         indexes: [
@@ -1358,11 +1358,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1390,15 +1390,15 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should create table with global secondary index', function (done) {
-      var config = {
+    it('should create table with global secondary index', done => {
+      const config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
         indexes: [
@@ -1411,11 +1411,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1444,15 +1444,15 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should create table with global secondary index', function (done) {
-      var config = {
+    it('should create table with global secondary index', done => {
+      const config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
         indexes: [{
@@ -1471,11 +1471,11 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1505,7 +1505,7 @@ describe('table', function () {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, function (err) {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();
@@ -1513,9 +1513,9 @@ describe('table', function () {
     });
   });
 
-  describe('#describeTable', function () {
-    it('should make describe table request', function (done) {
-      var config = {
+  describe('#describeTable', () => {
+    it('should make describe table request', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -1523,17 +1523,17 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      var request = {
+      const request = {
         TableName: 'accounts'
       };
 
       dynamodb.describeTable.yields(null, {});
 
-      table.describeTable(function (err) {
+      table.describeTable(err => {
         expect(err).to.be.null;
         dynamodb.describeTable.calledWith(request).should.be.true;
         done();
@@ -1541,9 +1541,9 @@ describe('table', function () {
     });
   });
 
-  describe('#updateTable', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#updateTable', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -1551,13 +1551,13 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
     });
 
-    it('should make update table request', function (done) {
-      var request = {
+    it('should make update table request', done => {
+      const request = {
         TableName: 'accounts',
         ProvisionedThroughput: { ReadCapacityUnits: 4, WriteCapacityUnits: 2 }
       };
@@ -1565,15 +1565,15 @@ describe('table', function () {
       dynamodb.describeTable.yields(null, {});
       dynamodb.updateTable.yields(null, {});
 
-      table.updateTable({ readCapacity: 4, writeCapacity: 2 }, function (err) {
+      table.updateTable({ readCapacity: 4, writeCapacity: 2 }, err => {
         expect(err).to.be.null;
         dynamodb.updateTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should make update table request without callback', function (done) {
-      var request = {
+    it('should make update table request without callback', done => {
+      const request = {
         TableName: 'accounts',
         ProvisionedThroughput: { ReadCapacityUnits: 2, WriteCapacityUnits: 1 }
       };
@@ -1586,9 +1586,9 @@ describe('table', function () {
     });
   });
 
-  describe('#deleteTable', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#deleteTable', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -1596,27 +1596,27 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
     });
 
-    it('should make delete table request', function (done) {
-      var request = {
+    it('should make delete table request', done => {
+      const request = {
         TableName: 'accounts'
       };
 
       dynamodb.deleteTable.yields(null, {});
 
-      table.deleteTable(function (err) {
+      table.deleteTable(err => {
         expect(err).to.be.null;
         dynamodb.deleteTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should make delete table request without callback', function (done) {
-      var request = {
+    it('should make delete table request without callback', done => {
+      const request = {
         TableName: 'accounts',
       };
 
@@ -1628,9 +1628,9 @@ describe('table', function () {
     });
   });
 
-  describe('#tableName', function () {
-    it('should return given name', function () {
-      var config = {
+  describe('#tableName', () => {
+    it('should return given name', () => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -1638,15 +1638,15 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
       table.tableName().should.eql('accounts');
     });
 
-    it('should return table name set on schema', function () {
-      var config = {
+    it('should return table name set on schema', () => {
+      const config = {
         hashKey: 'email',
         tableName: 'accounts-2014-03',
         schema: {
@@ -1655,22 +1655,20 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
       table.tableName().should.eql('accounts-2014-03');
     });
 
-    it('should return table name returned from function on schema', function () {
-      var d = new Date();
-      var dateString = [d.getFullYear(), d.getMonth() + 1].join('_');
+    it('should return table name returned from function on schema', () => {
+      const d = new Date();
+      const dateString = [d.getFullYear(), d.getMonth() + 1].join('_');
 
-      var nameFunc = function () {
-        return `accounts_${dateString}`;
-      };
+      const nameFunc = () => `accounts_${dateString}`;
 
-      var config = {
+      const config = {
         hashKey: 'email',
         tableName: nameFunc,
         schema: {
@@ -1679,7 +1677,7 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
@@ -1687,10 +1685,10 @@ describe('table', function () {
     });
   });
 
-  describe('hooks', function () {
-    describe('#create', function () {
-      it('should call before hooks', function (done) {
-        var config = {
+  describe('hooks', () => {
+    describe('#create', () => {
+      it('should call before hooks', done => {
+        const config = {
           hashKey: 'email',
           schema: {
             email: Joi.string(),
@@ -1699,30 +1697,30 @@ describe('table', function () {
           }
         };
 
-        var s = new Schema(config);
+        const s = new Schema(config);
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+        const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.put.yields(null, {});
 
         serializer.serializeItem.withArgs(s, { email: 'test@test.com', name: 'Tommy', age: 23 }).returns({});
 
-        table.before('create', function (data, next) {
+        table.before('create', (data, next) => {
           expect(data).to.exist;
           data.name = 'Tommy';
 
           return next(null, data);
         });
 
-        table.before('create', function (data, next) {
+        table.before('create', (data, next) => {
           expect(data).to.exist;
           data.age = '25';
 
           return next(null, data);
         });
 
-        table.create(item, function (err, item) {
+        table.create(item, (err, item) => {
           expect(err).to.not.exist;
           item.get('name').should.equal('Tommy');
           item.get('age').should.equal('25');
@@ -1731,8 +1729,8 @@ describe('table', function () {
         });
       });
 
-      it('should return error when before hook returns error', function (done) {
-        var config = {
+      it('should return error when before hook returns error', done => {
+        const config = {
           hashKey: 'email',
           schema: {
             email: Joi.string(),
@@ -1741,15 +1739,13 @@ describe('table', function () {
           }
         };
 
-        var s = new Schema(config);
+        const s = new Schema(config);
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        table.before('create', function (data, next) {
-          return next(new Error('fail'));
-        });
+        table.before('create', (data, next) => next(new Error('fail')));
 
-        table.create({ email: 'foo@bar.com' }, function (err, item) {
+        table.create({ email: 'foo@bar.com' }, (err, item) => {
           expect(err).to.exist;
           expect(item).to.not.exist;
 
@@ -1757,8 +1753,8 @@ describe('table', function () {
         });
       });
 
-      it('should call after hook', function (done) {
-        var config = {
+      it('should call after hook', done => {
+        const config = {
           hashKey: 'email',
           schema: {
             email: Joi.string(),
@@ -1767,28 +1763,28 @@ describe('table', function () {
           }
         };
 
-        var s = new Schema(config);
+        const s = new Schema(config);
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+        const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.put.yields(null, {});
 
         serializer.serializeItem.withArgs(s, item).returns({});
 
-        table.after('create', function (data) {
+        table.after('create', data => {
           expect(data).to.exist;
 
           return done();
         });
 
-        table.create(item, function () {});
+        table.create(item, () => {});
       });
     });
 
-    describe('#update', function () {
-      it('should call before hook', function (done) {
-        var config = {
+    describe('#update', () => {
+      it('should call before hook', done => {
+        const config = {
           hashKey: 'email',
           schema: {
             email: Joi.string(),
@@ -1797,39 +1793,39 @@ describe('table', function () {
           }
         };
 
-        var s = new Schema(config);
+        const s = new Schema(config);
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+        const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.update.yields(null, {});
 
         serializer.serializeItem.withArgs(s, item).returns({});
 
         serializer.buildKey.returns({ email: { S: 'test@test.com' } });
-        var modified = { email: 'test@test.com', name: 'Tim Test', age: 44 };
+        const modified = { email: 'test@test.com', name: 'Tim Test', age: 44 };
         serializer.serializeItemForUpdate.withArgs(s, 'PUT', modified).returns({});
 
         serializer.deserializeItem.returns(modified);
         docClient.update.yields(null, {});
 
-        var called = false;
-        table.before('update', function (data, next) {
-          var attrs = _.merge({}, data, { age: 44 });
+        let called = false;
+        table.before('update', (data, next) => {
+          const attrs = _.merge({}, data, { age: 44 });
           called = true;
           return next(null, attrs);
         });
 
-        table.after('update', function () {
+        table.after('update', () => {
           expect(called).to.be.true;
           return done();
         });
 
-        table.update(item, function () {});
+        table.update(item, () => {});
       });
 
-      it('should return error when before hook returns error', function (done) {
-        var config = {
+      it('should return error when before hook returns error', done => {
+        const config = {
           hashKey: 'email',
           schema: {
             email: Joi.string(),
@@ -1838,15 +1834,13 @@ describe('table', function () {
           }
         };
 
-        var s = new Schema(config);
+        const s = new Schema(config);
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        table.before('update', function (data, next) {
-          return next(new Error('fail'));
-        });
+        table.before('update', (data, next) => next(new Error('fail')));
 
-        table.update({}, function (err) {
+        table.update({}, err => {
           expect(err).to.exist;
           err.message.should.equal('fail');
 
@@ -1854,8 +1848,8 @@ describe('table', function () {
         });
       });
 
-      it('should call after hook', function (done) {
-        var config = {
+      it('should call after hook', done => {
+        const config = {
           hashKey: 'email',
           schema: {
             email: Joi.string(),
@@ -1864,11 +1858,11 @@ describe('table', function () {
           }
         };
 
-        var s = new Schema(config);
+        const s = new Schema(config);
 
         table = new Table('accounts', s, serializer, docClient, logger);
 
-        var item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+        const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.update.yields(null, {});
 
         serializer.serializeItem.withArgs(s, item).returns({});
@@ -1879,16 +1873,14 @@ describe('table', function () {
         serializer.deserializeItem.returns(item);
         docClient.update.yields(null, {});
 
-        table.after('update', function () {
-          return done();
-        });
+        table.after('update', () => done());
 
-        table.update(item, function () {});
+        table.update(item, () => {});
       });
     });
 
-    it('#destroy should call after hook', function (done) {
-      var config = {
+    it('#destroy should call after hook', done => {
+      const config = {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
@@ -1897,18 +1889,16 @@ describe('table', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
       docClient.delete.yields(null, {});
       serializer.buildKey.returns({});
 
-      table.after('destroy', function () {
-        return done();
-      });
+      table.after('destroy', () => done());
 
-      table.destroy('test@test.com', function () {});
+      table.destroy('test@test.com', () => {});
     });
   });
 });

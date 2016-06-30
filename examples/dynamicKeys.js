@@ -1,15 +1,15 @@
 'use strict';
 
-var vogels = require('../index');
-var AWS = vogels.AWS;
-var Joi = require('joi');
-var async = require('async');
-var util = require('util');
-var _ = require('lodash');
+const vogels = require('../index');
+const AWS = vogels.AWS;
+const Joi = require('joi');
+const async = require('async');
+const util = require('util');
+const _ = require('lodash');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var DynamicModel = vogels.define('example-dynamic-key', {
+const DynamicModel = vogels.define('example-dynamic-key', {
   hashKey: 'id',
   timestamps: true,
   schema: Joi.object().keys({
@@ -17,7 +17,7 @@ var DynamicModel = vogels.define('example-dynamic-key', {
   }).unknown()
 });
 
-var printResults = function (err, resp) {
+const printResults = (err, resp) => {
   console.log('----------------------------------------------------------------------');
   if (err) {
     console.log('Error running scan', err);
@@ -36,14 +36,14 @@ var printResults = function (err, resp) {
 
 vogels.createTables({
   'example-Account': { readCapacity: 1, writeCapacity: 10 },
-}, function (err) {
+}, err => {
   if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }
 
-  async.times(25, function (n, next) {
-    var data = { id: `Model ${n}` };
+  async.times(25, (n, next) => {
+    const data = { id: `Model ${n}` };
 
     if (n % 3 === 0) {
       data.name = 'Dynamic Model the 3rd';
@@ -56,7 +56,7 @@ vogels.createTables({
     }
 
     DynamicModel.create(data, next);
-  }, function () {
+  }, () => {
     DynamicModel.scan().loadAll().exec(printResults);
   });
 });

@@ -1,12 +1,12 @@
 'use strict';
 
-var vogels = require('../index');
-var Joi = require('joi');
-var AWS = vogels.AWS;
+const vogels = require('../index');
+const Joi = require('joi');
+const AWS = vogels.AWS;
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('example-model-methods-Account', {
+const Account = vogels.define('example-model-methods-Account', {
   hashKey: 'email',
   timestamps: true,
   schema: {
@@ -17,16 +17,16 @@ var Account = vogels.define('example-model-methods-Account', {
 });
 
 Account.prototype.sayHello = function () {
-  console.log('Hello my name is ' + this.get('name') + ' I\'m ' + this.get('age') + ' years old');
+  console.log(`Hello my name is ${this.get('name')} I\'m ${this.get('age')} years old`);
 };
 
-Account.findByAgeRange = function (low, high) {
+Account.findByAgeRange = (low, high) => {
   Account.scan()
   .where('age').gte(low)
   .where('age').lte(high)
   .loadAll()
-  .exec(function (err, data) {
-    data.Items.forEach(function (account) {
+  .exec((err, data) => {
+    data.Items.forEach(account => {
       account.sayHello();
     });
   });

@@ -1,15 +1,15 @@
 'use strict';
 
-var vogels = require('../index');
-var util = require('util');
-var _ = require('lodash');
-var async = require('async');
-var Joi = require('joi');
-var AWS = vogels.AWS;
+const vogels = require('../index');
+const util = require('util');
+const _ = require('lodash');
+const async = require('async');
+const Joi = require('joi');
+const AWS = vogels.AWS;
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('example-query', {
+const Account = vogels.define('example-query', {
   hashKey: 'name',
   rangeKey: 'email',
   timestamps: true,
@@ -24,7 +24,7 @@ var Account = vogels.define('example-query', {
   ]
 });
 
-var printResults = function (err, resp) {
+const printResults = (err, resp) => {
   console.log('----------------------------------------------------------------------');
   if (err) {
     console.log('Error running query', err);
@@ -41,16 +41,16 @@ var printResults = function (err, resp) {
   console.log('----------------------------------------------------------------------');
 };
 
-var loadSeedData = function (callback) {
+const loadSeedData = callback => {
   callback = callback || _.noop;
 
-  async.times(25, function (n, next) {
-    var prefix = n % 5 === 0 ? 'foo' : 'test';
-    Account.create({ email: prefix + n + '@example.com', name: 'Test ' + n % 3, age: n }, next);
+  async.times(25, (n, next) => {
+    const prefix = n % 5 === 0 ? 'foo' : 'test';
+    Account.create({ email: `${prefix}${n}@example.com`, name: `Test ${n % 3}`, age: n }, next);
   }, callback);
 };
 
-var runQueries = function () {
+const runQueries = () => {
   // Basic query against hash key
   Account.query('Test 0').exec(printResults);
 
@@ -81,7 +81,7 @@ var runQueries = function () {
 async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
-], function (err) {
+], err => {
   if (err) {
     console.log('error', err);
     process.exit(1);

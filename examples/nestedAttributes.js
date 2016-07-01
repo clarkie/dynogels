@@ -1,15 +1,15 @@
 'use strict';
 
-var vogels = require('../index');
-var util = require('util');
-var _ = require('lodash');
-var async = require('async');
-var Joi = require('joi');
-var AWS = vogels.AWS;
+const vogels = require('../index');
+const util = require('util');
+const _ = require('lodash');
+const async = require('async');
+const Joi = require('joi');
+const AWS = vogels.AWS;
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Movie = vogels.define('example-nested-attribute', {
+const Movie = vogels.define('example-nested-attribute', {
   hashKey: 'title',
   timestamps: true,
   schema: {
@@ -29,7 +29,7 @@ var Movie = vogels.define('example-nested-attribute', {
   }
 });
 
-var printResults = function (err, data) {
+const printResults = (err, data) => {
   console.log('----------------------------------------------------------------------');
   if (err) {
     console.log('Error - ', err);
@@ -39,16 +39,16 @@ var printResults = function (err, data) {
   console.log('----------------------------------------------------------------------');
 };
 
-var loadSeedData = function (callback) {
+const loadSeedData = callback => {
   callback = callback || _.noop;
 
-  async.times(10, function (n, next) {
-    var director = { firstName: 'Steven', lastName: 'Spielberg the ' + n, titles: ['Producer', 'Writer', 'Director'] };
-    var actors = [
+  async.times(10, (n, next) => {
+    const director = { firstName: 'Steven', lastName: `Spielberg the ${n}`, titles: ['Producer', 'Writer', 'Director'] };
+    const actors = [
       { firstName: 'Tom', lastName: 'Hanks', titles: ['Producer', 'Actor', 'Soundtrack'] }
     ];
 
-    var tags = ['tag ' + n];
+    const tags = [`tag ${n}`];
 
     if (n % 3 === 0) {
       actors.push({ firstName: 'Rex', lastName: 'Ryan', titles: ['Actor', 'Head Coach'] });
@@ -60,11 +60,11 @@ var loadSeedData = function (callback) {
       tags.push('Comedy');
     }
 
-    Movie.create({ title: 'Movie ' + n, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
+    Movie.create({ title: `Movie ${n}`, releaseYear: 2001 + n, actors: actors, director: director, tags: tags }, next);
   }, callback);
 };
 
-var runExample = function () {
+const runExample = () => {
   Movie.create({
     title: 'Star Wars: Episode IV - A New Hope',
     releaseYear: 1977,
@@ -79,7 +79,7 @@ var runExample = function () {
     tags: ['Action', 'Adventure']
   }, printResults);
 
-  var params = {};
+  const params = {};
   params.UpdateExpression = 'SET #year = #year + :inc, #dir.titles = list_append(#dir.titles, :title), #act[0].firstName = :firstName ADD tags :tag';
   params.ConditionExpression = '#year = :current';
   params.ExpressionAttributeNames = {
@@ -101,7 +101,7 @@ var runExample = function () {
 async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
-], function (err) {
+], err => {
   if (err) {
     console.log('error', err);
     process.exit(1);

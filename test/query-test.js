@@ -1,22 +1,22 @@
 'use strict';
 
-var helper = require('./test-helper');
-var Schema = require('../lib/schema');
-var Query = require('../lib//query');
-var Serializer = require('../lib/serializer');
-var Table = require('../lib/table');
-var chai = require('chai');
-var expect = chai.expect;
-var assert = require('assert');
-var Joi = require('joi');
+const helper = require('./test-helper');
+const Schema = require('../lib/schema');
+const Query = require('../lib//query');
+const Serializer = require('../lib/serializer');
+const Table = require('../lib/table');
+const chai = require('chai');
+const expect = chai.expect;
+const assert = require('assert');
+const Joi = require('joi');
 
 chai.should();
 
-describe('Query', function () {
-  var serializer;
-  var table;
+describe('Query', () => {
+  let serializer;
+  let table;
 
-  beforeEach(function () {
+  beforeEach(() => {
     serializer = helper.mockSerializer();
 
     table = helper.mockTable();
@@ -25,9 +25,9 @@ describe('Query', function () {
     table.log = helper.testLogger();
   });
 
-  describe('#exec', function () {
-    it('should run query against table', function (done) {
-      var config = {
+  describe('#exec', () => {
+    it('should run query against table', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -41,14 +41,14 @@ describe('Query', function () {
       table.runQuery.yields(null, {});
       serializer.serializeItem.returns({ name: { S: 'tim' } });
 
-      new Query('tim', table, serializer).exec(function (err, results) {
+      new Query('tim', table, serializer).exec((err, results) => {
         results.should.eql({ Items: [], Count: 0 });
         done();
       });
     });
 
-    it('should return error', function (done) {
-      var config = {
+    it('should return error', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -57,20 +57,20 @@ describe('Query', function () {
         }
       };
 
-      var s = new Schema(config);
-      var t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
+      const s = new Schema(config);
+      const t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
 
       t.docClient.query.yields(new Error('Fail'));
 
-      new Query('tim', t, Serializer).exec(function (err, results) {
+      new Query('tim', t, Serializer).exec((err, results) => {
         expect(err).to.exist;
         expect(results).to.not.exist;
         done();
       });
     });
 
-    it('should stream error', function (done) {
-      var config = {
+    it('should stream error', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -79,26 +79,26 @@ describe('Query', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
-      var t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
+      const t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
 
       t.docClient.query.yields(new Error('Fail'));
 
-      var stream = new Query('tim', t, Serializer).exec();
+      const stream = new Query('tim', t, Serializer).exec();
 
-      stream.on('error', function (err) {
+      stream.on('error', err => {
         expect(err).to.exist;
         return done();
       });
 
-      stream.on('readable', function () {
+      stream.on('readable', () => {
         assert(false, 'readable should not be called');
       });
     });
 
-    it('should stream data after handling retryable error', function (done) {
-      var config = {
+    it('should stream data after handling retryable error', done => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -107,40 +107,40 @@ describe('Query', function () {
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
-      var t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
+      const t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
 
-      var err = new Error('RetryableException');
+      const err = new Error('RetryableException');
       err.retryable = true;
 
       t.docClient.query
         .onCall(0).yields(err)
         .onCall(1).yields(null, { Items: [{ name: 'Tim Tester', email: 'test@test.com' }] });
 
-      var stream = new Query('tim', t, Serializer).exec();
+      const stream = new Query('tim', t, Serializer).exec();
 
-      var called = false;
+      let called = false;
 
-      stream.on('readable', function () {
+      stream.on('readable', () => {
         called = true;
 
-        var data = stream.read();
+        const data = stream.read();
         if (data) {
           expect(data.Items).to.have.length.above(0);
         }
       });
 
-      stream.on('end', function () {
+      stream.on('end', () => {
         expect(called).to.be.true;
         return done();
       });
     });
   });
 
-  describe('#limit', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#limit', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -152,23 +152,23 @@ describe('Query', function () {
       table.schema = new Schema(config);
     });
 
-    it('should set the limit', function () {
-      var query = new Query('tim', table, serializer).limit(10);
+    it('should set the limit', () => {
+      const query = new Query('tim', table, serializer).limit(10);
       query.request.Limit.should.equal(10);
     });
 
-    it('should throw when limit is zero', function () {
-      var query = new Query('tim', table, serializer);
+    it('should throw when limit is zero', () => {
+      const query = new Query('tim', table, serializer);
 
-      expect(function () {
+      expect(() => {
         query.limit(0);
       }).to.throw('Limit must be greater than 0');
     });
   });
 
-  describe('#filterExpression', function () {
-    it('should set filter expression', function () {
-      var config = {
+  describe('#filterExpression', () => {
+    it('should set filter expression', () => {
+      const config = {
         hashKey: 'name',
         schema: {
           name: Joi.string(),
@@ -177,15 +177,15 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).filterExpression('Postedby = :val');
+      const query = new Query('tim', table, serializer).filterExpression('Postedby = :val');
 
       query.request.FilterExpression.should.equal('Postedby = :val');
     });
   });
 
-  describe('#expressionAttributeValues', function () {
-    it('should set expression attribute values', function () {
-      var config = {
+  describe('#expressionAttributeValues', () => {
+    it('should set expression attribute values', () => {
+      const config = {
         hashKey: 'name',
         schema: {
           name: Joi.string(),
@@ -194,15 +194,15 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).expressionAttributeValues({ ':val': 'test' });
+      const query = new Query('tim', table, serializer).expressionAttributeValues({ ':val': 'test' });
 
       query.request.ExpressionAttributeValues.should.eql({ ':val': 'test' });
     });
   });
 
-  describe('#expressionAttributeNames', function () {
-    it('should set expression attribute names', function () {
-      var config = {
+  describe('#expressionAttributeNames', () => {
+    it('should set expression attribute names', () => {
+      const config = {
         hashKey: 'name',
         schema: {
           name: Joi.string(),
@@ -211,15 +211,15 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).expressionAttributeNames({ '#name': 'name' });
+      const query = new Query('tim', table, serializer).expressionAttributeNames({ '#name': 'name' });
 
       query.request.ExpressionAttributeNames.should.eql({ '#name': 'name' });
     });
   });
 
-  describe('#projectionExpression', function () {
-    it('should set projection expression', function () {
-      var config = {
+  describe('#projectionExpression', () => {
+    it('should set projection expression', () => {
+      const config = {
         hashKey: 'name',
         schema: {
           name: Joi.string(),
@@ -228,15 +228,15 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).projectionExpression('#name, #email');
+      const query = new Query('tim', table, serializer).projectionExpression('#name, #email');
 
       query.request.ProjectionExpression.should.eql('#name, #email');
     });
   });
 
-  describe('#usingIndex', function () {
-    it('should set the index name to use', function () {
-      var config = {
+  describe('#usingIndex', () => {
+    it('should set the index name to use', () => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -249,13 +249,13 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).usingIndex('CreatedIndex');
+      const query = new Query('tim', table, serializer).usingIndex('CreatedIndex');
 
       query.request.IndexName.should.equal('CreatedIndex');
     });
 
-    it('should create key condition for global index hash key', function () {
-      var config = {
+    it('should create key condition for global index hash key', () => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -270,7 +270,7 @@ describe('Query', function () {
 
       serializer.serializeItem.returns({ age: { N: '18' } });
 
-      var query = new Query(18, table, serializer).usingIndex('UserAgeIndex');
+      const query = new Query(18, table, serializer).usingIndex('UserAgeIndex');
       query.exec();
 
       query.request.IndexName.should.equal('UserAgeIndex');
@@ -281,9 +281,9 @@ describe('Query', function () {
     });
   });
 
-  describe('#consistentRead', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#consistentRead', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -297,25 +297,25 @@ describe('Query', function () {
       table.schema = new Schema(config);
     });
 
-    it('should set Consistent Read to true', function () {
-      var query = new Query('tim', table, serializer).consistentRead(true);
+    it('should set Consistent Read to true', () => {
+      const query = new Query('tim', table, serializer).consistentRead(true);
       query.request.ConsistentRead.should.be.true;
     });
 
-    it('should set Consistent Read to true when passing no args', function () {
-      var query = new Query('tim', table, serializer).consistentRead();
+    it('should set Consistent Read to true when passing no args', () => {
+      const query = new Query('tim', table, serializer).consistentRead();
       query.request.ConsistentRead.should.be.true;
     });
 
-    it('should set Consistent Read to false', function () {
-      var query = new Query('tim', table, serializer).consistentRead(false);
+    it('should set Consistent Read to false', () => {
+      const query = new Query('tim', table, serializer).consistentRead(false);
       query.request.ConsistentRead.should.be.false;
     });
   });
 
-  describe('#attributes', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#attributes', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -329,22 +329,22 @@ describe('Query', function () {
       table.schema = new Schema(config);
     });
 
-    it('should set array attributes to get', function () {
-      var query = new Query('tim', table, serializer).attributes(['created', 'email']);
+    it('should set array attributes to get', () => {
+      const query = new Query('tim', table, serializer).attributes(['created', 'email']);
       query.request.ProjectionExpression.should.eql('#created,#email');
       query.request.ExpressionAttributeNames.should.eql({ '#created': 'created', '#email': 'email' });
     });
 
-    it('should set single attribute to get', function () {
-      var query = new Query('tim', table, serializer).attributes('email');
+    it('should set single attribute to get', () => {
+      const query = new Query('tim', table, serializer).attributes('email');
       query.request.ProjectionExpression.should.eql('#email');
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
     });
   });
 
-  describe('#order', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#order', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -358,20 +358,20 @@ describe('Query', function () {
       table.schema = new Schema(config);
     });
 
-    it('should set scan index forward to true', function () {
-      var query = new Query('tim', table, serializer).ascending();
+    it('should set scan index forward to true', () => {
+      const query = new Query('tim', table, serializer).ascending();
       query.request.ScanIndexForward.should.be.true;
     });
 
-    it('should set scan index forward to false', function () {
-      var query = new Query('tim', table, serializer).descending();
+    it('should set scan index forward to false', () => {
+      const query = new Query('tim', table, serializer).descending();
       query.request.ScanIndexForward.should.be.false;
     });
   });
 
-  describe('#startKey', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#startKey', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -385,19 +385,19 @@ describe('Query', function () {
       table.schema = new Schema(config);
     });
 
-    it('should set start Key', function () {
-      var key = { name: { S: 'tim' }, email: { S: 'foo@example.com' } };
+    it('should set start Key', () => {
+      const key = { name: { S: 'tim' }, email: { S: 'foo@example.com' } };
       serializer.buildKey.returns(key);
 
-      var query = new Query('tim', table, serializer).startKey({ name: 'tim', email: 'foo@example.com' });
+      const query = new Query('tim', table, serializer).startKey({ name: 'tim', email: 'foo@example.com' });
 
       query.request.ExclusiveStartKey.should.eql(key);
     });
   });
 
-  describe('#select', function () {
-    it('should set select Key', function () {
-      var config = {
+  describe('#select', () => {
+    it('should set select Key', () => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -410,15 +410,15 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).select('COUNT');
+      const query = new Query('tim', table, serializer).select('COUNT');
 
       query.request.Select.should.eql('COUNT');
     });
   });
 
-  describe('#ReturnConsumedCapacity', function () {
-    beforeEach(function () {
-      var config = {
+  describe('#ReturnConsumedCapacity', () => {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -432,24 +432,24 @@ describe('Query', function () {
       table.schema = new Schema(config);
     });
 
-    it('should set return consumed capacity Key to passed in value', function () {
-      var query = new Query('tim', table, serializer).returnConsumedCapacity('TOTAL');
+    it('should set return consumed capacity Key to passed in value', () => {
+      const query = new Query('tim', table, serializer).returnConsumedCapacity('TOTAL');
 
       query.request.ReturnConsumedCapacity.should.eql('TOTAL');
     });
 
-    it('should set return consumed capacity Key', function () {
-      var query = new Query('tim', table, serializer).returnConsumedCapacity();
+    it('should set return consumed capacity Key', () => {
+      const query = new Query('tim', table, serializer).returnConsumedCapacity();
 
       query.request.ReturnConsumedCapacity.should.eql('TOTAL');
     });
   });
 
-  describe('#where', function () {
-    var query;
+  describe('#where', () => {
+    let query;
 
-    beforeEach(function () {
-      var config = {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -464,7 +464,7 @@ describe('Query', function () {
       query = new Query('tim', table, serializer);
     });
 
-    it('should have hash key and range key equals clauses', function () {
+    it('should have hash key and range key equals clauses', () => {
       query = query.where('email').equals('foo@example.com');
       query.exec();
 
@@ -473,7 +473,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email = :email) AND (#name = :name)');
     });
 
-    it('should have equals clause', function () {
+    it('should have equals clause', () => {
       query = query.where('email').equals('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -481,7 +481,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email = :email)');
     });
 
-    it('should have less than or equal clause', function () {
+    it('should have less than or equal clause', () => {
       query = query.where('email').lte('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -489,7 +489,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email <= :email)');
     });
 
-    it('should have less than clause', function () {
+    it('should have less than clause', () => {
       query = query.where('email').lt('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -497,7 +497,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email < :email)');
     });
 
-    it('should have greater than or equal clause', function () {
+    it('should have greater than or equal clause', () => {
       query = query.where('email').gte('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -505,7 +505,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email >= :email)');
     });
 
-    it('should have greater than clause', function () {
+    it('should have greater than clause', () => {
       query = query.where('email').gt('foo@example.com');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -513,7 +513,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email > :email)');
     });
 
-    it('should have begins with clause', function () {
+    it('should have begins with clause', () => {
       query = query.where('email').beginsWith('foo');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -521,7 +521,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(begins_with(#email, :email))');
     });
 
-    it('should have between clause', function () {
+    it('should have between clause', () => {
       query = query.where('email').between('bob@bob.com', 'foo@foo.com');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -529,7 +529,7 @@ describe('Query', function () {
       query.request.KeyConditionExpression.should.eql('(#email BETWEEN :email AND :email_2)');
     });
 
-    it('should support multiple clauses on same attribute', function () {
+    it('should support multiple clauses on same attribute', () => {
       query = query.where('email').gt('foo@example.com').where('email').lt('moo@foo.com');
 
       query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
@@ -538,11 +538,11 @@ describe('Query', function () {
     });
   });
 
-  describe('#filter', function () {
-    var query;
+  describe('#filter', () => {
+    let query;
 
-    beforeEach(function () {
-      var config = {
+    beforeEach(() => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -559,7 +559,7 @@ describe('Query', function () {
       query = new Query('tim', table, serializer);
     });
 
-    it('should have equals clause', function () {
+    it('should have equals clause', () => {
       query = query.filter('age').equals(5);
 
       query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
@@ -567,7 +567,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(#age = :age)');
     });
 
-    it('should have exists clause', function () {
+    it('should have exists clause', () => {
       query = query.filter('age').exists();
 
       query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
@@ -575,7 +575,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(attribute_exists(#age))');
     });
 
-    it('should have not exists clause', function () {
+    it('should have not exists clause', () => {
       query = query.filter('age').exists(false);
 
       query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
@@ -583,7 +583,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(attribute_not_exists(#age))');
     });
 
-    it('should have between clause', function () {
+    it('should have between clause', () => {
       query = query.filter('age').between(5, 7);
 
       query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
@@ -591,7 +591,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(#age BETWEEN :age AND :age_2)');
     });
 
-    it('should have IN clause', function () {
+    it('should have IN clause', () => {
       query = query.filter('age').in([5, 7, 12]);
 
       query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
@@ -599,7 +599,7 @@ describe('Query', function () {
       query.request.FilterExpression.should.eql('(#age IN (:age,:age_2,:age_3))');
     });
 
-    it('should support multiple filters on same attribute', function () {
+    it('should support multiple filters on same attribute', () => {
       query = query.filter('age').gt(5).filter('age').lt(20).filter('age').ne(15);
 
       query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
@@ -608,9 +608,9 @@ describe('Query', function () {
     });
   });
 
-  describe('#loadAll', function () {
-    it('should set load all option to true', function () {
-      var config = {
+  describe('#loadAll', () => {
+    it('should set load all option to true', () => {
+      const config = {
         hashKey: 'name',
         rangeKey: 'email',
         schema: {
@@ -621,7 +621,7 @@ describe('Query', function () {
 
       table.schema = new Schema(config);
 
-      var query = new Query('tim', table, serializer).loadAll();
+      const query = new Query('tim', table, serializer).loadAll();
 
       query.options.loadAll.should.be.true;
     });

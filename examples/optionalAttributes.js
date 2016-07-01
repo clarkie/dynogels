@@ -1,12 +1,12 @@
 'use strict';
 
-var vogels = require('../index');
-var AWS = vogels.AWS;
-var Joi = require('joi');
+const vogels = require('../index');
+const AWS = vogels.AWS;
+const Joi = require('joi');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Person = vogels.define('example-optional-attribute', {
+const Person = vogels.define('example-optional-attribute', {
   hashKey: 'id',
   schema: {
     id: vogels.types.uuid(),
@@ -14,7 +14,7 @@ var Person = vogels.define('example-optional-attribute', {
   }
 });
 
-var printInfo = function (err, person) {
+const printInfo = (err, person) => {
   if (err) {
     console.log('got error', err);
   } else if (person) {
@@ -24,7 +24,7 @@ var printInfo = function (err, person) {
   }
 };
 
-vogels.createTables(function (err) {
+vogels.createTables(err => {
   if (err) {
     console.log('Failed to create table', err);
     process.exit(1);
@@ -33,6 +33,6 @@ vogels.createTables(function (err) {
   Person.create({ name: 'Nick' }, printInfo);
   Person.create({ name: null }, printInfo);
 
-  var p = new Person({ name: null });
+  const p = new Person({ name: null });
   p.save(printInfo);
 });

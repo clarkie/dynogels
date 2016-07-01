@@ -1,12 +1,12 @@
 'use strict';
 
-var vogels = require('../index');
-var AWS = vogels.AWS;
-var Joi = require('joi');
+const vogels = require('../index');
+const AWS = vogels.AWS;
+const Joi = require('joi');
 
-AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-var Account = vogels.define('example-update', {
+const Account = vogels.define('example-update', {
   hashKey: 'email',
   timestamps: true,
   schema: {
@@ -18,29 +18,29 @@ var Account = vogels.define('example-update', {
   }
 });
 
-vogels.createTables(function (err) {
+vogels.createTables(err => {
   if (err) {
     console.log('Error creating tables', err);
     process.exit(1);
   }
 
-  Account.update({ email: 'test5@example.com', age: { $add: 1 } }, function (err, acc) {
+  Account.update({ email: 'test5@example.com', age: { $add: 1 } }, (err, acc) => {
     console.log('incremented age', acc.get('age'));
   });
 
-  Account.update({ email: 'test@example.com', nicknames: { $add: 'smalls' } }, function (err, acc) {
+  Account.update({ email: 'test@example.com', nicknames: { $add: 'smalls' } }, (err, acc) => {
     console.log('added one nickname', acc.get('nicknames'));
   });
 
-  Account.update({ email: 'test@example.com', nicknames: { $add: ['bigs', 'big husk', 'the dude'] } }, function (err, acc) {
+  Account.update({ email: 'test@example.com', nicknames: { $add: ['bigs', 'big husk', 'the dude'] } }, (err, acc) => {
     console.log('added three nicknames', acc.get('nicknames'));
   });
 
-  Account.update({ email: 'test@example.com', nicknames: { $del: 'the dude' } }, function (err, acc) {
+  Account.update({ email: 'test@example.com', nicknames: { $del: 'the dude' } }, (err, acc) => {
     console.log('removed nickname', acc.get('nicknames'));
   });
 
-  Account.update({ email: 'test@example.com', nested: { roles: ['guest'] } }, function (err, acc) {
+  Account.update({ email: 'test@example.com', nested: { roles: ['guest'] } }, (err, acc) => {
     console.log('added nested data', acc.get('nested'));
   });
 });

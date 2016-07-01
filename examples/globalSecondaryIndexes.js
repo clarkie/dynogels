@@ -1,19 +1,19 @@
 'use strict';
 
-var vogels = require('../index');
-var _ = require('lodash');
-var util = require('util');
-var AWS = vogels.AWS;
-var Joi = require('joi');
-var async = require('async');
+const vogels = require('../index');
+const _ = require('lodash');
+const util = require('util');
+const AWS = vogels.AWS;
+const Joi = require('joi');
+const async = require('async');
 
-// AWS.config.loadFromPath(process.env.HOME + '/.ec2/credentials.json');
+// AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 // http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html
 
 AWS.config.update({ region: 'us-east-1' });
 
-var GameScore = vogels.define('example-global-index', {
+const GameScore = vogels.define('example-global-index', {
   hashKey: 'userId',
   rangeKey: 'gameTitle',
   schema: {
@@ -35,7 +35,7 @@ var GameScore = vogels.define('example-global-index', {
   ]
 });
 
-var data = [
+const data = [
   { userId: '101', gameTitle: 'Galaxy Invaders', topScore: 5842, wins: 10, losses: 5, topScoreDateTime: new Date(2012, 1, 3, 8, 30) },
   { userId: '101', gameTitle: 'Meteor Blasters', topScore: 1000, wins: 12, losses: 3, topScoreDateTime: new Date(2013, 1, 3, 8, 30) },
   { userId: '101', gameTitle: 'Starship X', topScore: 24, wins: 4, losses: 9 },
@@ -49,10 +49,10 @@ var data = [
   { userId: '103', gameTitle: 'Starship X', topScore: 42, wins: 4, losses: 19 },
 ];
 
-var loadSeedData = function (callback) {
+const loadSeedData = callback => {
   callback = callback || _.noop;
 
-  async.each(data, function (attrs, callback) {
+  async.each(data, (attrs, callback) => {
     GameScore.create(attrs, callback);
   }, callback);
 };
@@ -60,7 +60,7 @@ var loadSeedData = function (callback) {
 async.series([
   async.apply(vogels.createTables.bind(vogels)),
   loadSeedData
-], function (err) {
+], err => {
   if (err) {
     console.log('error', err);
     process.exit(1);
@@ -72,7 +72,7 @@ async.series([
   .usingIndex('GameTitleIndex')
   .where('topScore').gt(0)
   .descending()
-  .exec(function (err, data) {
+  .exec((err, data) => {
     if (err) {
       console.log(err);
     } else {

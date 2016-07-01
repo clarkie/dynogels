@@ -1,21 +1,21 @@
 'use strict';
 
-var Item = require('../lib/item');
-var Table = require('../lib/table');
-var Schema = require('../lib/schema');
-var chai = require('chai');
-var expect = chai.expect;
-var helper = require('./test-helper');
-var serializer = require('../lib/serializer');
-var Joi = require('joi');
+const Item = require('../lib/item');
+const Table = require('../lib/table');
+const Schema = require('../lib/schema');
+const chai = require('chai');
+const expect = chai.expect;
+const helper = require('./test-helper');
+const serializer = require('../lib/serializer');
+const Joi = require('joi');
 
 chai.should();
 
-describe('item', function () {
-  var table;
+describe('item', () => {
+  let table;
 
-  beforeEach(function () {
-    var config = {
+  beforeEach(() => {
+    const config = {
       hashKey: 'num',
       schema: {
         num: Joi.number(),
@@ -23,27 +23,27 @@ describe('item', function () {
       }
     };
 
-    var schema = new Schema(config);
+    const schema = new Schema(config);
 
     table = new Table('mockTable', schema, serializer, helper.mockDocClient(), helper.testLogger());
   });
 
-  it('JSON.stringify should only serialize attrs', function () {
-    var attrs = { num: 1, name: 'foo' };
-    var item = new Item(attrs, table);
-    var stringified = JSON.stringify(item);
+  it('JSON.stringify should only serialize attrs', () => {
+    const attrs = { num: 1, name: 'foo' };
+    const item = new Item(attrs, table);
+    const stringified = JSON.stringify(item);
 
     stringified.should.equal(JSON.stringify(attrs));
   });
 
-  describe('#save', function () {
-    it('should return error', function (done) {
+  describe('#save', () => {
+    it('should return error', done => {
       table.docClient.put.yields(new Error('fail'));
 
-      var attrs = { num: 1, name: 'foo' };
-      var item = new Item(attrs, table);
+      const attrs = { num: 1, name: 'foo' };
+      const item = new Item(attrs, table);
 
-      item.save(function (err, data) {
+      item.save((err, data) => {
         expect(err).to.exist;
         expect(data).to.not.exist;
 
@@ -52,14 +52,14 @@ describe('item', function () {
     });
   });
 
-  describe('#update', function () {
-    it('should return item', function (done) {
+  describe('#update', () => {
+    it('should return item', done => {
       table.docClient.update.yields(null, { Attributes: { num: 1, name: 'foo' } });
 
-      var attrs = { num: 1, name: 'foo' };
-      var item = new Item(attrs, table);
+      const attrs = { num: 1, name: 'foo' };
+      const item = new Item(attrs, table);
 
-      item.update(function (err, data) {
+      item.update((err, data) => {
         expect(err).to.not.exist;
         expect(data.get()).to.eql({ num: 1, name: 'foo' });
 
@@ -68,13 +68,13 @@ describe('item', function () {
     });
 
 
-    it('should return error', function (done) {
+    it('should return error', done => {
       table.docClient.update.yields(new Error('fail'));
 
-      var attrs = { num: 1, name: 'foo' };
-      var item = new Item(attrs, table);
+      const attrs = { num: 1, name: 'foo' };
+      const item = new Item(attrs, table);
 
-      item.update(function (err, data) {
+      item.update((err, data) => {
         expect(err).to.exist;
         expect(data).to.not.exist;
 
@@ -82,13 +82,13 @@ describe('item', function () {
       });
     });
 
-    it('should return null', function (done) {
+    it('should return null', done => {
       table.docClient.update.yields(null, {});
 
-      var attrs = { num: 1, name: 'foo' };
-      var item = new Item(attrs, table);
+      const attrs = { num: 1, name: 'foo' };
+      const item = new Item(attrs, table);
 
-      item.update(function (err, data) {
+      item.update((err, data) => {
         expect(err).to.not.exist;
         expect(data).to.not.exist;
 

@@ -1,22 +1,22 @@
 'use strict';
 
-var Table = require('../lib/table');
-var ParallelScan = require('../lib/parallelScan');
-var Schema = require('../lib/schema');
-var chai = require('chai');
-var expect = chai.expect;
-var assert = require('assert');
-var helper = require('./test-helper');
-var serializer = require('../lib/serializer');
-var Joi = require('joi');
+const Table = require('../lib/table');
+const ParallelScan = require('../lib/parallelScan');
+const Schema = require('../lib/schema');
+const chai = require('chai');
+const expect = chai.expect;
+const assert = require('assert');
+const helper = require('./test-helper');
+const serializer = require('../lib/serializer');
+const Joi = require('joi');
 
 chai.should();
 
-describe('ParallelScan', function () {
-  var table;
+describe('ParallelScan', () => {
+  let table;
 
-  beforeEach(function () {
-    var config = {
+  beforeEach(() => {
+    const config = {
       hashKey: 'num',
       schema: {
         num: Joi.number(),
@@ -24,17 +24,17 @@ describe('ParallelScan', function () {
       }
     };
 
-    var schema = new Schema(config);
+    const schema = new Schema(config);
 
     table = new Table('mockTable', schema, serializer, helper.mockDynamoDB(), helper.testLogger());
   });
 
-  it('should return error', function (done) {
-    var scan = new ParallelScan(table, serializer, 4);
+  it('should return error', done => {
+    const scan = new ParallelScan(table, serializer, 4);
 
     table.docClient.scan.yields(new Error('fail'));
 
-    scan.exec(function (err, data) {
+    scan.exec((err, data) => {
       expect(err).to.exist;
       expect(data).to.not.exist;
 
@@ -42,19 +42,19 @@ describe('ParallelScan', function () {
     });
   });
 
-  it('should stream error', function (done) {
-    var scan = new ParallelScan(table, serializer, 4);
+  it('should stream error', done => {
+    const scan = new ParallelScan(table, serializer, 4);
 
     table.docClient.scan.yields(new Error('fail'));
 
-    var stream = scan.exec();
+    const stream = scan.exec();
 
-    stream.on('error', function (err) {
+    stream.on('error', err => {
       expect(err).to.exist;
       return done();
     });
 
-    stream.on('readable', function () {
+    stream.on('readable', () => {
       assert(false, 'readable should not be called');
     });
   });

@@ -1,14 +1,14 @@
 'use strict';
 
-var sinon = require('sinon');
-var AWS = require('aws-sdk');
-var Table = require('../lib/table');
-var _ = require('lodash');
-var bunyan = require('bunyan');
+const sinon = require('sinon');
+const AWS = require('aws-sdk');
+const Table = require('../lib/table');
+const _ = require('lodash');
+const bunyan = require('bunyan');
 
-exports.mockDynamoDB = function () {
-  var opts = { endpoint: 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };
-  var db = new AWS.DynamoDB(opts);
+exports.mockDynamoDB = () => {
+  const opts = { endpoint: 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };
+  const db = new AWS.DynamoDB(opts);
 
   db.scan = sinon.stub();
   db.putItem = sinon.stub();
@@ -26,15 +26,15 @@ exports.mockDynamoDB = function () {
   return db;
 };
 
-exports.realDynamoDB = function () {
-  var opts = { endpoint: 'http://localhost:8000', apiVersion: '2012-08-10', region: 'eu-west-1' };
+exports.realDynamoDB = () => {
+  const opts = { endpoint: 'http://localhost:8000', apiVersion: '2012-08-10', region: 'eu-west-1' };
   return new AWS.DynamoDB(opts);
 };
 
-exports.mockDocClient = function () {
-  var client = new AWS.DynamoDB.DocumentClient({ service: exports.mockDynamoDB() });
+exports.mockDocClient = () => {
+  const client = new AWS.DynamoDB.DocumentClient({ service: exports.mockDynamoDB() });
 
-  var operations = [
+  const operations = [
     'batchGet',
     'batchWrite',
     'put',
@@ -45,7 +45,7 @@ exports.mockDocClient = function () {
     'query'
   ];
 
-  _.each(operations, function (op) {
+  _.each(operations, op => {
     client[op] = sinon.stub();
   });
 
@@ -65,8 +65,8 @@ exports.mockDocClient = function () {
   return client;
 };
 
-exports.mockSerializer = function () {
-  var serializer = {
+exports.mockSerializer = () => {
+  const serializer = {
     buildKey: sinon.stub(),
     deserializeItem: sinon.stub(),
     serializeItem: sinon.stub(),
@@ -76,12 +76,10 @@ exports.mockSerializer = function () {
   return serializer;
 };
 
-exports.mockTable = function () {
-  return sinon.createStubInstance(Table);
-};
+exports.mockTable = () => sinon.createStubInstance(Table);
 
-exports.fakeUUID = function () {
-  var uuid = {
+exports.fakeUUID = () => {
+  const uuid = {
     v1: sinon.stub(),
     v4: sinon.stub()
   };
@@ -89,14 +87,10 @@ exports.fakeUUID = function () {
   return uuid;
 };
 
-exports.randomName = function (prefix) {
-  return prefix + '_' + Date.now() + '.' + _.random(1000);
-};
+exports.randomName = prefix => `${prefix}_${Date.now()}.${_.random(1000)}`;
 
-exports.testLogger = function () {
-  return bunyan.createLogger({
-    name: 'vogels-tests',
-    serializers: { err: bunyan.stdSerializers.err },
-    level: bunyan.FATAL
-  });
-};
+exports.testLogger = () => bunyan.createLogger({
+  name: 'vogels-tests',
+  serializers: { err: bunyan.stdSerializers.err },
+  level: bunyan.FATAL
+});

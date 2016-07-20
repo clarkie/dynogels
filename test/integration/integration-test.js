@@ -1141,5 +1141,14 @@ describe('Vogels Integration Tests', function () {
         return done();
       });
     });
+
+    it('#toPlainObject', done => {
+      Tweet.create({ UserId: 'tester-2', content: 'update test tweet' }, (err, tweet) => {
+        expect(err).to.not.exist;
+
+        expect(tweet.toPlainObject()).to.have.keys(['UserId', 'content', 'TweetID', 'PublishedDateTime']);
+        return done();
+      });
+    });
   });
 });

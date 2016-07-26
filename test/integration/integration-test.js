@@ -698,6 +698,83 @@ describe('Vogels Integration Tests', function () {
       });
     });
 
+    it('should return all users with age between 18 and 22', done => {
+      User.scan()
+        .where('age').between(18, 22)
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          console.log(data.Items.length);
+          expect(data.Items).to.have.length.above(1);
+
+          return done();
+        });
+    });
+
+    it('should return 1 user with age between 18 and 22', done => {
+      User.scan()
+        .where('age').between(18, 22)
+        .limit(1)
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          console.log(data.Items.length);
+          expect(data.Items).to.have.length(1);
+
+          return done();
+        });
+    });
+
+    it('should return all users with email beginning with test1', done => {
+      User.scan()
+        .where('email').beginsWith('test1')
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          console.log(data.Items.length);
+          expect(data.Items).to.have.length.above(1);
+
+          return done();
+        });
+    });
+
+    it('should return 1 user with email beginning with test1', done => {
+      User.scan()
+        .where('email').beginsWith('test1')
+        .limit(1)
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          console.log(data.Items.length);
+          expect(data.Items).to.have.length(1);
+
+          return done();
+        });
+    });
+
+    it('should return all users with age between 18 and 22 and with email beginning with test1', done => {
+      User.scan()
+        .where('age').between(18, 22)
+        .where('email').beginsWith('test1')
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          console.log(data.Items.length);
+          expect(data.Items).to.have.length.above(1);
+
+          return done();
+        });
+    });
+
+    it('should return 1 user with age between 18 and 22 and with email beginning with test1', done => {
+      User.scan()
+        .where('age').between(18, 22)
+        .where('email').beginsWith('test1')
+        .limit(1)
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          console.log(data.Items.length);
+          expect(data.Items).to.have.length(1);
+
+          return done();
+        });
+    });
+
     it('should return users matching multiple filters', done => {
       User.scan()
       .where('age').between(18, 22)

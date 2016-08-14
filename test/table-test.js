@@ -901,22 +901,22 @@ describe('table', () => {
       });
     });
 
-    it('should handle errors regarding invalid expressions', function (done) {
-      var config = {
+    it('should handle errors regarding invalid expressions', (done) => {
+      const config = {
         hashKey: 'name',
-        schema : {
-          name     : Joi.string(),
-          birthday : Joi.date().iso()
+        schema: {
+          name: Joi.string(),
+          birthday: Joi.date().iso()
         }
       };
 
-      var s = new Schema(config);
+      const s = new Schema(config);
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      var item = {name : 'Dr. Who', birthday: undefined};
+      const item = { name: 'Dr. Who', birthday: undefined };
 
-      table.update(item, function (err, account) {
+      table.update(item, (err, account) => {
         expect(err).to.exist;
         expect(account).to.not.exist;
         done();

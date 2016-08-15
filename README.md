@@ -1,12 +1,12 @@
-# dynogels 
-[![Build Status](https://travis-ci.org/clarkie/dynogels.png?branch=master)](https://travis-ci.org/clarkie/dynogels) 
+# dynogels
+[![Build Status](https://travis-ci.org/clarkie/dynogels.png?branch=master)](https://travis-ci.org/clarkie/dynogels)
 [![Coverage Status](https://coveralls.io/repos/github/clarkie/dynogels/badge.svg)](https://coveralls.io/github/clarkie/dynogels)
 [![npm version](https://badge.fury.io/js/dynogels.svg)](http://badge.fury.io/js/dynogels)
 [![Dependencies Status](https://david-dm.org/clarkie/dynogels.svg)](https://david-dm.org/clarkie/dynogels)
 [![DevDependencies Status](https://david-dm.org/clarkie/dynogels/dev-status.svg)](https://david-dm.org/clarkie/dynogels#info=devDependencies)
 [![Known Vulnerabilities](https://snyk.io/test/npm/dynogels/badge.svg)](https://snyk.io/test/npm/dynogels)
 
-Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from [Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name. 
+Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from [Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name.
 
 ## Features
 * Simplified data modeling and mapping to DynamoDB types
@@ -276,8 +276,8 @@ hashkeys.
 
 ```js
 BlogPost.create({
-  email: 'werner@example.com', 
-  title: 'Expanding the Cloud', 
+  email: 'werner@example.com',
+  title: 'Expanding the Cloud',
   content: 'Today, we are excited to announce the limited preview...'
   }, function (err, post) {
     console.log('created blog post', post.get('title'));
@@ -545,8 +545,9 @@ BlogPost
   .select('COUNT')
   .exec(callback);
 
-// only return title and content attributes of 10 blog posts
-// that begin with the title Expanding
+// query the first 10 posts by werner@example.com but only return
+// the title and content from posts where the title starts with 'Expanding'
+// WARNING: See notes below on the implementation of limit in DynamoDB **
 BlogPost
   .query('werner@example.com')
   .where('title').beginsWith('Expanding')
@@ -576,6 +577,9 @@ BlogPost
   .loadAll()
   .exec(callback);
 ```
+
+** Warning, limit is applied first before the where filter. The limit value limits the scanned count,
+not the number of returned items. See #12
 
 Vogels supports all the possible KeyConditions that DynamoDB currently
 supports.
@@ -666,7 +670,7 @@ var GameScore = vogels.define('GameScore', {
 });
 ```
 
-Now we can query against the global index 
+Now we can query against the global index
 
 ```js
 GameScore
@@ -678,7 +682,7 @@ GameScore
 
 When can also configure the attributes projected into the index.
 By default all attributes will be projected when no Projection pramater is
-present 
+present
 
 ```js
 var GameScore = vogels.define('GameScore', {
@@ -777,7 +781,7 @@ This api is very similar to the query api.
 Account.scan().exec(callback);
 
 // scan all accounts, this time loading all results
-// note this will potentially make several calls to DynamoDB 
+// note this will potentially make several calls to DynamoDB
 // in order to load all results
 Account
   .scan()
@@ -1025,7 +1029,7 @@ Logging can be enabled to provide detailed information on data being sent and re
 By default logging is turned off.
 
 ```js
-vogels.log.level('info'); // enabled INFO log level 
+vogels.log.level('info'); // enabled INFO log level
 ```
 
 Logging can also be enabled / disabled at the model level.

@@ -900,6 +900,28 @@ describe('table', () => {
         done();
       });
     });
+
+    it('should handle errors regarding invalid expressions', (done) => {
+      const config = {
+        hashKey: 'name',
+        schema: {
+          name: Joi.string(),
+          birthday: Joi.date().iso()
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, realSerializer, docClient, logger);
+
+      const item = { name: 'Dr. Who', birthday: undefined };
+
+      table.update(item, (err, account) => {
+        expect(err).to.exist;
+        expect(account).to.not.exist;
+        done();
+      });
+    });
   });
 
   describe('#query', () => {
@@ -1902,4 +1924,3 @@ describe('table', () => {
     });
   });
 });
-

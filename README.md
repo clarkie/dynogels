@@ -415,7 +415,7 @@ Movie.update({title : 'Movie 0', description : 'This is a description'}, params,
 
 ### Deleting
 You delete items in DynamoDB using the hashkey of model
-If your model uses both a hash and range key, than both need to be provided
+If your model uses both a hash and range key, then both need to be provided
 
 ```js
 Account.destroy('foo@example.com', function (err) {

@@ -71,7 +71,7 @@ internals.loadSeedData = callback => {
   ], callback);
 };
 
-describe('Vogels Integration Tests', function () {
+describe('Dynogels Integration Tests', function () {
   this.timeout(0);
 
   before(done => {

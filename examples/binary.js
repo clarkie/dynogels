@@ -1,13 +1,13 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const fs = require('fs');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const BinModel = vogels.define('example-binary', {
+const BinModel = dynogels.define('example-binary', {
   hashKey: 'name',
   timestamps: true,
   schema: {
@@ -26,7 +26,7 @@ const printFileInfo = (err, file) => {
   }
 };
 
-vogels.createTables(err => {
+dynogels.createTables(err => {
   if (err) {
     console.log('Error creating tables', err);
     process.exit(1);

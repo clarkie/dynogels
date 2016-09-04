@@ -1,15 +1,15 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const util = require('util');
 const _ = require('lodash');
 const async = require('async');
 const Joi = require('joi');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('example-query', {
+const Account = dynogels.define('example-query', {
   hashKey: 'name',
   rangeKey: 'email',
   timestamps: true,
@@ -79,7 +79,7 @@ const runQueries = () => {
 };
 
 async.series([
-  async.apply(vogels.createTables.bind(vogels)),
+  async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
 ], err => {
   if (err) {

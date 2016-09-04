@@ -1,24 +1,24 @@
 'use strict';
 
-const vogels = require('../index');
-const AWS = vogels.AWS;
+const dynogels = require('../index');
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('example-update', {
+const Account = dynogels.define('example-update', {
   hashKey: 'email',
   timestamps: true,
   schema: {
     email: Joi.string().email(),
     name: Joi.string(),
     age: Joi.number(),
-    nicknames: vogels.types.stringSet(),
+    nicknames: dynogels.types.stringSet(),
     nested: Joi.object()
   }
 });
 
-vogels.createTables(err => {
+dynogels.createTables(err => {
   if (err) {
     console.log('Error creating tables', err);
     process.exit(1);

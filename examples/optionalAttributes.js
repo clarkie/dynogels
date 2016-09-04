@@ -1,15 +1,15 @@
 'use strict';
 
-const vogels = require('../index');
-const AWS = vogels.AWS;
+const dynogels = require('../index');
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Person = vogels.define('example-optional-attribute', {
+const Person = dynogels.define('example-optional-attribute', {
   hashKey: 'id',
   schema: {
-    id: vogels.types.uuid(),
+    id: dynogels.types.uuid(),
     name: Joi.string().allow(null)
   }
 });
@@ -24,7 +24,7 @@ const printInfo = (err, person) => {
   }
 };
 
-vogels.createTables(err => {
+dynogels.createTables(err => {
   if (err) {
     console.log('Failed to create table', err);
     process.exit(1);

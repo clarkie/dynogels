@@ -1,21 +1,21 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const util = require('util');
 const _ = require('lodash');
 const async = require('async');
 const Joi = require('joi');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Movie = vogels.define('example-nested-attribute', {
+const Movie = dynogels.define('example-nested-attribute', {
   hashKey: 'title',
   timestamps: true,
   schema: {
     title: Joi.string(),
     releaseYear: Joi.number(),
-    tags: vogels.types.stringSet(),
+    tags: dynogels.types.stringSet(),
     director: Joi.object().keys({
       firstName: Joi.string(),
       lastName: Joi.string(),
@@ -92,14 +92,14 @@ const runExample = () => {
     ':current': 2001,
     ':title': ['The Man'],
     ':firstName': 'Rob',
-    ':tag': vogels.Set(['Sports', 'Horror'], 'S')
+    ':tag': dynogels.Set(['Sports', 'Horror'], 'S')
   };
 
   Movie.update({ title: 'Movie 0' }, params, printResults);
 };
 
 async.series([
-  async.apply(vogels.createTables.bind(vogels)),
+  async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
 ], err => {
   if (err) {

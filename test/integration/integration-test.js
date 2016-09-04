@@ -1,6 +1,6 @@
 'use strict';
 
-const vogels = require('../../index');
+const dynogels = require('../../index');
 const chai = require('chai');
 const expect = chai.expect;
 const async = require('async');
@@ -75,16 +75,16 @@ describe('Vogels Integration Tests', function () {
   this.timeout(0);
 
   before(done => {
-    vogels.dynamoDriver(helper.realDynamoDB());
+    dynogels.dynamoDriver(helper.realDynamoDB());
 
-    User = vogels.define('vogels-int-test-user', {
+    User = dynogels.define('dynogels-int-test-user', {
       hashKey: 'id',
       schema: {
         id: Joi.string().required().default(uuid.v4),
         email: Joi.string().required(),
         name: Joi.string().allow(''),
         age: Joi.number().min(10),
-        roles: vogels.types.stringSet().default(['user']),
+        roles: dynogels.types.stringSet().default(['user']),
         acceptedTerms: Joi.boolean().default(false),
         things: Joi.array(),
         settings: {
@@ -96,12 +96,12 @@ describe('Vogels Integration Tests', function () {
       }
     });
 
-    Tweet = vogels.define('vogels-int-test-tweet', {
+    Tweet = dynogels.define('dynogels-int-test-tweet', {
       hashKey: 'UserId',
       rangeKey: 'TweetID',
       schema: {
         UserId: Joi.string(),
-        TweetID: vogels.types.uuid(),
+        TweetID: dynogels.types.uuid(),
         content: Joi.string(),
         num: Joi.number(),
         tag: Joi.string(),
@@ -112,14 +112,14 @@ describe('Vogels Integration Tests', function () {
       ]
     });
 
-    Movie = vogels.define('vogels-int-test-movie', {
+    Movie = dynogels.define('dynogels-int-test-movie', {
       hashKey: 'title',
       timestamps: true,
       schema: {
         title: Joi.string(),
         description: Joi.string(),
         releaseYear: Joi.number(),
-        tags: vogels.types.stringSet(),
+        tags: dynogels.types.stringSet(),
         director: Joi.object().keys({
           firstName: Joi.string(),
           lastName: Joi.string(),
@@ -133,7 +133,7 @@ describe('Vogels Integration Tests', function () {
       }
     });
 
-    DynamicKeyModel = vogels.define('vogels-int-test-dyn-key', {
+    DynamicKeyModel = dynogels.define('dynogels-int-test-dyn-key', {
       hashKey: 'id',
       schema: Joi.object().keys({
         id: Joi.string()
@@ -141,7 +141,7 @@ describe('Vogels Integration Tests', function () {
     });
 
     async.series([
-      async.apply(vogels.createTables.bind(vogels)),
+      async.apply(dynogels.createTables.bind(dynogels)),
       callback => {
         const items = [{ fiz: 3, buz: 5, fizbuz: 35 }];
         User.create({ id: '123456789', email: 'some@user.com', age: 30, settings: { nickname: 'thedude' }, things: items }, callback);
@@ -398,7 +398,7 @@ describe('Vogels Integration Tests', function () {
         ':current': 2001,
         ':title': ['The Man'],
         ':firstName': 'Rob',
-        ':tag': vogels.Set(['Sports', 'Horror'], 'S')
+        ':tag': dynogels.Set(['Sports', 'Horror'], 'S')
       };
 
       Movie.update({ title: 'Movie 0', description: 'This is a description' }, params, (err, mov) => {
@@ -908,7 +908,7 @@ describe('Vogels Integration Tests', function () {
     let ModelCustomTimestamps;
 
     before(done => {
-      Model = vogels.define('vogels-int-test-timestamp', {
+      Model = dynogels.define('dynogels-int-test-timestamp', {
         hashKey: 'id',
         timestamps: true,
         schema: {
@@ -916,7 +916,7 @@ describe('Vogels Integration Tests', function () {
         }
       });
 
-      ModelCustomTimestamps = vogels.define('vogels-int-test-timestamp-custom', {
+      ModelCustomTimestamps = dynogels.define('dynogels-int-test-timestamp-custom', {
         hashKey: 'id',
         timestamps: true,
         createdAt: 'created',
@@ -927,7 +927,7 @@ describe('Vogels Integration Tests', function () {
       });
 
 
-      return vogels.createTables(done);
+      return dynogels.createTables(done);
     });
 
     it('should add createdAt param', done => {

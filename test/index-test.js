@@ -1,6 +1,6 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const AWS = require('aws-sdk');
 const helper = require('./test-helper');
 const Table = require('../lib/table');
@@ -11,9 +11,9 @@ const sinon = require('sinon');
 
 chai.should();
 
-describe('vogels', () => {
+describe('dynogels', () => {
   afterEach(() => {
-    vogels.reset();
+    dynogels.reset();
   });
 
   describe('#define', () => {
@@ -25,20 +25,20 @@ describe('vogels', () => {
         }
       };
 
-      const model = vogels.define('Account', config);
+      const model = dynogels.define('Account', config);
       expect(model).to.not.be.nil;
     });
 
     it('should throw when using old api', () => {
       expect(() => {
-        vogels.define('Account', schema => {
+        dynogels.define('Account', schema => {
           schema.String('email', { hashKey: true });
         });
       }).to.throw(/define no longer accepts schema callback, migrate to new api/);
     });
 
     it('should have config method', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       Account.config({ tableName: 'test-accounts' });
 
@@ -46,13 +46,13 @@ describe('vogels', () => {
     });
 
     it('should configure table name as accounts', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       Account.config().name.should.equal('accounts');
     });
 
     it('should return new account item', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       const acc = new Account({ name: 'Test Acc' });
       acc.table.should.be.instanceof(Table);
@@ -61,31 +61,31 @@ describe('vogels', () => {
 
   describe('#models', () => {
     it('should be empty', () => {
-      vogels.models.should.be.empty;
+      dynogels.models.should.be.empty;
     });
 
     it('should contain single model', () => {
-      vogels.define('Account', { hashKey: 'id' });
+      dynogels.define('Account', { hashKey: 'id' });
 
-      vogels.models.should.contain.keys('Account');
+      dynogels.models.should.contain.keys('Account');
     });
   });
 
   describe('#model', () => {
     it('should return defined model', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
-      vogels.model('Account').should.equal(Account);
+      dynogels.model('Account').should.equal(Account);
     });
 
     it('should return null', () => {
-      expect(vogels.model('Person')).to.be.null;
+      expect(dynogels.model('Person')).to.be.null;
     });
   });
 
   describe('model config', () => {
     it('should configure set dynamodb driver', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       Account.config({ tableName: 'test-accounts' });
 
@@ -93,7 +93,7 @@ describe('vogels', () => {
     });
 
     it('should configure set dynamodb driver', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       const dynamodb = helper.realDynamoDB();
       Account.config({ dynamodb: dynamodb });
@@ -102,7 +102,7 @@ describe('vogels', () => {
     });
 
     it('should set document client', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       const docClient = new AWS.DynamoDB.DocumentClient(helper.realDynamoDB());
 
@@ -113,11 +113,11 @@ describe('vogels', () => {
 
 
     it('should globally set dynamodb driver for all models', () => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
-      const Post = vogels.define('Post', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
+      const Post = dynogels.define('Post', { hashKey: 'id' });
 
       const dynamodb = helper.realDynamoDB();
-      vogels.dynamoDriver(dynamodb);
+      dynogels.dynamoDriver(dynamodb);
 
       Account.docClient.service.config.endpoint.should.eq(dynamodb.config.endpoint);
       Post.docClient.service.config.endpoint.should.eq(dynamodb.config.endpoint);
@@ -125,9 +125,9 @@ describe('vogels', () => {
 
     it('should continue to use globally set dynamodb driver', () => {
       const dynamodb = helper.mockDynamoDB();
-      vogels.dynamoDriver(dynamodb);
+      dynogels.dynamoDriver(dynamodb);
 
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       Account.docClient.service.config.endpoint.should.eq(dynamodb.config.endpoint);
     });
@@ -137,10 +137,10 @@ describe('vogels', () => {
     let clock;
 
     beforeEach(() => {
-      vogels.reset();
+      dynogels.reset();
       // var dynamodb = helper.mockDynamoDB();
-      // vogels.dynamoDriver(dynamodb);
-      vogels.documentClient(helper.mockDocClient());
+      // dynogels.dynamoDriver(dynamodb);
+      dynogels.documentClient(helper.mockDocClient());
       clock = sinon.useFakeTimers();
     });
 
@@ -151,7 +151,7 @@ describe('vogels', () => {
     it('should create single definied model', function (done) {
       this.timeout(0);
 
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       const second = {
         Table: { TableStatus: 'PENDING' }
@@ -170,7 +170,7 @@ describe('vogels', () => {
 
       dynamodb.createTable.yields(null, null);
 
-      vogels.createTables(err => {
+      dynogels.createTables(err => {
         expect(err).to.not.exist;
         expect(dynamodb.describeTable.calledThrice).to.be.true;
         return done();
@@ -181,14 +181,14 @@ describe('vogels', () => {
     });
 
     it('should return error', done => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
 
       const dynamodb = Account.docClient.service;
       dynamodb.describeTable.onCall(0).yields(null, null);
 
       dynamodb.createTable.yields(new Error('Fail'), null);
 
-      vogels.createTables(err => {
+      dynogels.createTables(err => {
         expect(err).to.exist;
         expect(dynamodb.describeTable.calledOnce).to.be.true;
         return done();
@@ -196,7 +196,7 @@ describe('vogels', () => {
     });
 
     it('should create model without callback', done => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
       const dynamodb = Account.docClient.service;
 
       const second = {
@@ -214,7 +214,7 @@ describe('vogels', () => {
 
       dynamodb.createTable.yields(null, null);
 
-      vogels.createTables();
+      dynogels.createTables();
 
       clock.tick(1200);
       clock.tick(1200);
@@ -224,7 +224,7 @@ describe('vogels', () => {
     });
 
     it('should return error when waiting for table to become active', done => {
-      const Account = vogels.define('Account', { hashKey: 'id' });
+      const Account = dynogels.define('Account', { hashKey: 'id' });
       const dynamodb = Account.docClient.service;
 
       const second = {
@@ -238,7 +238,7 @@ describe('vogels', () => {
 
       dynamodb.createTable.yields(null, null);
 
-      vogels.createTables(err => {
+      dynogels.createTables(err => {
         expect(err).to.exist;
         expect(dynamodb.describeTable.calledThrice).to.be.true;
         return done();

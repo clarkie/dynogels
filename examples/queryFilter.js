@@ -1,15 +1,15 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const util = require('util');
 const _ = require('lodash');
 const Joi = require('joi');
 const async = require('async');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('example-query-filter', {
+const Account = dynogels.define('example-query-filter', {
   hashKey: 'name',
   rangeKey: 'email',
   timestamps: true,
@@ -17,7 +17,7 @@ const Account = vogels.define('example-query-filter', {
     name: Joi.string(),
     email: Joi.string().email(),
     age: Joi.number(),
-    roles: vogels.types.stringSet(),
+    roles: dynogels.types.stringSet(),
   },
 
   indexes: [
@@ -74,7 +74,7 @@ const runFilterQueries = () => {
 };
 
 async.series([
-  async.apply(vogels.createTables.bind(vogels)),
+  async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
 ], err => {
   if (err) {

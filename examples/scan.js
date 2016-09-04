@@ -1,15 +1,15 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const util = require('util');
 const _ = require('lodash');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 const async = require('async');
 const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('example-scan', {
+const Account = dynogels.define('example-scan', {
   hashKey: 'name',
   rangeKey: 'email',
   timestamps: true,
@@ -17,7 +17,7 @@ const Account = vogels.define('example-scan', {
     name: Joi.string(),
     email: Joi.string().email(),
     age: Joi.number(),
-    scores: vogels.types.numberSet(),
+    scores: dynogels.types.numberSet(),
   },
 });
 
@@ -74,7 +74,7 @@ const runScans = () => {
 };
 
 async.series([
-  async.apply(vogels.createTables.bind(vogels)),
+  async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
 ], err => {
   if (err) {

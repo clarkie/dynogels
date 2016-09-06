@@ -1,24 +1,24 @@
 'use strict';
 
-const vogels = require('../index');
-const AWS = vogels.AWS;
+const dynogels = require('../index');
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 const async = require('async');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('example-Account', {
+const Account = dynogels.define('example-Account', {
   hashKey: 'AccountId',
   timestamps: true,
   schema: {
-    AccountId: vogels.types.uuid(),
+    AccountId: dynogels.types.uuid(),
     name: Joi.string(),
     email: Joi.string().email(),
     age: Joi.number(),
   }
 });
 
-vogels.createTables({
+dynogels.createTables({
   'example-Account': { readCapacity: 1, writeCapacity: 10 },
 }, err => {
   if (err) {

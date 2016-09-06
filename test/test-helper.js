@@ -90,7 +90,7 @@ exports.fakeUUID = () => {
 exports.randomName = prefix => `${prefix}_${Date.now()}.${_.random(1000)}`;
 
 exports.testLogger = () => bunyan.createLogger({
-  name: 'vogels-tests',
+  name: 'dynogels-tests',
   serializers: { err: bunyan.stdSerializers.err },
   level: bunyan.FATAL
 });

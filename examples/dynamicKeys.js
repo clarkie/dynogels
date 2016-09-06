@@ -1,7 +1,7 @@
 'use strict';
 
-const vogels = require('../index');
-const AWS = vogels.AWS;
+const dynogels = require('../index');
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 const async = require('async');
 const util = require('util');
@@ -9,7 +9,7 @@ const _ = require('lodash');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const DynamicModel = vogels.define('example-dynamic-key', {
+const DynamicModel = dynogels.define('example-dynamic-key', {
   hashKey: 'id',
   timestamps: true,
   schema: Joi.object().keys({
@@ -34,7 +34,7 @@ const printResults = (err, resp) => {
   console.log('----------------------------------------------------------------------');
 };
 
-vogels.createTables({
+dynogels.createTables({
   'example-Account': { readCapacity: 1, writeCapacity: 10 },
 }, err => {
   if (err) {

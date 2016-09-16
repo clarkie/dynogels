@@ -547,7 +547,7 @@ BlogPost
 
 // query the first 10 posts by werner@example.com but only return
 // the title and content from posts where the title starts with 'Expanding'
-// WARNING: See notes below on the implementation of limit in DynamoDB **
+// WARNING: See notes below on the implementation of limit in DynamoDB
 BlogPost
   .query('werner@example.com')
   .where('title').beginsWith('Expanding')
@@ -578,8 +578,8 @@ BlogPost
   .exec(callback);
 ```
 
-** Warning, limit is applied first before the where filter. The limit value limits the scanned count,
-not the number of returned items. See #12
+**Warning, limit is applied first before the where filter. The limit value limits the scanned count,
+not the number of returned items. See #12**
 
 Vogels supports all the possible KeyConditions that DynamoDB currently
 supports.
@@ -650,6 +650,7 @@ BlogPost
 See the queryFilter.js [example][0] for more examples of using query filters
 
 #### Global Indexes
+
 First, define a model with a global secondary index.
 
 ```js

@@ -41,7 +41,14 @@ dynogels.define('example-GameScore', {
 
 dynogels.createTables({
   'example-Account': { readCapacity: 1, writeCapacity: 1 },
-  'example-GameScore': { readCapacity: 1, writeCapacity: 1 }
+  'example-GameScore': {
+    readCapacity: 1,
+    writeCapacity: 1,
+    streamSpecification: {
+      streamEnabled: true,
+      streamViewType: 'NEW_IMAGE'
+    }
+  }
 }, err => {
   if (err) {
     console.log('Error creating tables', err);

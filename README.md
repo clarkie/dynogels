@@ -108,12 +108,19 @@ dynogels.createTables(function(err) {
 });
 ```
 
-When creating tables you can pass specific throughput settings for any defined models.
+When creating tables you can pass specific throughput settings or stream specification for any defined models.
 
 ```js
 dynogels.createTables({
   'BlogPost': {readCapacity: 5, writeCapacity: 10},
-  'Account': {readCapacity: 20, writeCapacity: 4}
+  'Account': {
+    readCapacity: 20, 
+    writeCapacity: 4, 
+    streamSpecification: { 
+      streamEnabled: true, 
+      streamViewType: 'NEW_IMAGE' 
+    }
+  }
 }, function(err) {
   if (err) {
     console.log('Error creating tables: ', err);

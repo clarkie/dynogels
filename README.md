@@ -334,6 +334,11 @@ Account.update({email: 'foo@example.com', name: 'Bar Tester'}, {ReturnValues: 'A
   console.log('update account', acc.get('name')); // prints the old account name
 });
 
+// Return the consumed capacity of this update
+Account.update({email: 'foo@example.com', name: 'Bar Tester'}, {ReturnConsumedCapaity: 'INDEXES'}, function (err, acc, consumedCapacity) {
+  console.log('update account', consumedCapacity); // prints the consumed capacity
+});
+
 // Only update the account if the current age of the account is 21
 Account.update({email: 'foo@example.com', name: 'Bar Tester'}, {expected: {age: 22}}, function (err, acc) {
   console.log('update account', acc.get('name'));

@@ -6,7 +6,7 @@ const expect = chai.expect;
 const async = require('async');
 const _ = require('lodash');
 const helper = require('../test-helper');
-const uuid = require('node-uuid');
+const uuid = require('uuid');
 const Joi = require('joi');
 
 chai.should();

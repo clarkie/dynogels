@@ -6,7 +6,8 @@
 [![DevDependencies Status](https://david-dm.org/clarkie/dynogels/dev-status.svg)](https://david-dm.org/clarkie/dynogels#info=devDependencies)
 [![Known Vulnerabilities](https://snyk.io/test/npm/dynogels/badge.svg)](https://snyk.io/test/npm/dynogels)
 
-Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from [Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name.
+Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from
+[Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name.
 
 ## Features
 * Simplified data modeling and mapping to DynamoDB types
@@ -29,7 +30,9 @@ var dynogels = require('dynogels');
 dynogels.AWS.config.loadFromPath('credentials.json');
 ```
 
-When running on EC2 it's recommended to leverage EC2 IAM roles. If you have configured your instance to use IAM roles, Vogels will automatically select these credentials for use in your application, and you do not need to manually provide credentials in any other format.
+When running on EC2 it's recommended to leverage EC2 IAM roles. If you have configured your instance to use IAM roles,
+Vogels will automatically select these credentials for use in your application,
+and you do not need to manually provide credentials in any other format.
 
 ```js
 var dynogels = require('dynogels');
@@ -37,7 +40,8 @@ dynogels.AWS.config.update({region: "REGION"}); // region must be set
 ```
 
 You can also directly pass in your access key id, secret and region.
-  * It's recommended not to hard-code credentials inside an application. Use this method only for small personal scripts or for testing purposes.
+  * It's recommended not to hard-code credentials inside an application.
+  Use this method only for small personal scripts or for testing purposes.
 
 ```js
 var dynogels = require('dynogels');
@@ -172,7 +176,8 @@ var Tweet = dynogels.define('Tweet', {
 
 ### Configuration
 You can configure dynogels to automatically add `createdAt` and `updatedAt` timestamp attributes when
-saving and updating a model. `updatedAt` will only be set when updating a record and will not be set on initial creation of the model.
+saving and updating a model. `updatedAt` will only be set when updating a record
+and will not be set on initial creation of the model.
 
 ```js
 var Account = dynogels.define('Account', {
@@ -1086,9 +1091,11 @@ See the [examples][0] for more working sample code.
 Dynogels is provided as-is, free of charge. For support, you have a few choices:
 
 - Ask your support question on [Stackoverflow.com](http://stackoverflow.com), and tag your question with **dynogels**.
-- If you believe you have found a bug in dynogels, please submit a support ticket on the [Github Issues page for dynogels](http://github.com/clarkie/dynogels/issues). We'll get to them as soon as we can.
+- If you believe you have found a bug in dynogels, please submit a support ticket on
+ the [Github Issues page for dynogels](http://github.com/clarkie/dynogels/issues). We'll get to them as soon as we can.
 - For general feedback message me on [twitter](https://twitter.com/clarkieclarkie)
-- For more personal or immediate support, I’m available for hire to consult on your project. [Contact](mailto:andrew.t.clarke@gmail.com) me for more detals.
+- For more personal or immediate support, I’m available for hire to consult on your project.
+[Contact](mailto:andrew.t.clarke@gmail.com) me for more detals.
 
 ### Maintainers
 

@@ -29,7 +29,7 @@ var dynogels = require('dynogels');
 dynogels.AWS.config.loadFromPath('credentials.json');
 ```
 
-When running on EC2 its recommended to leverage EC2 IAM roles. If you have configured your instance to use IAM roles, Vogels will automatically select these credentials for use in your application, and you do not need to manually provide credentials in any other format.
+When running on EC2 it's recommended to leverage EC2 IAM roles. If you have configured your instance to use IAM roles, Vogels will automatically select these credentials for use in your application, and you do not need to manually provide credentials in any other format.
 
 ```js
 var dynogels = require('dynogels');
@@ -37,7 +37,7 @@ dynogels.AWS.config.update({region: "REGION"}); // region must be set
 ```
 
 You can also directly pass in your access key id, secret and region.
-  * Its recommend you not hard-code credentials inside an application. Use this method only for small personal scripts or for testing purposes.
+  * It's recommended not to hard-code credentials inside an application. Use this method only for small personal scripts or for testing purposes.
 
 ```js
 var dynogels = require('dynogels');

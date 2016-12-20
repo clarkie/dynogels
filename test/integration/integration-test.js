@@ -327,6 +327,28 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
+    it('should fail to update a non-existent user', (done) => {
+      User.update({
+        id: 'not a valid id',
+        name: 'Bad Update Name'
+      }, (err, account) => {
+        expect(err).to.exist;
+        expect(account).to.not.exist;
+        return done();
+      });
+    });
+
+    it('should fail to update an attribute not in the schema', (done) => {
+      User.update({
+        id: '123456789',
+        invalidAttribute: 'Invalid Value'
+      }, (err, account) => {
+        expect(err).to.exist;
+        expect(account).to.not.exist;
+        return done();
+      });
+    });
+
     it('should remove name attribute from user record when set to empty string', done => {
       User.update({ id: '9999', name: '' }, (err, acc) => {
         expect(err).to.not.exist;
@@ -412,22 +434,26 @@ describe('Dynogels Integration Tests', function () {
     });
 
     it('should update item with dynamic keys', done => {
-      DynamicKeyModel.update({
-        id: 'rand-5',
-        color: 'green',
-        settings: { email: 'dynupdate@test.com' }
-      }, (err, acc) => {
-        expect(err).to.not.exist;
-        expect(acc).to.exist;
-        expect(acc.get()).to.have.keys(['id', 'settings', 'color']);
-
-        expect(acc.get()).to.eql({
+      DynamicKeyModel.create({
+        id: 'rand-5'
+      }, () => {
+        DynamicKeyModel.update({
           id: 'rand-5',
           color: 'green',
           settings: { email: 'dynupdate@test.com' }
-        });
+        }, (err, acc) => {
+          expect(err).to.not.exist;
+          expect(acc).to.exist;
+          expect(acc.get()).to.have.keys(['id', 'settings', 'color']);
 
-        return done();
+          expect(acc.get()).to.eql({
+            id: 'rand-5',
+            color: 'green',
+            settings: { email: 'dynupdate@test.com' }
+          });
+
+          return done();
+        });
       });
     });
   });
@@ -946,16 +972,18 @@ describe('Dynogels Integration Tests', function () {
     });
 
     it('should add updatedAt param', done => {
-      Model.update({ id: 'test-2' }, err => {
-        expect(err).to.not.exist;
+      Model.create({ id: 'test-2' }, () => {
+        Model.update({ id: 'test-2' }, err => {
+          expect(err).to.not.exist;
 
-        Model.get('test-2', (err2, data) => {
-          expect(err2).to.not.exist;
+          Model.get('test-2', (err2, data) => {
+            expect(err2).to.not.exist;
 
-          expect(data.get('id')).to.eql('test-2');
-          expect(data.get('updatedAt')).to.exist;
+            expect(data.get('id')).to.eql('test-2');
+            expect(data.get('updatedAt')).to.exist;
 
-          return done();
+            return done();
+          });
         });
       });
     });
@@ -976,16 +1004,18 @@ describe('Dynogels Integration Tests', function () {
     });
 
     it('should add custom updatedAt param', done => {
-      ModelCustomTimestamps.update({ id: 'test-2' }, err => {
-        expect(err).to.not.exist;
+      ModelCustomTimestamps.create({ id: 'test-2' }, () => {
+        ModelCustomTimestamps.update({ id: 'test-2' }, err => {
+          expect(err).to.not.exist;
 
-        ModelCustomTimestamps.get('test-2', (err2, data) => {
-          expect(err2).to.not.exist;
+          ModelCustomTimestamps.get('test-2', (err2, data) => {
+            expect(err2).to.not.exist;
 
-          expect(data.get('id')).to.eql('test-2');
-          expect(data.get('updated')).to.exist;
+            expect(data.get('id')).to.eql('test-2');
+            expect(data.get('updated')).to.exist;
 
-          return done();
+            return done();
+          });
         });
       });
     });

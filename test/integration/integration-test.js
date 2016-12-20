@@ -338,17 +338,6 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should fail to update an attribute not in the schema', (done) => {
-      User.update({
-        id: '123456789',
-        invalidAttribute: 'Invalid Value'
-      }, (err, account) => {
-        expect(err).to.exist;
-        expect(account).to.not.exist;
-        return done();
-      });
-    });
-
     it('should remove name attribute from user record when set to empty string', done => {
       User.update({ id: '9999', name: '' }, (err, acc) => {
         expect(err).to.not.exist;

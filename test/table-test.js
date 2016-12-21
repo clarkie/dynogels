@@ -706,8 +706,8 @@ describe('table', () => {
         hashKey: 'userId',
         rangeKey: 'timeOffset',
         schema: {
-          hashKey: Joi.number(),
-          rangeKey: Joi.number()
+          userId: Joi.number(),
+          timeOffset: Joi.number()
         }
       };
 
@@ -727,6 +727,8 @@ describe('table', () => {
 
       const item = { userId: 0, timeOffset: 0 };
       table.update(item, (err, user) => {
+        expect(err).to.be.null;
+
         user.should.be.instanceof(Item);
 
         user.get('userId').should.equal(0);

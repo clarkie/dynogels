@@ -676,7 +676,8 @@ describe('table', () => {
         ReturnValues: 'ALL_NEW',
         UpdateExpression: 'SET #name = :name, #age = :age',
         ExpressionAttributeValues: { ':name': 'Tim Test', ':age': 23 },
-        ExpressionAttributeNames: { '#name': 'name', '#age': 'age' }
+        ExpressionAttributeNames: { '#hashKey': 'email', '#name': 'name', '#age': 'age' },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       const returnedAttributes = {
@@ -718,7 +719,9 @@ describe('table', () => {
       const request = {
         TableName: 'users',
         Key: { userId: 0, timeOffset: 0 },
-        ReturnValues: 'ALL_NEW'
+        ReturnValues: 'ALL_NEW',
+        ExpressionAttributeNames: { '#hashKey': 'userId' },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       const returnedAttributes = { userId: 0, timeOffset: 0 };
@@ -756,8 +759,8 @@ describe('table', () => {
         ReturnValues: 'ALL_OLD',
         UpdateExpression: 'SET #name = :name, #age = :age',
         ExpressionAttributeValues: { ':name_2': 'Foo Bar', ':name': 'Tim Test', ':age': 23 },
-        ExpressionAttributeNames: { '#name': 'name', '#age': 'age' },
-        ConditionExpression: '(#name = :name_2)'
+        ExpressionAttributeNames: { '#hashKey': 'email', '#name': 'name', '#age': 'age' },
+        ConditionExpression: 'attribute_exists(#hashKey) AND (#name = :name_2)'
       };
 
       const returnedAttributes = {
@@ -803,7 +806,8 @@ describe('table', () => {
         ReturnValues: 'ALL_NEW',
         UpdateExpression: 'SET #name = :name, #age = :age ADD #color :c',
         ExpressionAttributeValues: { ':name': 'Tim Test', ':age': 23, ':c': 'red' },
-        ExpressionAttributeNames: { '#name': 'name', '#age': 'age', '#color': 'color' }
+        ExpressionAttributeNames: { '#hashKey': 'email', '#name': 'name', '#age': 'age', '#color': 'color' },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       const returnedAttributes = {

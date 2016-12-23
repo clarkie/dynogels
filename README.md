@@ -134,6 +134,22 @@ dynogels.createTables({
 });
 ```
 
+You can also pass operational options using the `$dynogels` key:
+
+* `pollingInterval`: When creating a table, Dynogels must poll the DynamoDB server to detect when table creation has completed.  This option specifies the *minimum* poll interval, in milliseconds.  (Default: 1000)
+
+```js
+dynogels.createTables({
+  $dynogels: { pollingInterval: 100 }
+}, function(err) {
+  if (err) {
+    console.log('Error creating tables: ', err);
+  } else {
+    console.log('Tables has been created');
+  }
+});
+```
+
 ### Delete Table
 
 ```js

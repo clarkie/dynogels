@@ -373,6 +373,32 @@ Account.update({email: 'foo@example.com', age: null}, function (err, acc) {
 });
 ```
 
+To ensure that an item exists before updating, use the `expected` parameter to check the existence of the hash key.  The hash key must exist for every DynamoDB item. This will return an error if the item does not exist.
+```js
+Account.update(
+  { email: 'foo@example.com', name: 'FooBar Testers' },
+  { expected: { email: { Exists: true } } },
+  (err, acc) => {
+    console.log(acc.get('name')); // FooBar Testers
+  }
+);
+
+Account.update(
+  { email: 'baz@example.com', name: 'Bar Tester' },
+  { expected: { email: { Exists: true } } },
+  (err, acc) => {
+    console.log(err); // Condition Expression failed: no Account with that hash key
+  }
+);
+```
+
+This is essentially short-hand for:
+```js
+var params = {};
+    params.ConditionExpression = 'attribute_exists(#hashKey)';
+    params.ExpressionAttributeNames = { '#hashKey' : 'email' };
+```
+
 You can also pass what action to perform when updating a given attribute
 Use $add to increment or decrement numbers and add values to sets
 

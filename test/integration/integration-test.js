@@ -327,6 +327,38 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
+    it('should use expected to check that the item exists', (done) => {
+      User.update(
+        {
+          id: '123456789',
+          email: 'updated_already@exists.com'
+        },
+        {
+          expected: { id: { Exists: true } }
+        },
+        (err, acc) => {
+          expect(err).to.not.exist;
+          expect(acc).to.exist;
+          expect(acc.attrs.email).to.eql('updated_already@exists.com');
+          done();
+        }
+      );
+    });
+
+    it('should fail when expected exists check fails', (done) => {
+      User.update(
+        {
+          id: 'does not exist'
+        },
+        { expected: { id: { Exists: true } } },
+        (err, acc) => {
+          expect(err).to.exist;
+          expect(acc).to.not.exist;
+          done();
+        }
+      );
+    });
+
     it('should remove name attribute from user record when set to empty string', done => {
       User.update({ id: '9999', name: '' }, (err, acc) => {
         expect(err).to.not.exist;

@@ -706,8 +706,8 @@ describe('table', () => {
         hashKey: 'userId',
         rangeKey: 'timeOffset',
         schema: {
-          hashKey: Joi.number(),
-          rangeKey: Joi.number()
+          userId: Joi.number(),
+          timeOffset: Joi.number()
         }
       };
 
@@ -727,6 +727,8 @@ describe('table', () => {
 
       const item = { userId: 0, timeOffset: 0 };
       table.update(item, (err, user) => {
+        expect(err).to.be.null;
+
         user.should.be.instanceof(Item);
 
         user.get('userId').should.equal(0);
@@ -1360,6 +1362,47 @@ describe('table', () => {
       dynamodb.createTable.yields(null, {});
 
       table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
+        expect(err).to.be.null;
+        dynamodb.createTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
+
+    it('should create table with stream specification', done => {
+      const config = {
+        hashKey: 'name',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      const request = {
+        TableName: 'accounts',
+        AttributeDefinitions: [
+          { AttributeName: 'name', AttributeType: 'S' }
+        ],
+        KeySchema: [
+          { AttributeName: 'name', KeyType: 'HASH' }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 },
+        StreamSpecification: { StreamEnabled: true, StreamViewType: 'NEW_IMAGE' }
+      };
+
+      dynamodb.createTable.yields(null, {});
+
+      table.createTable({
+        readCapacity: 5,
+        writeCapacity: 5,
+        streamSpecification: {
+          streamEnabled: true,
+          streamViewType: 'NEW_IMAGE'
+        }
+      }, err => {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();

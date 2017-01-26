@@ -6,7 +6,8 @@
 [![DevDependencies Status](https://david-dm.org/clarkie/dynogels/dev-status.svg)](https://david-dm.org/clarkie/dynogels#info=devDependencies)
 [![Known Vulnerabilities](https://snyk.io/test/npm/dynogels/badge.svg)](https://snyk.io/test/npm/dynogels)
 
-Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from [Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name.
+Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from
+[Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name.
 
 ## Features
 * Simplified data modeling and mapping to DynamoDB types
@@ -25,23 +26,26 @@ Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been 
 First, you need to configure the [AWS SDK][2] with your credentials.
 
 ```js
-var vogels = require('dynogels');
-vogels.AWS.config.loadFromPath('credentials.json');
+var dynogels = require('dynogels');
+dynogels.AWS.config.loadFromPath('credentials.json');
 ```
 
-When running on EC2 its recommended to leverage EC2 IAM roles. If you have configured your instance to use IAM roles, Vogels will automatically select these credentials for use in your application, and you do not need to manually provide credentials in any other format.
+When running on EC2 it's recommended to leverage EC2 IAM roles. If you have configured your instance to use IAM roles,
+Vogels will automatically select these credentials for use in your application,
+and you do not need to manually provide credentials in any other format.
 
 ```js
-var vogels = require('dynogels');
-vogels.AWS.config.update({region: "REGION"}); // region must be set
+var dynogels = require('dynogels');
+dynogels.AWS.config.update({region: "REGION"}); // region must be set
 ```
 
 You can also directly pass in your access key id, secret and region.
-  * Its recommend you not hard-code credentials inside an application. Use this method only for small personal scripts or for testing purposes.
+  * It's recommended not to hard-code credentials inside an application.
+  Use this method only for small personal scripts or for testing purposes.
 
 ```js
-var vogels = require('dynogels');
-vogels.AWS.config.update({accessKeyId: 'AKID', secretAccessKey: 'SECRET', region: "REGION"});
+var dynogels = require('dynogels');
+dynogels.AWS.config.update({accessKeyId: 'AKID', secretAccessKey: 'SECRET', region: "REGION"});
 ```
 
 Currently the following region codes are available in Amazon:
@@ -62,7 +66,7 @@ Currently the following region codes are available in Amazon:
 Models are defined through the toplevel define method.
 
 ```js
-var Account = vogels.define('Account', {
+var Account = dynogels.define('Account', {
   hashKey : 'email',
 
   // add the timestamp attributes (updatedAt, createdAt)
@@ -72,7 +76,7 @@ var Account = vogels.define('Account', {
     email   : Joi.string().email(),
     name    : Joi.string(),
     age     : Joi.number(),
-    roles   : vogels.types.stringSet(),
+    roles   : dynogels.types.stringSet(),
     settings : {
       nickname      : Joi.string(),
       acceptedTerms : Joi.boolean().default(false)
@@ -84,14 +88,14 @@ var Account = vogels.define('Account', {
 Models can also be defined with hash and range keys.
 
 ```js
-var BlogPost = vogels.define('BlogPost', {
+var BlogPost = dynogels.define('BlogPost', {
   hashKey : 'email',
   rangeKey : ‘title’,
   schema : {
     email   : Joi.string().email(),
     title   : Joi.string(),
     content : Joi.binary(),
-    tags   : vogels.types.stringSet(),
+    tags   : dynogels.types.stringSet(),
   }
 });
 ```
@@ -99,7 +103,7 @@ var BlogPost = vogels.define('BlogPost', {
 ### Create Tables for all defined models
 
 ```js
-vogels.createTables(function(err) {
+dynogels.createTables(function(err) {
   if (err) {
     console.log('Error creating tables: ', err);
   } else {
@@ -108,12 +112,35 @@ vogels.createTables(function(err) {
 });
 ```
 
-When creating tables you can pass specific throughput settings for any defined models.
+When creating tables you can pass specific throughput settings or stream specification for any defined models.
 
 ```js
-vogels.createTables({
+dynogels.createTables({
   'BlogPost': {readCapacity: 5, writeCapacity: 10},
-  'Account': {readCapacity: 20, writeCapacity: 4}
+  'Account': {
+    readCapacity: 20, 
+    writeCapacity: 4, 
+    streamSpecification: { 
+      streamEnabled: true, 
+      streamViewType: 'NEW_IMAGE' 
+    }
+  }
+}, function(err) {
+  if (err) {
+    console.log('Error creating tables: ', err);
+  } else {
+    console.log('Tables has been created');
+  }
+});
+```
+
+You can also pass operational options using the `$dynogels` key:
+
+* `pollingInterval`: When creating a table, Dynogels must poll the DynamoDB server to detect when table creation has completed.  This option specifies the *minimum* poll interval, in milliseconds.  (Default: 1000)
+
+```js
+dynogels.createTables({
+  $dynogels: { pollingInterval: 100 }
 }, function(err) {
   if (err) {
     console.log('Error creating tables: ', err);
@@ -153,22 +180,23 @@ Default, the uuid will be automatically generated when attempting to create
 the model in DynamoDB.
 
 ```js
-var Tweet = vogels.define('Tweet', {
+var Tweet = dynogels.define('Tweet', {
   hashKey : 'TweetID',
   timestamps : true,
   schema : {
-    TweetID : vogels.types.uuid(),
+    TweetID : dynogels.types.uuid(),
     content : Joi.string(),
   }
 });
 ```
 
 ### Configuration
-You can configure vogels to automatically add `createdAt` and `updatedAt` timestamp attributes when
-saving and updating a model. `updatedAt` will only be set when updating a record and will not be set on initial creation of the model.
+You can configure dynogels to automatically add `createdAt` and `updatedAt` timestamp attributes when
+saving and updating a model. `updatedAt` will only be set when updating a record
+and will not be set on initial creation of the model.
 
 ```js
-var Account = vogels.define('Account', {
+var Account = dynogels.define('Account', {
   hashKey : 'email',
 
   // add the timestamp attributes (updatedAt, createdAt)
@@ -180,11 +208,11 @@ var Account = vogels.define('Account', {
 });
 ```
 
-If you want vogels to handle timestamps, but only want some of them, or want your
+If you want dynogels to handle timestamps, but only want some of them, or want your
 timestamps to be called something else, you can override each attribute individually:
 
 ```js
-var Account = vogels.define('Account', {
+var Account = dynogels.define('Account', {
   hashKey : 'email',
 
   // enable timestamps support
@@ -205,7 +233,7 @@ var Account = vogels.define('Account', {
 You can override the table name the model will use.
 
 ```js
-var Event = vogels.define('Event', {
+var Event = dynogels.define('Event', {
   hashKey : 'name',
   schema : {
     name : Joi.string(),
@@ -216,11 +244,11 @@ var Event = vogels.define('Event', {
 });
 ```
 
-if you set the tableName to a function, vogels will use the result of the function as the active table to use.
+if you set the tableName to a function, dynogels will use the result of the function as the active table to use.
 Useful for storing time series data.
 
 ```js
-var Event = vogels.define('Event', {
+var Event = dynogels.define('Event', {
   hashKey : 'name',
   schema : {
     name : Joi.string(),
@@ -250,7 +278,7 @@ Account.config({dynamodb: dynamodb});
 
 // or globally use custom DynamoDB instance
 // all defined models will now use this driver
-vogels.dynamoDriver(dynamodb);
+dynogels.dynamoDriver(dynamodb);
 ```
 
 ### Saving Models to DynamoDB
@@ -345,6 +373,32 @@ Account.update({email: 'foo@example.com', age: null}, function (err, acc) {
 });
 ```
 
+To ensure that an item exists before updating, use the `expected` parameter to check the existence of the hash key.  The hash key must exist for every DynamoDB item. This will return an error if the item does not exist.
+```js
+Account.update(
+  { email: 'foo@example.com', name: 'FooBar Testers' },
+  { expected: { email: { Exists: true } } },
+  (err, acc) => {
+    console.log(acc.get('name')); // FooBar Testers
+  }
+);
+
+Account.update(
+  { email: 'baz@example.com', name: 'Bar Tester' },
+  { expected: { email: { Exists: true } } },
+  (err, acc) => {
+    console.log(err); // Condition Expression failed: no Account with that hash key
+  }
+);
+```
+
+This is essentially short-hand for:
+```js
+var params = {};
+    params.ConditionExpression = 'attribute_exists(#hashKey)';
+    params.ExpressionAttributeNames = { '#hashKey' : 'email' };
+```
+
 You can also pass what action to perform when updating a given attribute
 Use $add to increment or decrement numbers and add values to sets
 
@@ -407,7 +461,7 @@ var params = {};
     ':current' : 2001,
     ':title' : ['The Man'],
     ':firstName' : 'Rob',
-    ':tag' : vogels.Set(['Sports', 'Horror'], 'S')
+    ':tag' : dynogels.Set(['Sports', 'Horror'], 'S')
   };
 
 Movie.update({title : 'Movie 0', description : 'This is a description'}, params, function (err, mov) {});
@@ -547,7 +601,7 @@ BlogPost
 
 // query the first 10 posts by werner@example.com but only return
 // the title and content from posts where the title starts with 'Expanding'
-// WARNING: See notes below on the implementation of limit in DynamoDB **
+// WARNING: See notes below on the implementation of limit in DynamoDB
 BlogPost
   .query('werner@example.com')
   .where('title').beginsWith('Expanding')
@@ -578,8 +632,8 @@ BlogPost
   .exec(callback);
 ```
 
-** Warning, limit is applied first before the where filter. The limit value limits the scanned count,
-not the number of returned items. See #12
+**Warning, limit is applied first before the where filter. The limit value limits the scanned count,
+not the number of returned items. See #12**
 
 Vogels supports all the possible KeyConditions that DynamoDB currently
 supports.
@@ -650,10 +704,11 @@ BlogPost
 See the queryFilter.js [example][0] for more examples of using query filters
 
 #### Global Indexes
+
 First, define a model with a global secondary index.
 
 ```js
-var GameScore = vogels.define('GameScore', {
+var GameScore = dynogels.define('GameScore', {
   hashKey : 'userId',
   rangeKey : 'gameTitle',
   schema : {
@@ -685,7 +740,7 @@ By default all attributes will be projected when no Projection pramater is
 present
 
 ```js
-var GameScore = vogels.define('GameScore', {
+var GameScore = dynogels.define('GameScore', {
   hashKey : 'userId',
   rangeKey : 'gameTitle',
   schema : {
@@ -724,7 +779,7 @@ GameScore
 First, define a model using a local secondary index
 
 ```js
-var BlogPost = vogels.define('Account', {
+var BlogPost = dynogels.define('Account', {
   hashKey : 'email',
   rangekey : 'title',
   schema : {
@@ -980,7 +1035,7 @@ Account.getItems(['foo@example.com','bar@example.com'], {ConsistentRead: true}, 
 ```
 
 ### Streaming api
-vogels supports a basic streaming api in addition to the callback
+dynogels supports a basic streaming api in addition to the callback
 api for `query`, `scan`, and `parallelScan` operations.
 
 ```js
@@ -994,7 +1049,7 @@ stream.on('end', function () {
   console.log('Parallel scan of accounts finished');
 });
 
-var querystream = BlogPost.query('werner@vogels.com').loadAll().exec();
+var querystream = BlogPost.query('werner@dynogels.com').loadAll().exec();
 
 querystream.on('readable', function () {
   console.log('single query response', stream.read());
@@ -1006,10 +1061,10 @@ querystream.on('end', function () {
 ```
 
 ### Dynamic Table Names
-vogels supports dynamic table names, useful for storing time series data.
+dynogels supports dynamic table names, useful for storing time series data.
 
 ```js
-var Event = vogels.define('Event', {
+var Event = dynogels.define('Event', {
   hashKey : 'name',
   schema : {
     name : Joi.string(),
@@ -1029,14 +1084,14 @@ Logging can be enabled to provide detailed information on data being sent and re
 By default logging is turned off.
 
 ```js
-vogels.log.level('info'); // enabled INFO log level
+dynogels.log.level('info'); // enabled INFO log level
 ```
 
 Logging can also be enabled / disabled at the model level.
 
 ```js
-var Account = vogels.define('Account', {hashKey : 'email'});
-var Event = vogels.define('Account', {hashKey : 'name'});
+var Account = dynogels.define('Account', {hashKey : 'email'});
+var Event = dynogels.define('Account', {hashKey : 'name'});
 
 Account.log.level('warn'); // enable WARN log level for Account model operations
 ```
@@ -1044,9 +1099,9 @@ Account.log.level('warn'); // enable WARN log level for Account model operations
 ## Examples
 
 ```js
-var vogels = require('dynogels');
+var dynogels = require('dynogels');
 
-var Account = vogels.define('Account', {
+var Account = dynogels.define('Account', {
   hashKey : 'email',
 
   // add the timestamp attributes (updatedAt, createdAt)
@@ -1078,9 +1133,11 @@ See the [examples][0] for more working sample code.
 Dynogels is provided as-is, free of charge. For support, you have a few choices:
 
 - Ask your support question on [Stackoverflow.com](http://stackoverflow.com), and tag your question with **dynogels**.
-- If you believe you have found a bug in vogels, please submit a support ticket on the [Github Issues page for vogels](http://github.com/clarkie/dynogels/issues). We'll get to them as soon as we can.
+- If you believe you have found a bug in dynogels, please submit a support ticket on
+ the [Github Issues page for dynogels](http://github.com/clarkie/dynogels/issues). We'll get to them as soon as we can.
 - For general feedback message me on [twitter](https://twitter.com/clarkieclarkie)
-- For more personal or immediate support, I’m available for hire to consult on your project. [Contact](mailto:andrew.t.clarke@gmail.com) me for more detals.
+- For more personal or immediate support, I’m available for hire to consult on your project.
+[Contact](mailto:andrew.t.clarke@gmail.com) me for more detals.
 
 ### Maintainers
 
@@ -1112,7 +1169,7 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[0]: https://github.com/ryanfitz/vogels/tree/master/examples
+[0]: https://github.com/clarkie/dynogels/tree/master/examples
 [1]: http://nodejs.org
 [2]: http://aws.amazon.com/sdkfornodejs
 [3]: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html

@@ -1,9 +1,9 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const _ = require('lodash');
 const util = require('util');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 const async = require('async');
 
@@ -13,7 +13,7 @@ const async = require('async');
 
 AWS.config.update({ region: 'us-east-1' });
 
-const GameScore = vogels.define('example-global-index', {
+const GameScore = dynogels.define('example-global-index', {
   hashKey: 'userId',
   rangeKey: 'gameTitle',
   schema: {
@@ -58,7 +58,7 @@ const loadSeedData = callback => {
 };
 
 async.series([
-  async.apply(vogels.createTables.bind(vogels)),
+  async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
 ], err => {
   if (err) {

@@ -1,12 +1,12 @@
 'use strict';
 
-const vogels = require('../index');
-const AWS = vogels.AWS;
+const dynogels = require('../index');
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('example-tablename', {
+const Account = dynogels.define('example-tablename', {
   hashKey: 'email',
   timestamps: true,
   schema: {
@@ -30,7 +30,7 @@ const printAccountInfo = (err, acc) => {
   }
 };
 
-vogels.createTables(err => {
+dynogels.createTables(err => {
   if (err) {
     console.log('Failed to create tables', err);
   } else {

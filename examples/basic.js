@@ -1,20 +1,20 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const _ = require('lodash');
 const util = require('util');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('Foobar', {
+const Account = dynogels.define('Foobar', {
   hashKey: 'email',
   schema: {
     email: Joi.string(),
     name: Joi.string(),
     age: Joi.number(),
-    scores: vogels.types.numberSet(),
+    scores: dynogels.types.numberSet(),
     created: Joi.date().default(Date.now, 'now'),
     list: Joi.array(),
     settings: {
@@ -45,7 +45,7 @@ const printScanResults = (err, data) => {
   }
 };
 
-vogels.createTables(err => {
+dynogels.createTables(err => {
   if (err) {
     console.log('failed to create table', err);
   }

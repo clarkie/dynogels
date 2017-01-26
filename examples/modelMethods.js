@@ -1,12 +1,12 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const Joi = require('joi');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Account = vogels.define('example-model-methods-Account', {
+const Account = dynogels.define('example-model-methods-Account', {
   hashKey: 'email',
   timestamps: true,
   schema: {

@@ -1,12 +1,12 @@
 'use strict';
 
-const vogels = require('../index');
-const AWS = vogels.AWS;
+const dynogels = require('../index');
+const AWS = dynogels.AWS;
 const Joi = require('joi');
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-vogels.define('example-Account', {
+dynogels.define('example-Account', {
   hashKey: 'name',
   rangeKey: 'email',
   schema: {
@@ -19,7 +19,7 @@ vogels.define('example-Account', {
   ]
 });
 
-vogels.define('example-GameScore', {
+dynogels.define('example-GameScore', {
   hashKey: 'userId',
   rangeKey: 'gameTitle',
   schema: {
@@ -39,9 +39,16 @@ vogels.define('example-GameScore', {
   }]
 });
 
-vogels.createTables({
+dynogels.createTables({
   'example-Account': { readCapacity: 1, writeCapacity: 1 },
-  'example-GameScore': { readCapacity: 1, writeCapacity: 1 }
+  'example-GameScore': {
+    readCapacity: 1,
+    writeCapacity: 1,
+    streamSpecification: {
+      streamEnabled: true,
+      streamViewType: 'NEW_IMAGE'
+    }
+  }
 }, err => {
   if (err) {
     console.log('Error creating tables', err);

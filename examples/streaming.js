@@ -1,12 +1,12 @@
 'use strict';
 
-const vogels = require('../index');
+const dynogels = require('../index');
 const Joi = require('joi');
-const AWS = vogels.AWS;
+const AWS = dynogels.AWS;
 
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
-const Product = vogels.define('example-streaming-Product', {
+const Product = dynogels.define('example-streaming-Product', {
   hashKey: 'ProductId',
   timestamps: true,
   schema: {

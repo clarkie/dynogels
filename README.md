@@ -591,7 +591,7 @@ BlogPost
   .query('werner@example.com')
   .where('title').beginsWith('Expanding')
   .exec(callback);
-
+  
 // return only the count of documents that begin with the title Expanding
 BlogPost
   .query('werner@example.com')
@@ -629,6 +629,12 @@ BlogPost
   .limit(10)
   .ascending()
   .loadAll()
+  .exec(callback);
+
+// Traversing Map Data Types
+Account
+  .query('werner@example.com')
+  .filter('settings.acceptedTerms').equals(true)
   .exec(callback);
 ```
 
@@ -864,6 +870,12 @@ Account
   .where('email').gte('f@example.com')
   .attributes(['email','created'])
   .returnConsumedCapacity()
+  .exec();
+
+// Load All accounts, if settings.acceptedTerms is true
+Account
+  .scan()
+  .where('settings.acceptedTerms').equals(true)
   .exec();
 
 // Returns number of matching accounts, rather than the matching accounts themselves

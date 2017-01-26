@@ -200,7 +200,8 @@ describe('Scan', () => {
           name: Joi.string(),
           email: Joi.string(),
           created: Joi.date(),
-          scores: Schema.types.numberSet()
+          scores: Schema.types.numberSet(),
+          data: Joi.object()
         },
         indexes: [{ hashKey: 'name', rangeKey: 'created', type: 'local', name: 'CreatedIndex' }]
       };
@@ -350,6 +351,14 @@ describe('Scan', () => {
       scan.request.ExpressionAttributeNames.should.eql({ '#created': 'created' });
       scan.request.ExpressionAttributeValues.should.eql({ ':created': d.toISOString() });
       scan.request.FilterExpression.should.eql('(#created = :created)');
+    });
+
+    it('should support Map.Attr document paths', () => {
+      scan = scan.where('data.attr').equals(15);
+
+      scan.request.ExpressionAttributeNames.should.eql({ '#data': 'data', '#attr': 'attr' });
+      scan.request.ExpressionAttributeValues.should.eql({ ':data_attr': 15 });
+      scan.request.FilterExpression.should.eql('(#data.#attr = :data_attr)');
     });
   });
 

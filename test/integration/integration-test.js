@@ -725,6 +725,22 @@ describe('Dynogels Integration Tests', function () {
         return done();
       });
     });
+
+    it('should return movie if directed by Steven Spielberg the 4', done => {
+      Movie.query('Movie 4').filter('director.firstName').equals('Steven').filter('director.lastName').equals('Spielberg the 4').limit(2).loadAll().exec((err, data) => {
+        expect(err).to.not.exist;
+        expect(data.Items).to.have.length.above(0);
+
+        _.each(data.Items, t => {
+          expect(t.get('title')).to.eql('Movie 4');
+
+          expect(t.get('director').firstName).to.eql('Steven');
+          expect(t.get('director').lastName).to.eql('Spielberg the 4');
+        });
+
+        return done();
+      });
+    });
   });
 
 
@@ -937,6 +953,20 @@ describe('Dynogels Integration Tests', function () {
 
         _.each(data.Items, t => {
           expect(t.get('tag')).to.exist;
+        });
+
+        return done();
+      });
+    });
+
+    it('should return all movies directed by Steven Spielberg the 4', done => {
+      Movie.scan().where('director.firstName').equals('Steven').where('director.lastName').equals('Spielberg the 4').limit(2).loadAll().exec((err, data) => {
+        expect(err).to.not.exist;
+        expect(data.Items).to.have.length.above(0);
+
+        _.each(data.Items, t => {
+          expect(t.get('director').firstName).to.eql('Steven');
+          expect(t.get('director').lastName).to.eql('Spielberg the 4');
         });
 
         return done();

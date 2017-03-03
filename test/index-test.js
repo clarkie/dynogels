@@ -137,7 +137,11 @@ describe('dynogels', () => {
     it('should extend a model with custom methods', () => {
       let Account = dynogels.define('Account', { hashKey: 'id' });
 
-      Account = Account.extend({ getId: () => this.get('id') }, { getFoo: () => 'foo' });
+      Account = Account.extend({
+        getId: function () {
+          return this.get('id');
+        }
+      }, { getFoo: () => 'foo' });
 
       expect(Account.getFoo()).to.equal('foo');
 

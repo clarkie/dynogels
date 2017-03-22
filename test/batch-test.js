@@ -278,6 +278,82 @@ describe('Batch', () => {
       });
     });
 
+
+    it('should get unprocessed keys', done => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      table.schema = new Schema(config);
+
+      const firstResponse = {
+        Responses: {
+          accounts: [
+            { email: 'test@test.com', name: 'Tim Tester' }
+          ]
+        },
+        UnprocessedKeys: {
+          accounts: {
+            Keys: [
+              { email: 'foo@example.com' }
+            ]
+          }
+        }
+      };
+
+      const secondResponse = {
+        Responses: {
+          accounts: [
+            { email: 'foo@example.com', name: 'Foo Bar' }
+          ]
+        },
+      };
+
+      const expectedFirstRequest = {
+        RequestItems: {
+          accounts: {
+            Keys: [
+              { email: 'test@test.com' },
+              { email: 'foo@example.com' },
+            ]
+          }
+        }
+      };
+
+      const expectedSecondRequest = {
+        RequestItems: {
+          accounts: {
+            Keys: [
+              { email: 'foo@example.com' }
+            ],
+          }
+        }
+      };
+
+      const item1 = { email: 'test@test.com', name: 'Tim Tester' };
+      const item2 = { email: 'foo@example.com', name: 'Foo Bar' };
+      table.initItem.onCall(0).returns(new Item(item1));
+      table.initItem.onCall(1).returns(new Item(item2));
+
+      table.runBatchGetItems
+        .withArgs(expectedFirstRequest).yields(null, firstResponse)
+        .withArgs(expectedSecondRequest).yields(null, secondResponse);
+
+      batch(table, Serializer).getItems(['test@test.com', 'foo@example.com'], (err, items) => {
+        expect(err).to.not.exist;
+
+        expect(table.runBatchGetItems.calledTwice).to.be.true;
+        items.should.have.length(2);
+        items[0].get('email').should.equal('test@test.com');
+        items[1].get('email').should.equal('foo@example.com');
+        done();
+      });
+    });
+
     it('should return error', done => {
       const config = {
         hashKey: 'email',

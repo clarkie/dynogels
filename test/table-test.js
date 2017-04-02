@@ -20,13 +20,11 @@ describe('table', () => {
   let serializer;
   let docClient;
   let dynamodb;
-  let logger;
 
   beforeEach(() => {
     serializer = helper.mockSerializer();
     docClient = helper.mockDocClient();
     dynamodb = docClient.service;
-    logger = helper.testLogger();
   });
 
   describe('#get', () => {
@@ -37,7 +35,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -67,7 +65,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -99,7 +97,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -130,7 +128,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -166,7 +164,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts_2014',
@@ -195,7 +193,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       docClient.get.yields(new Error('Fail'));
 
@@ -220,7 +218,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -256,7 +254,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -294,7 +292,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const numberSet = sinon.match(value => {
         const s = docClient.createSet([1, 2, 3]);
@@ -342,7 +340,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -376,7 +374,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -410,7 +408,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -445,7 +443,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -477,7 +475,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -511,7 +509,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -539,7 +537,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       table.create({ email: 'test@test.com', name: [1, 2, 3] }, (err, account) => {
         expect(err).to.exist;
@@ -562,7 +560,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -598,7 +596,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -633,7 +631,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -668,7 +666,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -713,7 +711,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('users', s, realSerializer, docClient, logger);
+      table = new Table('users', s, realSerializer, docClient);
 
       const request = {
         TableName: 'users',
@@ -750,7 +748,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -797,7 +795,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -851,7 +849,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -890,7 +888,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       docClient.update.yields(new Error('Fail'));
 
@@ -914,7 +912,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const item = { name: 'Dr. Who', birthday: undefined };
 
@@ -939,7 +937,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       table.query('Bob').should.be.instanceof(Query);
     });
@@ -958,7 +956,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       table.scan().should.be.instanceof(Scan);
     });
@@ -977,7 +975,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1010,7 +1008,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('users', s, serializer, docClient, logger);
+      table = new Table('users', s, serializer, docClient);
 
       const request = {
         TableName: 'users',
@@ -1044,7 +1042,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1078,7 +1076,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1121,7 +1119,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1166,7 +1164,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1211,7 +1209,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1248,7 +1246,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1277,7 +1275,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, realSerializer, docClient, logger);
+      table = new Table('accounts', s, realSerializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1310,7 +1308,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1344,7 +1342,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1379,7 +1377,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1425,7 +1423,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts',
@@ -1478,7 +1476,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('gameScores', s, serializer, docClient, logger);
+      table = new Table('gameScores', s, serializer, docClient);
 
       const request = {
         TableName: 'gameScores',
@@ -1538,7 +1536,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('gameScores', s, serializer, docClient, logger);
+      table = new Table('gameScores', s, serializer, docClient);
 
       const request = {
         TableName: 'gameScores',
@@ -1590,7 +1588,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       const request = {
         TableName: 'accounts'
@@ -1618,7 +1616,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
     });
 
     it('should make update table request', done => {
@@ -1663,7 +1661,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
     });
 
     it('should make delete table request', done => {
@@ -1705,7 +1703,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       table.tableName().should.eql('accounts');
     });
@@ -1722,7 +1720,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       table.tableName().should.eql('accounts-2014-03');
     });
@@ -1744,7 +1742,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       table.tableName().should.eql(`accounts_${dateString}`);
     });
@@ -1764,7 +1762,7 @@ describe('table', () => {
 
         const s = new Schema(config);
 
-        table = new Table('accounts', s, serializer, docClient, logger);
+        table = new Table('accounts', s, serializer, docClient);
 
         const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.put.yields(null, {});
@@ -1806,7 +1804,7 @@ describe('table', () => {
 
         const s = new Schema(config);
 
-        table = new Table('accounts', s, serializer, docClient, logger);
+        table = new Table('accounts', s, serializer, docClient);
 
         table.before('create', (data, next) => next(new Error('fail')));
 
@@ -1830,7 +1828,7 @@ describe('table', () => {
 
         const s = new Schema(config);
 
-        table = new Table('accounts', s, serializer, docClient, logger);
+        table = new Table('accounts', s, serializer, docClient);
 
         const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.put.yields(null, {});
@@ -1860,7 +1858,7 @@ describe('table', () => {
 
         const s = new Schema(config);
 
-        table = new Table('accounts', s, serializer, docClient, logger);
+        table = new Table('accounts', s, serializer, docClient);
 
         const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.update.yields(null, {});
@@ -1901,7 +1899,7 @@ describe('table', () => {
 
         const s = new Schema(config);
 
-        table = new Table('accounts', s, serializer, docClient, logger);
+        table = new Table('accounts', s, serializer, docClient);
 
         table.before('update', (data, next) => next(new Error('fail')));
 
@@ -1925,7 +1923,7 @@ describe('table', () => {
 
         const s = new Schema(config);
 
-        table = new Table('accounts', s, serializer, docClient, logger);
+        table = new Table('accounts', s, serializer, docClient);
 
         const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
         docClient.update.yields(null, {});
@@ -1956,7 +1954,7 @@ describe('table', () => {
 
       const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+      table = new Table('accounts', s, serializer, docClient);
 
       docClient.delete.yields(null, {});
       serializer.buildKey.returns({});

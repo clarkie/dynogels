@@ -22,7 +22,6 @@ describe('Query', () => {
     table = helper.mockTable();
     table.config = { name: 'accounts' };
     table.docClient = helper.mockDocClient();
-    table.log = helper.testLogger();
   });
 
   describe('#exec', () => {
@@ -58,7 +57,7 @@ describe('Query', () => {
       };
 
       const s = new Schema(config);
-      const t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
+      const t = new Table('accounts', s, Serializer, helper.mockDocClient());
 
       t.docClient.query.yields(new Error('Fail'));
 
@@ -81,7 +80,7 @@ describe('Query', () => {
 
       const s = new Schema(config);
 
-      const t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
+      const t = new Table('accounts', s, Serializer, helper.mockDocClient());
 
       t.docClient.query.yields(new Error('Fail'));
 
@@ -109,7 +108,7 @@ describe('Query', () => {
 
       const s = new Schema(config);
 
-      const t = new Table('accounts', s, Serializer, helper.mockDocClient(), helper.testLogger());
+      const t = new Table('accounts', s, Serializer, helper.mockDocClient());
 
       const err = new Error('RetryableException');
       err.retryable = true;

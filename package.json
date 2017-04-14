@@ -29,7 +29,6 @@
   "dependencies": {
     "async": "^2.0.0",
     "aws-sdk": "^2.4.8",
-    "bunyan": "^1.8.1",
     "joi": "^9.2.0",
     "lodash": "^4.13.1",
     "uuid": "^3.0.0"

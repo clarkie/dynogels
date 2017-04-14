@@ -22,7 +22,6 @@ describe('Query', () => {
     table = helper.mockTable();
     table.config = { name: 'accounts' };
     table.docClient = helper.mockDocClient();
-    table.log = helper.testLogger();
   });
 
   describe('#exec', () => {

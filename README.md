@@ -1092,21 +1092,25 @@ var Event = dynogels.define('Event', {
 ```
 
 ### Logging
-Logging can be enabled to provide detailed information on data being sent and returned from DynamoDB.
-[Bunyan](https://github.com/trentm/node-bunyan) is used for logging internally.
-By default logging is turned off.
+A logger that implements `info` and `warn` methods (e.g [Bunyan](https://www.npmjs.com/package/bunyan) or [Winston](https://www.npmjs.com/package/winston))
+can be provided to either dynogels itself or individual models:
 
 ```js
-dynogels.log.level('info'); // enabled INFO log level
+const logger = require('winston');
+logger.level = 'warn';
+
+dynogels.log = logger;  // enabled WARN log level on all tables
 ```
 
-Logging can also be enabled / disabled at the model level.
 
 ```js
-var Account = dynogels.define('Account', {hashKey : 'email'});
-var Event = dynogels.define('Account', {hashKey : 'name'});
+const accountLogger = require('winston');
+accountLogger.level = 'info';
 
-Account.log.level('warn'); // enable WARN log level for Account model operations
+var Account = dynogels.define('Account', {
+  hashKey: 'email',
+  log: accountLogger
+}); // INFO level on account table
 ```
 
 * [Bunyan log levels](https://github.com/trentm/node-bunyan#levels)

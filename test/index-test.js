@@ -48,7 +48,7 @@ describe('dynogels', () => {
     it('should configure table name as accounts', () => {
       const Account = dynogels.define('Account', { hashKey: 'id' });
 
-      Account.config().name.should.equal('accounts');
+      Account.config().name.should.equal('account');
     });
 
     it('should return new account item', () => {

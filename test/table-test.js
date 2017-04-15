@@ -991,7 +991,9 @@ describe('table', () => {
         TableName: 'accounts',
         Key: {
           email: 'test@test.com'
-        }
+        },
+        ExpressionAttributeNames: { '#hashKey': config.hashKey },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       docClient.delete.yields(null, {});
@@ -1025,7 +1027,9 @@ describe('table', () => {
         Key: {
           userId: 0,
           timeOffset: 0
-        }
+        },
+        ExpressionAttributeNames: { '#hashKey': config.hashKey },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       docClient.delete.yields(null, {});
@@ -1059,7 +1063,9 @@ describe('table', () => {
         Key: {
           email: { S: 'test@test.com' }
         },
-        ReturnValues: 'ALL_OLD'
+        ReturnValues: 'ALL_OLD',
+        ExpressionAttributeNames: { '#hashKey': config.hashKey },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       docClient.delete.yields(null, {});
@@ -1091,7 +1097,9 @@ describe('table', () => {
       const request = {
         TableName: 'accounts',
         Key: { email: 'test@test.com' },
-        ReturnValues: 'ALL_OLD'
+        ReturnValues: 'ALL_OLD',
+        ExpressionAttributeNames: { '#hashKey': config.hashKey },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       const returnedAttributes = {
@@ -1136,7 +1144,9 @@ describe('table', () => {
         Key: {
           email: 'test@test.com',
           name: 'Foo Bar'
-        }
+        },
+        ExpressionAttributeNames: { '#hashKey': config.hashKey },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       const returnedAttributes = {
@@ -1182,7 +1192,9 @@ describe('table', () => {
           email: 'test@test.com',
           name: 'Foo Bar'
         },
-        ReturnValues: 'ALL_OLD'
+        ReturnValues: 'ALL_OLD',
+        ExpressionAttributeNames: { '#hashKey': config.hashKey },
+        ConditionExpression: 'attribute_exists(#hashKey)'
       };
 
       const returnedAttributes = {
@@ -1226,9 +1238,12 @@ describe('table', () => {
         Key: {
           email: 'test@test.com'
         },
-        ExpressionAttributeNames: { '#name': 'name' },
+        ExpressionAttributeNames: {
+          '#hashKey': config.hashKey,
+          '#name': 'name'
+        },
         ExpressionAttributeValues: { ':name': 'Foo Bar' },
-        ConditionExpression: '(#name = :name)'
+        ConditionExpression: 'attribute_exists(#hashKey) AND (#name = :name)',
       };
 
       docClient.delete.yields(null, {});

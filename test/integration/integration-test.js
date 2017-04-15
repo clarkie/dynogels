@@ -1126,6 +1126,14 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
+    it('should fail when destroying an item that does not exist', (done) => {
+      User.destroy({ id: 'not a valid id' }, (err, acc) => {
+        expect(err).to.exist;
+        expect(acc).to.be.undefined;
+        done();
+      });
+    });
+
     it('should destroy item and return old values', done => {
       User.destroy({ id: userId }, { ReturnValues: 'ALL_OLD' }, (err, acc) => {
         expect(err).to.not.exist;

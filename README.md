@@ -674,6 +674,18 @@ BlogPost
   .where('title').gte('Expanding')
   .exec();
 
+// attribute doesn't exist
+BlogPost
+  .query('werner@example.com')
+  .where('title').null()
+  .exec();
+
+// attribute exists
+BlogPost
+  .query('werner@example.com')
+  .where('title').exists()
+  .exec();
+
 BlogPost
   .query('werner@example.com')
   .where('title').beginsWith('Expanding')

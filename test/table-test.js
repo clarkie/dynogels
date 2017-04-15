@@ -773,13 +773,21 @@ describe('table', () => {
 
       docClient.update.withArgs(request).yields(null, { Attributes: returnedAttributes });
 
-      table.update(item, { ReturnValues: 'ALL_OLD', expected: { name: 'Foo Bar' } }, (err, account) => {
+      const getOptions = function () {
+        return { ReturnValues: 'ALL_OLD', expected: { name: 'Foo Bar' } };
+      };
+
+      const passedOptions = getOptions();
+
+      table.update(item, passedOptions, (err, account) => {
         account.should.be.instanceof(Item);
 
         account.get('email').should.equal('test@test.com');
         account.get('name').should.equal('Tim Test');
         account.get('age').should.equal(23);
         account.get('scores').should.eql([97, 86]);
+
+        expect(passedOptions).to.deep.equal(getOptions());
 
         done();
       });

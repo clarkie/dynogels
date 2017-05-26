@@ -80,7 +80,7 @@ describe('Dynogels Integration Tests', function () {
     User = dynogels.define('dynogels-int-test-user', {
       hashKey: 'id',
       schema: {
-        id: Joi.string().required().default(() => uuid.v4(), 'uuid'),
+        id: Joi.string().default(() => uuid.v4(), 'uuid'),
         email: Joi.string().required(),
         name: Joi.string().allow(''),
         age: Joi.number().min(10),

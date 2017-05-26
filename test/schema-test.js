@@ -417,7 +417,7 @@ describe('schema', () => {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
-          name: Joi.string().default('Foo Bar').required(),
+          name: Joi.string().default('Foo Bar'),
           age: Joi.number().default(3)
         }
       };

@@ -137,7 +137,8 @@ describe('Dynogels Integration Tests', function () {
       hashKey: 'id',
       schema: Joi.object().keys({
         id: Joi.string()
-      }).unknown()
+      }).unknown(),
+      log: console,
     });
 
     async.series([

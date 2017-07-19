@@ -100,6 +100,23 @@ var BlogPost = dynogels.define('BlogPost', {
 });
 ```
 
+You can pass through validation options to Joi like so:
+
+```js
+var BlogPost = dynogels.define('BlogPost', {
+  hashKey : 'email',
+  rangeKey : 'title',
+  schema : {
+    email   : Joi.string().email(),
+    title   : Joi.string()
+  },
+  validation: {
+    // allow properties not defined in the schema
+    allowUnknown: true
+  }
+});
+```
+
 ### Create Tables for all defined models
 
 ```js

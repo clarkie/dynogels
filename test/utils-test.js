@@ -68,4 +68,42 @@ describe('utils', () => {
       });
     });
   });
+
+  describe('streamRequest', () => {
+    it('should read all', done => {
+      const requestStub = sandbox.stub();
+      requestStub.onCall(0).callsArgOnWithAsync(1, null, null, {
+        LastEvaluatedKey: 1,
+        ConsumedCapacity: { CapacityUnits: 100 },
+        Items: [1, 2]
+      });
+      requestStub.onCall(1).callsArgOnWithAsync(1, null, null, {
+        LastEvaluatedKey: 2,
+        ConsumedCapacity: { CapacityUnits: 100 },
+        Items: [3, 4]
+      });
+      requestStub.onCall(2).callsArgOnWithAsync(1, null, null, {
+        LastEvaluatedKey: null,
+        ConsumedCapacity: { CapacityUnits: 30 },
+        Items: [5]
+      });
+      const stream = utils.streamRequest({
+        options: {
+          loadAll: true,
+          consumeThroughputLimit: 50
+        },
+        buildRequest: () => null,
+        startKey: () => null
+      }, requestStub);
+
+      let batch = 0;
+      setInterval(() => clock.tick(500), 10);
+      stream.on('data', () => {
+        expect(requestStub.callCount).to.equal(++batch);
+        if (batch === 3) {
+          done();
+        }
+      });
+    });
+  });
 });

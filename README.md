@@ -1090,6 +1090,12 @@ querystream.on('readable', function () {
 querystream.on('end', function () {
   console.log('query for blog posts finished');
 });
+
+// rate limit for stream  
+var stream = BlogPost.query('werner@example.com').consumeThroughput(50).loadAll().exec();
+stream.on('data', function (data) {
+  console.log('single query response', data);
+});
 ```
 
 ### Dynamic Table Names

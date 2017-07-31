@@ -17,6 +17,7 @@ Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been 
 * [Global Secondary Indexes](#global-indexes)
 * [Local Secondary Indexes](#local-secondary-indexes)
 * [Parallel Scans](#parallel-scan)
+* Rate limiting for scan and query
 
 ## Installation
 
@@ -577,6 +578,13 @@ BlogPost
 // same as above, but load all results
 BlogPost
   .query('werner@example.com')
+  .loadAll()
+  .exec(callback);
+
+// limit consumed throughput to 50 when loading all
+BlogPost
+  .query('werner@example.com')
+  .consumeThroughput(50)
   .loadAll()
   .exec(callback);
 

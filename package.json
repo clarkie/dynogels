@@ -30,7 +30,6 @@
     "async": "2.4.1",
     "aws-sdk": "2.58.0",
     "joi": "10.5.0",
-    "limiter": "1.1.2",
     "lodash": "4.17.4",
     "uuid": "3.0.1"
   },
@@ -42,6 +41,7 @@
     "eslint-plugin-import": "^1.11.1",
     "istanbul": "^0.4.4",
     "jscoverage": "^0.6.0",
+    "limiter": "^1.1.2",
     "mocha": "^2.5.3",
     "sinon": "^1.17.4"
   }

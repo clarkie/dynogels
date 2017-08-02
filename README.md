@@ -582,9 +582,22 @@ BlogPost
   .exec(callback);
 
 // limit consumed throughput to 50 when loading all
+class SimpleRateLimiter {
+  constructor() {
+    this.config = { tokensPerSecond: Number.MAX_SAFE_INTEGER };
+  }
+
+  getTokensRemaining() {
+    return Promise.resolve(Number.MAX_SAFE_INTEGER);
+  }
+
+  tryRemoveTokens(count) {
+    return Promise.resolve(true);
+  }
+}
 BlogPost
   .query('werner@example.com')
-  .consumeThroughput(50)
+  .setRateLimiter(new SimpleRateLimiter())
   .loadAll()
   .exec(callback);
 
@@ -1092,7 +1105,20 @@ querystream.on('end', function () {
 });
 
 // rate limit for stream  
-var stream = BlogPost.query('werner@example.com').consumeThroughput(50).loadAll().exec();
+class SimpleRateLimiter {
+  constructor() {
+    this.config = { tokensPerSecond: Number.MAX_SAFE_INTEGER };
+  }
+
+  getTokensRemaining() {
+    return Promise.resolve(Number.MAX_SAFE_INTEGER);
+  }
+
+  tryRemoveTokens(count) {
+    return Promise.resolve(true);
+  }
+}
+var stream = BlogPost.query('werner@example.com').setRateLimiter(new SimpleRateLimiter()).loadAll().exec();
 stream.on('data', function (data) {
   console.log('single query response', data);
 });

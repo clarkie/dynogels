@@ -1,8 +1,24 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const utils = require('../lib/utils');
+const RateLimiter = require('limiter').RateLimiter;
 
 const expect = chai.expect;
+
+class SimpleRateLimiter {
+  constructor() {
+    this.config = { tokensPerSecond: Number.MAX_SAFE_INTEGER };
+    this._limiter = new RateLimiter(50, 'seconds');
+  }
+
+  getTokensRemaining() {
+    return Promise.resolve(this._limiter.getTokensRemaining());
+  }
+
+  tryRemoveTokens(count) {
+    return Promise.resolve(this._limiter.tryRemoveTokens(count));
+  }
+}
 
 describe('utils', () => {
   let sandbox;
@@ -37,8 +53,8 @@ describe('utils', () => {
         {
           options: {
             loadAll: true,
-            consumeThroughputLimit: 50
           },
+          rateLimiter: new SimpleRateLimiter(),
           table: {
             tableName: () => 'testTable',
           },
@@ -90,8 +106,8 @@ describe('utils', () => {
       const stream = utils.streamRequest({
         options: {
           loadAll: true,
-          consumeThroughputLimit: 50
         },
+        rateLimiter: new SimpleRateLimiter(),
         buildRequest: () => null,
         startKey: () => null
       }, requestStub);

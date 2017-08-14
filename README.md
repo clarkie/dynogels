@@ -17,6 +17,7 @@ Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been 
 * [Global Secondary Indexes](#global-indexes)
 * [Local Secondary Indexes](#local-secondary-indexes)
 * [Parallel Scans](#parallel-scan)
+* Rate limiting for scan and query
 
 ## Installation
 
@@ -580,6 +581,26 @@ BlogPost
   .loadAll()
   .exec(callback);
 
+// limit consumed throughput to 50 when loading all
+class SimpleRateLimiter {
+  constructor() {
+    this.config = { tokensPerSecond: Number.MAX_SAFE_INTEGER };
+  }
+
+  getTokensRemaining() {
+    return Promise.resolve(Number.MAX_SAFE_INTEGER);
+  }
+
+  tryRemoveTokens(count) {
+    return Promise.resolve(true);
+  }
+}
+BlogPost
+  .query('werner@example.com')
+  .setRateLimiter(new SimpleRateLimiter())
+  .loadAll()
+  .exec(callback);
+
 // only load the first 5 posts by werner
 BlogPost
   .query('werner@example.com')
@@ -1081,6 +1102,25 @@ querystream.on('readable', function () {
 
 querystream.on('end', function () {
   console.log('query for blog posts finished');
+});
+
+// rate limit for stream  
+class SimpleRateLimiter {
+  constructor() {
+    this.config = { tokensPerSecond: Number.MAX_SAFE_INTEGER };
+  }
+
+  getTokensRemaining() {
+    return Promise.resolve(Number.MAX_SAFE_INTEGER);
+  }
+
+  tryRemoveTokens(count) {
+    return Promise.resolve(true);
+  }
+}
+var stream = BlogPost.query('werner@example.com').setRateLimiter(new SimpleRateLimiter()).loadAll().exec();
+stream.on('data', function (data) {
+  console.log('single query response', data);
 });
 ```
 

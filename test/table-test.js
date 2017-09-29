@@ -1845,13 +1845,53 @@ describe('table', () => {
 
         serializer.serializeItem.withArgs(s, item).returns({});
 
-        table.after('create', data => {
-          expect(data).to.exist;
+        table.after('create', (item, next) => {
+          expect(item).to.exist;
+          expect(item.get('email')).to.equal('test@test.com');
+          expect(item.get('name')).to.equal('Tim Test');
+          expect(item.get('age')).to.equal(23);
+
+          setTimeout(() => {
+            next(null, { something: 'else' });
+          }, 10);
+        });
+
+        table.create(item, (err, item) => {
+          expect(err).to.not.exist;
+          expect(item).to.exist;
+          expect(item.something).to.equal('else');
+
+          done();
+        });
+      });
+
+      it('should return error when after hook returns error', done => {
+        const config = {
+          hashKey: 'email',
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
+          }
+        };
+
+        const s = new Schema(config);
+
+        table = new Table('accounts', s, serializer, docClient, logger);
+
+        const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+        docClient.put.yields(null, {});
+
+        serializer.serializeItem.withArgs(s, item).returns({});
+
+        table.after('create', (item, next) => next(new Error('fail')));
+
+        table.create({ email: 'foo@bar.com' }, (err, item) => {
+          expect(err).to.exist;
+          expect(item).to.not.exist;
 
           return done();
         });
-
-        table.create(item, () => {});
       });
     });
 
@@ -1946,32 +1986,123 @@ describe('table', () => {
         serializer.deserializeItem.returns(item);
         docClient.update.yields(null, {});
 
-        table.after('update', () => done());
+        table.after('update', (item, next) => {
+          expect(item).to.exist;
+          expect(item.get('email')).to.equal('test@test.com');
 
-        table.update(item, () => {});
+          setTimeout(() => {
+            next(null, { something: 'else' });
+          }, 10);
+        });
+
+        table.update(item, (err, item) => {
+          expect(err).to.not.exist;
+          expect(item).to.exist;
+          expect(item.something).to.equal('else');
+
+          done();
+        });
+      });
+
+      it('should return error when after hook returns error', done => {
+        const config = {
+          hashKey: 'email',
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
+          }
+        };
+
+        const s = new Schema(config);
+
+        table = new Table('accounts', s, serializer, docClient, logger);
+
+        const item = { email: 'test@test.com', name: 'Tim Test', age: 23 };
+        docClient.update.yields(null, {});
+
+        serializer.serializeItem.withArgs(s, item).returns({});
+
+        serializer.buildKey.returns({ email: { S: 'test@test.com' } });
+        serializer.serializeItemForUpdate.returns({});
+
+        serializer.deserializeItem.returns(item);
+        docClient.update.yields(null, {});
+
+        table.after('update', (item, next) => next(new Error('fail')));
+
+        table.update(item, (err, data) => {
+          expect(err).to.exist;
+          expect(data).to.not.exist;
+
+          return done();
+        });
       });
     });
 
-    it('#destroy should call after hook', done => {
-      const config = {
-        hashKey: 'email',
-        schema: {
-          email: Joi.string(),
-          name: Joi.string(),
-          age: Joi.number()
-        }
-      };
+    describe('#destroy', () => {
+      it('should call after hook', done => {
+        const config = {
+          hashKey: 'email',
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
+          }
+        };
 
-      const s = new Schema(config);
+        const s = new Schema(config);
 
-      table = new Table('accounts', s, serializer, docClient, logger);
+        table = new Table('accounts', s, serializer, docClient, logger);
 
-      docClient.delete.yields(null, {});
-      serializer.buildKey.returns({});
+        docClient.delete.yields(null, {});
 
-      table.after('destroy', () => done());
+        serializer.buildKey.returns({ email: { S: 'test@test.com' } });
+        serializer.deserializeItem.returns({ email: 'test@test.com' });
 
-      table.destroy('test@test.com', () => {});
+        table.after('destroy', (item, next) => {
+          expect(item).to.exist;
+          expect(item.get('email')).to.equal('test@test.com');
+
+          setTimeout(() => {
+            next(null, { something: 'else' });
+          }, 10);
+        });
+
+        table.destroy('test@test.com', (err, item) => {
+          expect(err).to.not.exist;
+          expect(item).to.exist;
+          expect(item.something).to.equal('else');
+
+          done();
+        });
+      });
+
+      it('should return error when after hook returns error', done => {
+        const config = {
+          hashKey: 'email',
+          schema: {
+            email: Joi.string(),
+            name: Joi.string(),
+            age: Joi.number()
+          }
+        };
+
+        const s = new Schema(config);
+
+        table = new Table('accounts', s, serializer, docClient, logger);
+
+        docClient.delete.yields(null, {});
+
+        table.after('destroy', (item, next) => next(new Error('fail')));
+
+        table.destroy('foo@bar.com', (err, item) => {
+          expect(err).to.exist;
+          expect(item).to.not.exist;
+
+          return done();
+        });
+      });
     });
   });
 });

@@ -21,24 +21,27 @@ Account.before('create', (data, next) => {
     data.name = 'Foo Bar';
   }
 
-  return next(null, data);
+  next(null, data);
 });
 
 Account.before('update', (data, next) => {
   data.age = 45;
-  return next(null, data);
+  next(null, data);
 });
 
-Account.after('create', item => {
+Account.after('create', (item, next) => {
   console.log('Account created', item.get());
+  next(null, item);
 });
 
-Account.after('update', item => {
+Account.after('update', (item, next) => {
   console.log('Account updated', item.get());
+  next(null, item);
 });
 
-Account.after('destroy', item => {
+Account.after('destroy', (item, next) => {
   console.log('Account destroyed', item.get());
+  next(null, item);
 });
 
 dynogels.createTables(err => {

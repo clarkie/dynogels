@@ -90,7 +90,7 @@ describe('item', () => {
 
       item.update((err, data) => {
         expect(err).to.not.exist;
-        expect(data).to.not.exist;
+        expect(data.get()).to.eql({ num: 1 });
 
         return done();
       });

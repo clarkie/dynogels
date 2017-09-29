@@ -1,13 +1,10 @@
-# dynogels
-[![Build Status](https://travis-ci.org/clarkie/dynogels.png?branch=master)](https://travis-ci.org/clarkie/dynogels)
-[![Coverage Status](https://coveralls.io/repos/github/clarkie/dynogels/badge.svg)](https://coveralls.io/github/clarkie/dynogels)
-[![npm version](https://badge.fury.io/js/dynogels.svg)](http://badge.fury.io/js/dynogels)
-[![Dependencies Status](https://david-dm.org/clarkie/dynogels.svg)](https://david-dm.org/clarkie/dynogels)
-[![DevDependencies Status](https://david-dm.org/clarkie/dynogels/dev-status.svg)](https://david-dm.org/clarkie/dynogels#info=devDependencies)
-[![Known Vulnerabilities](https://snyk.io/test/npm/dynogels/badge.svg)](https://snyk.io/test/npm/dynogels)
+# @d2l/dynogels
+[![CircleCI](https://circleci.com/gh/Brightspace/dynogels.svg?style=svg)](https://circleci.com/gh/Brightspace/dynogels)
 
 Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been forked from
 [Vogels](https://github.com/ryanfitz/vogels) and republished to npm under a different name.
+
+__This is a fork of Dynogels with better lifecycle hooks.__
 
 ## Features
 * Simplified data modeling and mapping to DynamoDB types

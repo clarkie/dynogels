@@ -57,6 +57,12 @@ describe('dynogels', () => {
       const acc = new Account({ name: 'Test Acc' });
       acc.table.should.be.instanceof(Table);
     });
+
+    it('should have validate method', () => {
+      const Account = dynogels.define('Account', { hashKey: 'id' });
+      expect(Account.validate).to.exist;
+      expect(Account.validate).to.be.a('function');
+    });
   });
 
   describe('#models', () => {

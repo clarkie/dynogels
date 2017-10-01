@@ -12,7 +12,7 @@ Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been 
 ## Features
 * Simplified data modeling and mapping to DynamoDB types
 * Advanced chainable apis for [query](#query) and [scan](#scan) operations
-* Data validation
+* [Data validation](#validation)
 * [Autogenerating UUIDs](#uuid)
 * [Global Secondary Indexes](#global-indexes)
 * [Local Secondary Indexes](#local-secondary-indexes)
@@ -205,6 +205,28 @@ var Tweet = dynogels.define('Tweet', {
     content : Joi.string(),
   }
 });
+```
+
+#### Data Validation
+Dynogels automatically validates the model against the schema before attempting to save it, but you can also call the `validate` method to validate an object before saving it. This can be helpful for a handler to validate input.
+
+```js
+var Tweet = dynogels.define('Tweet', {
+  hashKey : 'TweetID',
+  timestamps : true,
+  schema : {
+    TweetID : dynogels.types.uuid(),
+    content : Joi.string(),
+  }
+});
+
+const tweet = new Tweet({ content: 123 })
+const fail_result = Tweet.validate(tweet)
+console.log(fail_result.error.name) // ValidationError
+
+tweet.set('content', 'This is the content')
+const pass_result = Tweet.validate(tweet)
+console.log(pass_result.error) // null
 ```
 
 ### Configuration

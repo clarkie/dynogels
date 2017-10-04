@@ -12,7 +12,7 @@ Dynogels is a [DynamoDB][5] data mapper for [node.js][1]. This project has been 
 ## Features
 * Simplified data modeling and mapping to DynamoDB types
 * Advanced chainable apis for [query](#query) and [scan](#scan) operations
-* [Data validation](#validation)
+* [Data validation](#data-validation)
 * [Autogenerating UUIDs](#uuid)
 * [Global Secondary Indexes](#global-indexes)
 * [Local Secondary Indexes](#local-secondary-indexes)

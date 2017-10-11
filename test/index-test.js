@@ -26,7 +26,7 @@ describe('dynogels', () => {
       };
 
       const model = dynogels.define('Account', config);
-      expect(model).to.not.be.nil;
+      expect(model).to.be.a('function');
     });
 
     it('should throw when using old api', () => {

@@ -594,7 +594,7 @@ describe('Dynogels Integration Tests', function () {
           const published = t.get('PublishedDateTime');
 
           if (prev) {
-            expect(published).to.be.at.most(prev);
+            expect(published < prev).to.be.true;
           }
 
           prev = published;
@@ -622,7 +622,7 @@ describe('Dynogels Integration Tests', function () {
           const published = t.get('PublishedDateTime');
 
           if (prev) {
-            expect(published).to.be.at.most(prev);
+            expect(published < prev).to.be.true;
           }
 
           prev = published;

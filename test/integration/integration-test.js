@@ -133,12 +133,18 @@ describe('Dynogels Integration Tests', function () {
       }
     });
 
+    const silentLogger = {
+      log: () => {},
+      info: () => {},
+      warn: () => {},
+    };
+
     DynamicKeyModel = dynogels.define('dynogels-int-test-dyn-key', {
       hashKey: 'id',
       schema: Joi.object().keys({
         id: Joi.string()
       }).unknown(),
-      log: console,
+      log: silentLogger,
     });
 
     async.series([

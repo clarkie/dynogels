@@ -1,4 +1,4 @@
-# dynogels
+﻿# dynogels
 [![Build Status](https://travis-ci.org/clarkie/dynogels.png?branch=master)](https://travis-ci.org/clarkie/dynogels)
 [![Coverage Status](https://coveralls.io/repos/github/clarkie/dynogels/badge.svg)](https://coveralls.io/github/clarkie/dynogels)
 [![npm version](https://badge.fury.io/js/dynogels.svg)](http://badge.fury.io/js/dynogels)
@@ -124,7 +124,7 @@ dynogels.createTables(function(err) {
   if (err) {
     console.log('Error creating tables: ', err);
   } else {
-    console.log('Tables has been created');
+    console.log('Tables have been created');
   }
 });
 ```

@@ -361,6 +361,18 @@ describe('Scan', () => {
       scan.request.ExpressionAttributeValues.should.eql({ ':data_attr': 15 });
       scan.request.FilterExpression.should.eql('(#data.#attr = :data_attr)');
     });
+
+    it.only('should properly clean keys', () => {
+      scan = scan
+        .where('abcd').equals(15)
+        .where('abcdé').equals(16)
+        .where('abcd00e9').equals(17)
+        .where('data.abcdé').equals(18);
+
+      scan.request.ExpressionAttributeNames.should.eql({ '#abcd': 'abcd', '#abcd00e9': 'abcdé', '#abcd00300030e0039': 'abcd00e9', '#data': 'data' });
+      scan.request.ExpressionAttributeValues.should.eql({ ':abcd': 15, ':abcd00e9': 16, ':abcd00300030e0039': 17, ':data_abcd00e9': 18 });
+      scan.request.FilterExpression.should.eql('(#abcd = :abcd) AND (#abcd00e9 = :abcd00e9) AND (#abcd00300030e0039 = :abcd00300030e0039) AND (#data.#abcd00e9 = :data_abcd00e9)');
+    });
   });
 
   describe('#loadAll', () => {

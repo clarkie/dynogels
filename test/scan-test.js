@@ -361,7 +361,7 @@ describe('Scan', () => {
       scan.request.FilterExpression.should.eql('(#data.#attr = :data_attr)');
     });
 
-    it.only('should properly clean keys', () => {
+    it('should properly clean keys', () => {
       scan = scan
         .where('abcd').equals(15)
         .where('abcdé').equals(16)

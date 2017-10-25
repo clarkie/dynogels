@@ -108,7 +108,13 @@ describe('Dynogels Integration Tests', function () {
         PublishedDateTime: Joi.date().default(Date.now, 'now')
       },
       indexes: [
-        { hashKey: 'UserId', rangeKey: 'PublishedDateTime', type: 'local', name: 'PublishedDateTimeIndex' }
+        {
+          hashKey: 'UserId',
+          rangeKey: 'PublishedDateTime',
+          type: 'local',
+          name: 'PublishedDateTimeIndex',
+          projection: { NonKeyAttributes: ['TweetID', 'content'], ProjectionType: 'INCLUDE' }
+        }
       ]
     });
 
@@ -873,6 +879,9 @@ describe('Dynogels Integration Tests', function () {
           const published = t.get('PublishedDateTime');
 
           expect(published).to.be.at.least(oneMinAgoFormatted);
+
+          expect(t.toJSON()).to.have.keys(['UserId', 'TweetID', 'content', 'PublishedDateTime']);
+          expect(t.toJSON()).to.not.have.keys(['num', 'tag']);
         });
 
         return done();

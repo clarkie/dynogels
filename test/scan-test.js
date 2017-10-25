@@ -398,4 +398,25 @@ describe('Scan', () => {
       scan.request.ProjectionExpression.should.eql('#name, #email');
     });
   });
+
+  describe('#usingIndex', () => {
+    it('should set the index name to use', () => {
+      const config = {
+        hashKey: 'name',
+        rangeKey: 'email',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          created: Joi.date()
+        },
+        indexes: [{ hashKey: 'name', rangeKey: 'created', type: 'local', name: 'CreatedIndex' }]
+      };
+
+      table.schema = new Schema(config);
+
+      const scan = new Scan(table, serializer).usingIndex('CreatedIndex');
+
+      scan.request.IndexName.should.equal('CreatedIndex');
+    });
+  });
 });

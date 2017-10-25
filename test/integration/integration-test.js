@@ -858,6 +858,34 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
+    it('should return tweets using secondaryIndex and date object', done => {
+      const oneMinAgo = new Date(new Date().getTime() - 60 * 1000);
+
+      Tweet.scan()
+      .usingIndex('PublishedDateTimeIndex')
+      .where('PublishedDateTime').gt(oneMinAgo)
+      .descending()
+      .exec((err, data) => {
+        expect(err).to.not.exist;
+        expect(data.Items).to.have.length.above(0);
+
+        let prev;
+        _.each(data.Items, t => {
+          expect(t.get('UserId')).to.eql('userid-1');
+
+          const published = t.get('PublishedDateTime');
+
+          if (prev) {
+            expect(published).to.be.at.most(prev);
+          }
+
+          prev = published;
+        });
+
+        return done();
+      });
+    });
+
     it('should return users that match expression filters', done => {
       User.scan()
       .filterExpression('#age BETWEEN :low AND :high AND begins_with(#email, :e)')

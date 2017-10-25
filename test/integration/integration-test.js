@@ -864,22 +864,15 @@ describe('Dynogels Integration Tests', function () {
       Tweet.scan()
       .usingIndex('PublishedDateTimeIndex')
       .where('PublishedDateTime').gt(oneMinAgo)
-      .descending()
       .exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
 
-        let prev;
+        const oneMinAgoFormatted = oneMinAgo.toISOString();
         _.each(data.Items, t => {
-          expect(t.get('UserId')).to.eql('userid-1');
-
           const published = t.get('PublishedDateTime');
 
-          if (prev) {
-            expect(published).to.be.at.most(prev);
-          }
-
-          prev = published;
+          expect(published).to.be.at.least(oneMinAgoFormatted);
         });
 
         return done();

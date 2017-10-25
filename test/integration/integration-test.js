@@ -881,8 +881,6 @@ describe('Dynogels Integration Tests', function () {
 
           let prev;
           _.each(data.Items, (t) => {
-            expect(t.get('UserId')).to.eql('userid-1');
-
             const published = t.get('PublishedDateTime');
 
             if (prev) {
@@ -909,8 +907,6 @@ describe('Dynogels Integration Tests', function () {
 
           let prev;
           _.each(data.Items, (t) => {
-            expect(t.get('UserId')).to.eql('userid-1');
-
             const published = t.get('PublishedDateTime');
 
             if (prev) {

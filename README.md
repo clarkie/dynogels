@@ -802,6 +802,15 @@ GameScore
   .exec(callback);
 ```
 
+and scan
+
+```js
+GameScore
+  .scan()
+  .usingIndex('GameTitleIndex')
+  .exec(callback);
+```
+
 When can also configure the attributes projected into the index.
 By default all attributes will be projected when no Projection pramater is
 present
@@ -869,6 +878,15 @@ BlogPost
   .query('werner@example.com')
   .usingIndex('PublishedIndex')
   .descending()
+  .exec(callback);
+```
+
+and scan
+
+```js
+BlogPost
+  .scan()
+  .usingIndex('PublishedIndex')
   .exec(callback);
 ```
 

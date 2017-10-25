@@ -399,4 +399,51 @@ describe('Scan', () => {
       scan.request.ProjectionExpression.should.eql('#name, #email');
     });
   });
+
+  describe('#usingIndex', () => {
+    it('should set the index name to use', () => {
+      const config = {
+        hashKey: 'name',
+        rangeKey: 'email',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          created: Joi.date()
+        },
+        indexes: [{ hashKey: 'name', rangeKey: 'created', type: 'local', name: 'CreatedIndex' }]
+      };
+
+      table.schema = new Schema(config);
+
+      const scan = new Scan('tim', table, serializer).usingIndex('CreatedIndex');
+
+      scan.request.IndexName.should.equal('CreatedIndex');
+    });
+
+    it('should create key condition for global index hash key', () => {
+      const config = {
+        hashKey: 'name',
+        rangeKey: 'email',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
+        },
+        indexes: [{ hashKey: 'age', type: 'global', name: 'UserAgeIndex' }]
+      };
+
+      table.schema = new Schema(config);
+
+      serializer.serializeItem.returns({ age: { N: '18' } });
+
+      const scan = new Scan(18, table, serializer).usingIndex('UserAgeIndex');
+      scan.exec();
+
+      scan.request.IndexName.should.equal('UserAgeIndex');
+
+      scan.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
+      scan.request.ExpressionAttributeValues.should.eql({ ':age': 18 });
+      scan.request.KeyConditionExpression.should.eql('(#age = :age)');
+    });
+  });
 });

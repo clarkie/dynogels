@@ -117,7 +117,7 @@ describe('Batch', () => {
     });
 
     it('should not modify passed in keys', done => {
-      const keys = _.map(_.range(300), num => {
+      const keys = _.map(_.range(100), num => {
         const key = { email: `test${num}@test.com`, name: `Test ${num}` };
         serializer.buildKey.withArgs(key).returns({ email: { S: key.email }, name: { S: key.name } });
 
@@ -131,7 +131,7 @@ describe('Batch', () => {
       table.initItem.returns(new Item(item1));
 
       batch(table, serializer).getItems(keys, () => {
-        _.each(_.range(300), num => {
+        _.each(_.range(100), num => {
           const key = { email: `test${num}@test.com`, name: `Test ${num}` };
           keys[num].should.eql(key);
         });

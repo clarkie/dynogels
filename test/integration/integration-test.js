@@ -133,12 +133,18 @@ describe('Dynogels Integration Tests', function () {
       }
     });
 
+    const silentLogger = {
+      log: () => {},
+      info: () => {},
+      warn: () => {},
+    };
+
     DynamicKeyModel = dynogels.define('dynogels-int-test-dyn-key', {
       hashKey: 'id',
       schema: Joi.object().keys({
         id: Joi.string()
       }).unknown(),
-      log: console,
+      log: silentLogger,
     });
 
     async.series([
@@ -588,7 +594,7 @@ describe('Dynogels Integration Tests', function () {
           const published = t.get('PublishedDateTime');
 
           if (prev) {
-            expect(published).to.be.at.most(prev);
+            expect(published < prev).to.be.true;
           }
 
           prev = published;
@@ -616,7 +622,7 @@ describe('Dynogels Integration Tests', function () {
           const published = t.get('PublishedDateTime');
 
           if (prev) {
-            expect(published).to.be.at.most(prev);
+            expect(published < prev).to.be.true;
           }
 
           prev = published;

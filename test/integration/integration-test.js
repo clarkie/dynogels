@@ -108,7 +108,13 @@ describe('Dynogels Integration Tests', function () {
         PublishedDateTime: Joi.date().default(Date.now, 'now')
       },
       indexes: [
-        { hashKey: 'UserId', rangeKey: 'PublishedDateTime', type: 'local', name: 'PublishedDateTimeIndex' }
+        {
+          hashKey: 'UserId',
+          rangeKey: 'PublishedDateTime',
+          type: 'local',
+          name: 'PublishedDateTimeIndex',
+          projection: { NonKeyAttributes: ['TweetID', 'content'], ProjectionType: 'INCLUDE' }
+        }
       ]
     });
 
@@ -854,6 +860,30 @@ describe('Dynogels Integration Tests', function () {
 
       stream.on('end', () => {
         expect(called).to.be.true;
+        return done();
+      });
+    });
+
+    it('should return tweets using secondaryIndex and date object', done => {
+      const oneMinAgo = new Date(new Date().getTime() - 60 * 1000);
+
+      Tweet.scan()
+      .usingIndex('PublishedDateTimeIndex')
+      .where('PublishedDateTime').gt(oneMinAgo)
+      .exec((err, data) => {
+        expect(err).to.not.exist;
+        expect(data.Items).to.have.length.above(0);
+
+        const oneMinAgoFormatted = oneMinAgo.toISOString();
+        _.each(data.Items, t => {
+          const published = t.get('PublishedDateTime');
+
+          expect(published).to.be.at.least(oneMinAgoFormatted);
+
+          expect(t.toJSON()).to.have.keys(['UserId', 'TweetID', 'content', 'PublishedDateTime']);
+          expect(t.toJSON()).to.not.have.keys(['num', 'tag']);
+        });
+
         return done();
       });
     });

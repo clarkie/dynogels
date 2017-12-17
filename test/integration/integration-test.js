@@ -87,6 +87,7 @@ describe('Dynogels Integration Tests', function () {
         roles: dynogels.types.stringSet().default(['user']),
         acceptedTerms: Joi.boolean().default(false),
         things: Joi.array(),
+        custom: Joi.any().forbidden().error(new Error('Custom field is prohibited')),
         settings: {
           nickname: Joi.string(),
           notify: Joi.boolean().default(true),
@@ -257,6 +258,16 @@ describe('Dynogels Integration Tests', function () {
 
           return done();
         });
+      });
+    });
+
+    it('should return custom errors specified in the schema', done => {
+      const item = { id: '123456789', email: 'newemail', custom: 'forbidden' };
+      User.create(item, (err, acc) => {
+        expect(err).to.exist;
+        expect(acc).to.not.exist;
+        expect(err).to.match(/Custom field is prohibited/);
+        done();
       });
     });
 
@@ -521,6 +532,18 @@ describe('Dynogels Integration Tests', function () {
       }, (err, acc) => {
         expect(err).to.exist;
         expect(acc).to.not.exist;
+        done();
+      });
+    });
+
+    it('should fail with custom error', done => {
+      User.update({
+        id: '123456789',
+        custom: 'forbidden'
+      }, (err, acc) => {
+        expect(err).to.exist;
+        expect(acc).to.not.exist;
+        expect(err).to.match(/Custom field is prohibited/);
         done();
       });
     });

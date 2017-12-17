@@ -551,6 +551,29 @@ describe('table', () => {
       });
     });
 
+    it('should fail with custom errors specified in schema', done => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string().email({ errorLevel: true }).required(),
+          custom: Joi.any().forbidden().error(new Error('Only hashed passwords should be persisted')),
+        }
+      };
+
+      const s = new Schema(config);
+
+      const table = new Table('accounts', s, realSerializer, docClient, logger);
+
+      table.create({ email: 'test@test.com', custom: 'forbidden text' }, (err, account) => {
+        expect(err).to.exist;
+        expect(err).to.match(/hashed passwords/);
+        expect(account).to.not.exist;
+
+        sinon.assert.notCalled(docClient.put);
+        done();
+      });
+    });
+
     it('should create item with condition expression on hashkey when overwrite flag is false', done => {
       const config = {
         hashKey: 'email',

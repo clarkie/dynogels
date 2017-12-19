@@ -1127,7 +1127,7 @@ describe('table', () => {
       serializer.buildKey.returns(request.Key);
       serializer.deserializeItem.withArgs(returnedAttributes).returns(
         { email: 'test@test.com', name: 'Foo Bar'
-      });
+        });
 
       table.destroy('test@test.com', { ReturnValues: 'ALL_OLD' }, (err, item) => {
         serializer.buildKey.calledWith('test@test.com', null, s).should.be.true;
@@ -1172,7 +1172,7 @@ describe('table', () => {
       serializer.buildKey.returns(request.Key);
       serializer.deserializeItem.withArgs(returnedAttributes).returns(
         { email: 'test@test.com', name: 'Foo Bar'
-      });
+        });
 
       table.destroy('test@test.com', 'Foo Bar', (err, item) => {
         serializer.buildKey.calledWith('test@test.com', 'Foo Bar', s).should.be.true;
@@ -1218,7 +1218,7 @@ describe('table', () => {
       serializer.buildKey.returns(request.Key);
       serializer.deserializeItem.withArgs(returnedAttributes).returns(
         { email: 'test@test.com', name: 'Foo Bar'
-      });
+        });
 
       table.destroy('test@test.com', 'Foo Bar', { ReturnValues: 'ALL_OLD' }, (err, item) => {
         serializer.buildKey.calledWith('test@test.com', 'Foo Bar', s).should.be.true;
@@ -1994,7 +1994,85 @@ describe('table', () => {
 
       table.after('destroy', () => done());
 
-      table.destroy('test@test.com', () => {});
+      table.destroy('test@test.com', () => { });
+    });
+  });
+
+  describe('#validate', () => {
+    const helper = (config, attrs) => {
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+      const item = new Item(attrs, table);
+      return table.validate(item);
+    };
+
+    it('should succeed for empty item when nothing is required', () => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string()
+        }
+      };
+      const attrs = {};
+
+      const result = helper(config, attrs);
+      expect(result.error).to.be.null;
+    });
+
+    it('should succeed with required items', () => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string().required()
+        }
+      };
+      const attrs = { email: 'test@email.com' };
+
+      const result = helper(config, attrs);
+      expect(result.error).to.be.null;
+    });
+
+    it('should fail when missing required string field', () => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string().required()
+        }
+      };
+      const attrs = {};
+
+      const result = helper(config, attrs);
+      expect(result.error).to.not.be.null;
+      expect(result.error.name).to.eql('ValidationError');
+    });
+
+    it('should fail when giving numbers to string types', () => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string()
+        }
+      };
+      const attrs = { email: 123 };
+
+      const result = helper(config, attrs);
+      expect(result.error).to.not.be.null;
+      expect(result.error.name).to.eql('ValidationError');
+    });
+
+    it('should fail when giving strings to number types', () => {
+      const config = {
+        hashKey: 'phone',
+        schema: {
+          email: Joi.number()
+        }
+      };
+      const attrs = { phone: 123 };
+
+      const result = helper(config, attrs);
+      expect(result.error).to.not.be.null;
+      expect(result.error.name).to.eql('ValidationError');
     });
   });
 });

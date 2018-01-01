@@ -1143,14 +1143,18 @@ var Event = dynogels.define('Event', {
 ```
 
 ### Logging
-A logger that implements `info` and `warn` methods (e.g [Bunyan](https://www.npmjs.com/package/bunyan) or [Winston](https://www.npmjs.com/package/winston))
-can be provided to either dynogels itself or individual models:
+A [Bunyan](https://www.npmjs.com/package/bunyan) logger instance can be provided to either dynogels itself or individual models.  Dynogels requests are logged at the `info` level. 
+Other loggers that implement `info` and `warn` methods can also be used.  [Winston](https://www.npmjs.com/package/winston))  uses a different parameter signature than bunyan and the log messages are improperly formatted.
 
 ```js
-const logger = require('winston');
-logger.level = 'warn';
+const bunyan = require('bunyan');
+const logger = bunyan.createLogger(
+  {
+    name: 'myApp',
+    level:'info'
+  })
 
-dynogels.log = logger;  // enabled WARN log level on all tables
+dynogels.log = logger;
 ```
 
 

@@ -1144,13 +1144,13 @@ var Event = dynogels.define('Event', {
 
 ### Logging
 A [Bunyan](https://www.npmjs.com/package/bunyan) logger instance can be provided to either dynogels itself or individual models.  Dynogels requests are logged at the `info` level. 
-Other loggers that implement `info` and `warn` methods can also be used.  [Winston](https://www.npmjs.com/package/winston))  uses a different parameter signature than bunyan and the log messages are improperly formatted.
+Other loggers that implement `info` and `warn` methods can also be used. However, [Winston](https://www.npmjs.com/package/winston) uses a different parameter signature than bunyan so the log messages are improperly formatted when using Winston.
 
 ```js
 const bunyan = require('bunyan');
 const logger = bunyan.createLogger(
   {
-    name: 'myApp',
+    name: 'globalLogger',
     level:'info'
   })
 
@@ -1159,8 +1159,12 @@ dynogels.log = logger;
 
 
 ```js
-const accountLogger = require('winston');
-accountLogger.level = 'info';
+const bunyan = require('bunyan');
+const accountLogger = bunyan.createLogger(
+  {
+    name: 'modelLogger',
+    level:'info'
+  })
 
 var Account = dynogels.define('Account', {
   hashKey: 'email',

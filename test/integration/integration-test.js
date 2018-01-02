@@ -12,6 +12,7 @@ const Joi = require('joi');
 chai.should();
 
 let User;
+let CustomUser;
 let Tweet;
 let Movie;
 let DynamicKeyModel;
@@ -87,13 +88,21 @@ describe('Dynogels Integration Tests', function () {
         roles: dynogels.types.stringSet().default(['user']),
         acceptedTerms: Joi.boolean().default(false),
         things: Joi.array(),
-        custom: Joi.any().forbidden().error(new Error('Custom field is prohibited')),
         settings: {
           nickname: Joi.string(),
           notify: Joi.boolean().default(true),
           version: Joi.number()
         }
 
+      }
+    });
+
+    CustomUser = dynogels.define('dynogels-int-test-customuser', {
+      hashKey: 'id',
+      schema: {
+        id: Joi.string().default(() => uuid.v4(), 'uuid'),
+        custom: Joi.any().forbidden().error(new Error('Custom field is prohibited')),
+        email: Joi.string().required().error(new Error('Email is required!!!'))
       }
     });
 
@@ -263,7 +272,7 @@ describe('Dynogels Integration Tests', function () {
 
     it('should return custom errors specified in the schema', done => {
       const item = { id: '123456789', email: 'newemail', custom: 'forbidden' };
-      User.create(item, (err, acc) => {
+      CustomUser.create(item, (err, acc) => {
         expect(err).to.exist;
         expect(acc).to.not.exist;
         expect(err).to.match(/Custom field is prohibited/);
@@ -536,16 +545,48 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should fail with custom error', done => {
-      User.update({
-        id: '123456789',
-        custom: 'forbidden'
-      }, (err, acc) => {
-        expect(err).to.exist;
-        expect(acc).to.not.exist;
-        expect(err).to.match(/Custom field is prohibited/);
-        done();
-      });
+    it('should fail on update with custom error', done => {
+      CustomUser.create(
+        {
+          id: '0987654321',
+          email: 'update@test.com'
+        },
+        (err, acc) => {
+          expect(err).to.not.exist;
+          expect(acc).to.exist;
+          CustomUser.update({
+            id: acc.get('id'),
+            custom: 'forbidden'
+          }, (err, acc) => {
+            expect(err).to.exist;
+            expect(err.update).to.exist;
+            expect(acc).to.not.exist;
+            expect(err.update).to.match(/Custom field is prohibited/);
+            done();
+          });
+        });
+    });
+
+    it('should fail when removing a required attribute with a custom error', done => {
+      CustomUser.create(
+        {
+          id: '1234567890',
+          email: 'email@test.com'
+        },
+        (err, acc) => {
+          expect(err).to.not.exist;
+          expect(acc).to.exist;
+          CustomUser.update(
+            { id: acc.get('id'), email: null },
+            (err, acc) => {
+              console.log(err);
+              expect(err).to.exist;
+              expect(err.update).to.exist;
+              expect(acc).to.not.exist;
+              expect(err.update).to.match(/Email is required!!!/);
+              done();
+            });
+        });
     });
   });
 

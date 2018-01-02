@@ -481,28 +481,6 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should fail to update an attribute not in the schema', (done) => {
-      User.update({
-        id: '123456789',
-        invalidAttribute: 'Invalid Value'
-      }, (err, account) => {
-        expect(err).to.exist;
-        expect(account).to.not.exist;
-        return done();
-      });
-    });
-
-    it('should fail to remove a required attribute', (done) => {
-      User.update({
-        id: '123456789',
-        email: null
-      }, (err, account) => {
-        expect(err).to.exist;
-        expect(account).to.not.exist;
-        done();
-      });
-    });
-
     it('should successfully remove an optional attribute', (done) => {
       User.update({
         id: '123456789',
@@ -514,17 +492,6 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should fail for attribute mismatch to schema type', (done) => {
-      User.update({
-        id: '123456789',
-        name: 1
-      }, (err, account) => {
-        expect(err).to.exist;
-        expect(account).to.not.exist;
-        done();
-      });
-    });
-
     it('should fail to use $add for an invalid attribute', (done) => {
       User.update({
         id: '123456789',
@@ -532,18 +499,6 @@ describe('Dynogels Integration Tests', function () {
       }, (err, acc) => {
         expect(err).to.exist;
         expect(acc).to.not.exist;
-        done();
-      });
-    });
-
-    it('should fail with custom error', done => {
-      User.update({
-        id: '123456789',
-        custom: 'forbidden'
-      }, (err, acc) => {
-        expect(err).to.exist;
-        expect(acc).to.not.exist;
-        expect(err).to.match(/Custom field is prohibited/);
         done();
       });
     });

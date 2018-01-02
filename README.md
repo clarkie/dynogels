@@ -1072,6 +1072,150 @@ User.scan()
   .exec();
 ```
 
+### Indexes
+
+#### Global Indexes
+
+First, define a model with a global secondary index.
+
+```js
+var GameScore = dynogels.define('GameScore', {
+  hashKey : 'userId',
+  rangeKey : 'gameTitle',
+  schema : {
+    userId           : Joi.string(),
+    gameTitle        : Joi.string(),
+    topScore         : Joi.number(),
+    topScoreDateTime : Joi.date(),
+    wins             : Joi.number(),
+    losses           : Joi.number()
+  },
+  indexes : [{
+    hashKey : 'gameTitle', rangeKey : 'topScore', name : 'GameTitleIndex', type : 'global'
+  }]
+});
+```
+
+Now we can query against the global index
+
+```js
+GameScore
+  .query('Galaxy Invaders')
+  .usingIndex('GameTitleIndex')
+  .descending()
+  .exec(callback);
+```
+
+and scan
+
+```js
+GameScore
+  .scan()
+  .usingIndex('GameTitleIndex')
+  .exec(callback);
+```
+
+When can also configure the attributes projected into the index.
+By default all attributes will be projected when no Projection pramater is
+present
+
+```js
+var GameScore = dynogels.define('GameScore', {
+  hashKey : 'userId',
+  rangeKey : 'gameTitle',
+  schema : {
+    userId           : Joi.string(),
+    gameTitle        : Joi.string(),
+    topScore         : Joi.number(),
+    topScoreDateTime : Joi.date(),
+    wins             : Joi.number(),
+    losses           : Joi.number()
+  },
+  indexes : [{
+    hashKey : 'gameTitle',
+    rangeKey : 'topScore',
+    name : 'GameTitleIndex',
+    type : 'global',
+    projection: { NonKeyAttributes: [ 'wins' ], ProjectionType: 'INCLUDE' } //optional, defaults to ALL
+
+  }]
+});
+```
+
+Filter items against the configured rangekey for the global index.
+
+```js
+GameScore
+  .query('Galaxy Invaders')
+  .usingIndex('GameTitleIndex')
+  .where('topScore').gt(1000)
+  .descending()
+  .exec(function (err, data) {
+    console.log(_.map(data.Items, JSON.stringify));
+  });
+```
+
+#### Local Secondary Indexes
+First, define a model using a local secondary index
+
+```js
+var BlogPost = dynogels.define('Account', {
+  hashKey : 'email',
+  rangekey : 'title',
+  schema : {
+    email             : Joi.string().email(),
+    title             : Joi.string(),
+    content           : Joi.binary(),
+    PublishedDateTime : Joi.date()
+  },
+
+  indexes : [{
+    hashkey : 'email', rangekey : 'PublishedDateTime', type : 'local', name : 'PublishedIndex'
+  }]
+});
+```
+
+Now we can query for blog posts using the secondary index
+
+```js
+BlogPost
+  .query('werner@example.com')
+  .usingIndex('PublishedIndex')
+  .descending()
+  .exec(callback);
+```
+
+and scan
+
+```js
+BlogPost
+  .scan()
+  .usingIndex('PublishedIndex')
+  .exec(callback);
+```
+
+Could also query for published posts, but this time return oldest first
+
+```js
+BlogPost
+  .query('werner@example.com')
+  .usingIndex('PublishedIndex')
+  .ascending()
+  .exec(callback);
+```
+
+Finally lets load all published posts sorted by publish date
+```js
+BlogPost
+  .query('werner@example.com')
+  .usingIndex('PublishedIndex')
+  .descending()
+  .loadAll()
+  .exec(callback);
+```
+
+Learn more about [secondary indexes][3]
+
 ### Parallel Scan
 Parallel scans increase the throughput of your table scans.
 The parallel scan operation is identical to the scan api.

@@ -385,7 +385,9 @@ Use the `overwrite` option to prevent over writing of existing records.
 ### Updating
 
 When updating a model the hash and range key attributes must be given, all
-other attributes are optional
+other attributes are optional.  Schema validation is not possible on partial
+models, so it is possible to update a model to a state that is not consistent
+with the schema.
 
 ```js
 // update the name of the foo@example.com account

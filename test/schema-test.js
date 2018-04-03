@@ -53,6 +53,25 @@ describe('schema', () => {
       s.tableName.should.equal(func);
     });
 
+    it('should add encrypt with default value to schema', () => {
+      const config = {
+        hashKey: 'id'
+      };
+
+      const s = new Schema(config);
+      s.encrypt.should.be.false;
+    });
+
+    it('should add encrypt to schema', () => {
+      const config = {
+        hashKey: 'id',
+        encrypt: true
+      };
+
+      const s = new Schema(config);
+      s.encrypt.should.be.true;
+    });
+
     it('should add timestamps to schema', () => {
       const config = {
         hashKey: 'id',

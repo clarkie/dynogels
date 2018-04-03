@@ -1607,6 +1607,42 @@ describe('table', () => {
         done();
       });
     });
+
+    it('should create table with SSESpecification to true', done => {
+      const config = {
+        hashKey: 'email',
+        encrypt: true,
+        schema: {
+          email: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      const request = {
+        TableName: 'accounts',
+        AttributeDefinitions: [
+          { AttributeName: 'email', AttributeType: 'S' }
+        ],
+        KeySchema: [
+          { AttributeName: 'email', KeyType: 'HASH' }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 },
+        SSESpecification: {
+          Enabled: true
+        }
+      };
+
+      dynamodb.createTable.yields(null, {});
+
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
+        expect(err).to.be.null;
+        dynamodb.createTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
   });
 
   describe('#describeTable', () => {

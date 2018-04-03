@@ -269,6 +269,20 @@ var Account = dynogels.define('Account', {
 });
 ```
 
+You can also enable server-side encryption with `encrypt` that indicate whether server-side encryption is enabled (`true`) or disabled (`false`) on the table.
+
+```js
+var Event = dynogels.define('SecureData', {
+  hashKey : 'name',
+  encrypt: true,
+  schema : {
+    name : Joi.string(),
+    total : Joi.number()
+  },
+
+});
+```
+
 You can override the table name the model will use.
 
 ```js

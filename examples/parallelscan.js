@@ -1,11 +1,11 @@
 'use strict';
 
 const dynogels = require('../index');
-const AWS = dynogels.AWS;
 const _ = require('lodash');
 const Joi = require('joi');
 const async = require('async');
 
+const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 const Product = dynogels.define('example-parallel-scan', {
@@ -37,7 +37,7 @@ const printInfo = (err, resp) => {
   console.log('Average purchased price', totalPrices / resp.Count);
 };
 
-const loadSeedData = callback => {
+const loadSeedData = (callback) => {
   callback = callback || _.noop;
 
   async.times(30, (n, next) => {
@@ -50,15 +50,15 @@ const runParallelScan = () => {
   const totalSegments = 8;
 
   Product.parallelScan(totalSegments)
-  .where('purchased').equals(true)
-  .attributes('price')
-  .exec(printInfo);
+    .where('purchased').equals(true)
+    .attributes('price')
+    .exec(printInfo);
 };
 
 async.series([
   async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
-], err => {
+], (err) => {
   if (err) {
     console.log('error', err);
     process.exit(1);

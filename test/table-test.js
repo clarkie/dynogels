@@ -1730,6 +1730,38 @@ describe('table', () => {
   });
 
   describe('#createTable', () => {
+    it('should call dynamo.createTable with the makeCreateTableParams result', done => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+        }
+      };
+      const s = new Schema(config);
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      const mockCreateTableParamsResult = 'mockResult';
+
+      const options = { readCapacity: 5, writeCapacity: 5 };
+
+      const sandbox = sinon.sandbox.create();
+      const makeCreateTableParamsStub = sandbox.stub(Table.prototype, 'makeCreateTableParams');
+      makeCreateTableParamsStub.callsFake(() => mockCreateTableParamsResult);
+
+      dynamodb.createTable.yields(null, {});
+
+      table.createTable(options, err => {
+        expect(err).to.be.null;
+        makeCreateTableParamsStub.calledOnce.should.be.true;
+        expect(makeCreateTableParamsStub.args[0]).to.deep.equal([options]);
+        dynamodb.createTable.calledWith(mockCreateTableParamsResult).should.be.true;
+        sandbox.verify();
+        sandbox.reset();
+        done();
+      });
+    });
+
     it('should create table with hash key', done => {
       const config = {
         hashKey: 'email',

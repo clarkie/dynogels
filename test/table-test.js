@@ -1329,6 +1329,406 @@ describe('table', () => {
     });
   });
 
+  describe('#describeTable', () => {
+    it('should make describe table request', done => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      const request = {
+        TableName: 'accounts'
+      };
+
+      dynamodb.describeTable.yields(null, {});
+
+      table.describeTable(err => {
+        expect(err).to.be.null;
+        dynamodb.describeTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
+  });
+
+  describe('#updateTable', () => {
+    beforeEach(() => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+    });
+
+    it('should make update table request', done => {
+      const request = {
+        TableName: 'accounts',
+        ProvisionedThroughput: { ReadCapacityUnits: 4, WriteCapacityUnits: 2 }
+      };
+
+      dynamodb.describeTable.yields(null, {});
+      dynamodb.updateTable.yields(null, {});
+
+      table.updateTable({ readCapacity: 4, writeCapacity: 2 }, err => {
+        expect(err).to.be.null;
+        dynamodb.updateTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
+
+    it('should make update table request without callback', done => {
+      const request = {
+        TableName: 'accounts',
+        ProvisionedThroughput: { ReadCapacityUnits: 2, WriteCapacityUnits: 1 }
+      };
+
+      table.updateTable({ readCapacity: 2, writeCapacity: 1 });
+
+      dynamodb.updateTable.calledWith(request).should.be.true;
+
+      return done();
+    });
+  });
+
+  describe('#deleteTable', () => {
+    beforeEach(() => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+    });
+
+    it('should make delete table request', done => {
+      const request = {
+        TableName: 'accounts'
+      };
+
+      dynamodb.deleteTable.yields(null, {});
+
+      table.deleteTable(err => {
+        expect(err).to.be.null;
+        dynamodb.deleteTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
+
+    it('should make delete table request without callback', done => {
+      const request = {
+        TableName: 'accounts',
+      };
+
+      table.deleteTable();
+
+      dynamodb.deleteTable.calledWith(request).should.be.true;
+
+      return done();
+    });
+  });
+
+  describe('#tableName', () => {
+    it('should return given name', () => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      table.tableName().should.eql('accounts');
+    });
+
+    it('should return table name set on schema', () => {
+      const config = {
+        hashKey: 'email',
+        tableName: 'accounts-2014-03',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      table.tableName().should.eql('accounts-2014-03');
+    });
+
+    it('should return table name returned from function on schema', () => {
+      const d = new Date();
+      const dateString = [d.getFullYear(), d.getMonth() + 1].join('_');
+
+      const nameFunc = () => `accounts_${dateString}`;
+
+      const config = {
+        hashKey: 'email',
+        tableName: nameFunc,
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      table.tableName().should.eql(`accounts_${dateString}`);
+    });
+  });
+
+
+  describe('#makeCreateTableParams', () => {
+    it('should make table arguments with hash key', () => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+        TableName: 'accounts',
+        AttributeDefinitions: [
+          { AttributeName: 'email', AttributeType: 'S' }
+        ],
+        KeySchema: [
+          { AttributeName: 'email', KeyType: 'HASH' }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+      });
+    });
+
+    it('should create table with range key', () => {
+      const config = {
+        hashKey: 'name',
+        rangeKey: 'email',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+        TableName: 'accounts',
+        AttributeDefinitions: [
+          { AttributeName: 'name', AttributeType: 'S' },
+          { AttributeName: 'email', AttributeType: 'S' }
+        ],
+        KeySchema: [
+          { AttributeName: 'name', KeyType: 'HASH' },
+          { AttributeName: 'email', KeyType: 'RANGE' }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+      });
+    });
+
+    it('should create table with stream specification', () => {
+      const config = {
+        hashKey: 'name',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+      expect(table.makeCreateTableParams({
+        readCapacity: 5,
+        writeCapacity: 5,
+        streamSpecification: {
+          streamEnabled: true,
+          streamViewType: 'NEW_IMAGE'
+        }
+      })).to.deep.equal({
+        TableName: 'accounts',
+        AttributeDefinitions: [
+          { AttributeName: 'name', AttributeType: 'S' }
+        ],
+        KeySchema: [
+          { AttributeName: 'name', KeyType: 'HASH' }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 },
+        StreamSpecification: { StreamEnabled: true, StreamViewType: 'NEW_IMAGE' }
+      });
+    });
+
+    it('should create table with secondary index', () => {
+      const config = {
+        hashKey: 'name',
+        rangeKey: 'email',
+        indexes: [
+          { hashKey: 'name', rangeKey: 'age', name: 'ageIndex', type: 'local' }
+        ],
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+          age: Joi.number()
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+        TableName: 'accounts',
+        AttributeDefinitions: [
+          { AttributeName: 'name', AttributeType: 'S' },
+          { AttributeName: 'email', AttributeType: 'S' },
+          { AttributeName: 'age', AttributeType: 'N' }
+        ],
+        KeySchema: [
+          { AttributeName: 'name', KeyType: 'HASH' },
+          { AttributeName: 'email', KeyType: 'RANGE' }
+        ],
+        LocalSecondaryIndexes: [
+          {
+            IndexName: 'ageIndex',
+            KeySchema: [
+              { AttributeName: 'name', KeyType: 'HASH' },
+              { AttributeName: 'age', KeyType: 'RANGE' }
+            ],
+            Projection: {
+              ProjectionType: 'ALL'
+            }
+          }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+      });
+    });
+
+    it('should create table with global secondary index', () => {
+      const config = {
+        hashKey: 'userId',
+        rangeKey: 'gameTitle',
+        indexes: [
+          { hashKey: 'gameTitle', rangeKey: 'topScore', name: 'GameTitleIndex', type: 'global' }
+        ],
+        schema: {
+          userId: Joi.string(),
+          gameTitle: Joi.string(),
+          topScore: Joi.number()
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('gameScores', s, serializer, docClient, logger);
+      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+        TableName: 'gameScores',
+        AttributeDefinitions: [
+          { AttributeName: 'userId', AttributeType: 'S' },
+          { AttributeName: 'gameTitle', AttributeType: 'S' },
+          { AttributeName: 'topScore', AttributeType: 'N' }
+        ],
+        KeySchema: [
+          { AttributeName: 'userId', KeyType: 'HASH' },
+          { AttributeName: 'gameTitle', KeyType: 'RANGE' }
+        ],
+        GlobalSecondaryIndexes: [
+          {
+            IndexName: 'GameTitleIndex',
+            KeySchema: [
+              { AttributeName: 'gameTitle', KeyType: 'HASH' },
+              { AttributeName: 'topScore', KeyType: 'RANGE' }
+            ],
+            Projection: {
+              ProjectionType: 'ALL'
+            },
+            ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 }
+          }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+      });
+    });
+
+    it('should create table with global secondary index', () => {
+      const config = {
+        hashKey: 'userId',
+        rangeKey: 'gameTitle',
+        indexes: [{
+          hashKey: 'gameTitle',
+          rangeKey: 'topScore',
+          name: 'GameTitleIndex',
+          type: 'global',
+          readCapacity: 10,
+          writeCapacity: 5,
+          projection: { NonKeyAttributes: ['wins'], ProjectionType: 'INCLUDE' }
+        }],
+        schema: {
+          userId: Joi.string(),
+          gameTitle: Joi.string(),
+          topScore: Joi.number()
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('gameScores', s, serializer, docClient, logger);
+      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+        TableName: 'gameScores',
+        AttributeDefinitions: [
+          { AttributeName: 'userId', AttributeType: 'S' },
+          { AttributeName: 'gameTitle', AttributeType: 'S' },
+          { AttributeName: 'topScore', AttributeType: 'N' }
+        ],
+        KeySchema: [
+          { AttributeName: 'userId', KeyType: 'HASH' },
+          { AttributeName: 'gameTitle', KeyType: 'RANGE' }
+        ],
+        GlobalSecondaryIndexes: [
+          {
+            IndexName: 'GameTitleIndex',
+            KeySchema: [
+              { AttributeName: 'gameTitle', KeyType: 'HASH' },
+              { AttributeName: 'topScore', KeyType: 'RANGE' }
+            ],
+            Projection: {
+              NonKeyAttributes: ['wins'],
+              ProjectionType: 'INCLUDE'
+            },
+            ProvisionedThroughput: { ReadCapacityUnits: 10, WriteCapacityUnits: 5 }
+          }
+        ],
+        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+      });
+    });
+  });
+
   describe('#createTable', () => {
     it('should create table with hash key', done => {
       const config = {

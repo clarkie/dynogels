@@ -1502,7 +1502,7 @@ describe('table', () => {
   });
 
 
-  describe('#makeCreateTableParams', () => {
+  describe('#dynamoParameters', () => {
     it('should make table arguments with hash key', () => {
       const config = {
         hashKey: 'email',
@@ -1515,7 +1515,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'email', AttributeType: 'S' }
@@ -1527,7 +1527,7 @@ describe('table', () => {
       });
     });
 
-    it('should create table with range key', () => {
+    it('should make table arguments with range key', () => {
       const config = {
         hashKey: 'name',
         rangeKey: 'email',
@@ -1540,7 +1540,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1554,7 +1554,7 @@ describe('table', () => {
       });
     });
 
-    it('should create table with stream specification', () => {
+    it('should make table arguments with stream specification', () => {
       const config = {
         hashKey: 'name',
         schema: {
@@ -1566,7 +1566,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-      expect(table.makeCreateTableParams({
+      expect(table.dynamoParameters({
         readCapacity: 5,
         writeCapacity: 5,
         streamSpecification: {
@@ -1586,7 +1586,7 @@ describe('table', () => {
       });
     });
 
-    it('should create table with secondary index', () => {
+    it('should make table arguments with secondary index', () => {
       const config = {
         hashKey: 'name',
         rangeKey: 'email',
@@ -1604,7 +1604,7 @@ describe('table', () => {
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1631,7 +1631,7 @@ describe('table', () => {
       });
     });
 
-    it('should create table with global secondary index', () => {
+    it('should make table arguments with global secondary index', () => {
       const config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
@@ -1648,7 +1648,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
-      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1676,7 +1676,7 @@ describe('table', () => {
       });
     });
 
-    it('should create table with global secondary index', () => {
+    it('should make table arguments with global secondary index', () => {
       const config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
@@ -1699,7 +1699,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
-      expect(table.makeCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1730,7 +1730,7 @@ describe('table', () => {
   });
 
   describe('#createTable', () => {
-    it('should call dynamo.createTable with the makeCreateTableParams result', done => {
+    it('should call dynamo.createTable with the dynamoParameters result', done => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1746,15 +1746,15 @@ describe('table', () => {
       const options = { readCapacity: 5, writeCapacity: 5 };
 
       const sandbox = sinon.sandbox.create();
-      const makeCreateTableParamsStub = sandbox.stub(Table.prototype, 'makeCreateTableParams');
-      makeCreateTableParamsStub.callsFake(() => mockCreateTableParamsResult);
+      const dynamoParametersStub = sandbox.stub(Table.prototype, 'dynamoParameters');
+      dynamoParametersStub.callsFake(() => mockCreateTableParamsResult);
 
       dynamodb.createTable.yields(null, {});
 
       table.createTable(options, err => {
         expect(err).to.be.null;
-        makeCreateTableParamsStub.calledOnce.should.be.true;
-        expect(makeCreateTableParamsStub.args[0]).to.deep.equal([options]);
+        dynamoParametersStub.calledOnce.should.be.true;
+        expect(dynamoParametersStub.args[0]).to.deep.equal([options]);
         dynamodb.createTable.calledWith(mockCreateTableParamsResult).should.be.true;
         sandbox.verify();
         sandbox.reset();

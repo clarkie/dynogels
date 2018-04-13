@@ -1502,7 +1502,7 @@ describe('table', () => {
   });
 
 
-  describe('#dynamoParameters', () => {
+  describe('#dynamoCreateTableParams', () => {
     it('should make table arguments with hash key', () => {
       const config = {
         hashKey: 'email',
@@ -1515,7 +1515,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'email', AttributeType: 'S' }
@@ -1540,7 +1540,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1566,7 +1566,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-      expect(table.dynamoParameters({
+      expect(table.dynamoCreateTableParams({
         readCapacity: 5,
         writeCapacity: 5,
         streamSpecification: {
@@ -1604,7 +1604,7 @@ describe('table', () => {
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1648,7 +1648,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
-      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1699,7 +1699,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
-      expect(table.dynamoParameters({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1730,7 +1730,7 @@ describe('table', () => {
   });
 
   describe('#createTable', () => {
-    it('should call dynamo.createTable with the dynamoParameters result', done => {
+    it('should call dynamo.createTable with the dynamoCreateTableParams result', done => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1746,15 +1746,15 @@ describe('table', () => {
       const options = { readCapacity: 5, writeCapacity: 5 };
 
       const sandbox = sinon.sandbox.create();
-      const dynamoParametersStub = sandbox.stub(Table.prototype, 'dynamoParameters');
-      dynamoParametersStub.callsFake(() => mockCreateTableParamsResult);
+      const dynamoCreateTableParamsStub = sandbox.stub(Table.prototype, 'dynamoCreateTableParams');
+      dynamoCreateTableParamsStub.callsFake(() => mockCreateTableParamsResult);
 
       dynamodb.createTable.yields(null, {});
 
       table.createTable(options, err => {
         expect(err).to.be.null;
-        dynamoParametersStub.calledOnce.should.be.true;
-        expect(dynamoParametersStub.args[0]).to.deep.equal([options]);
+        dynamoCreateTableParamsStub.calledOnce.should.be.true;
+        expect(dynamoCreateTableParamsStub.args[0]).to.deep.equal([options]);
         dynamodb.createTable.calledWith(mockCreateTableParamsResult).should.be.true;
         sandbox.verify();
         sandbox.reset();

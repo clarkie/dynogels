@@ -184,7 +184,7 @@ BlogPost.deleteTable(function(err) {
 You can get the raw parameters needed for the DynamoDB [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html):
 
 ```js
-var parameters = BlogPost.dynamoParameters();
+var parameters = BlogPost.dynamoCreateTableParams();
 var dynamodb = new AWS.DynamoDB();
 dynamodb.createTable(params, (err)=>{ ... });
 ```

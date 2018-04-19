@@ -734,6 +734,11 @@ BlogPost
   .query('werner@example.com')
   .where('title').between('foo@example.com', 'test@example.com')
   .exec();
+  
+BlogPost
+  .query('werner@example.com')
+  .where('title').equals('Expanding')
+  .where('title', 'OR').equals('Closing');
 ```
 
 Query Filters allow you to further filter results on non-key attributes.

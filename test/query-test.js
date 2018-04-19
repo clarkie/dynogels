@@ -535,6 +535,14 @@ describe('Query', () => {
       query.request.ExpressionAttributeValues.should.eql({ ':email': 'foo@example.com', ':email_2': 'moo@foo.com' });
       query.request.KeyConditionExpression.should.eql('(#email > :email) AND (#email < :email_2)');
     });
+
+    it('should support multiple clauses on same attribute and custom binding', () => {
+      query = query.where('email').gt('foo@example.com').where('email', 'OR').lt('moo@foo.com');
+
+      query.request.ExpressionAttributeNames.should.eql({ '#email': 'email' });
+      query.request.ExpressionAttributeValues.should.eql({ ':email': 'foo@example.com', ':email_2': 'moo@foo.com' });
+      query.request.KeyConditionExpression.should.eql('(#email > :email) OR (#email < :email_2)');
+    });
   });
 
   describe('#filter', () => {
@@ -605,6 +613,14 @@ describe('Query', () => {
       query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
       query.request.ExpressionAttributeValues.should.eql({ ':age': 5, ':age_2': 20, ':age_3': 15 });
       query.request.FilterExpression.should.eql('(#age > :age) AND (#age < :age_2) AND (#age <> :age_3)');
+    });
+
+    it('should support multiple filters on same attribute with custom binding', () => {
+      query = query.filter('age').gt(5).filter('age', 'OR').lt(20).filter('age').ne(15);
+
+      query.request.ExpressionAttributeNames.should.eql({ '#age': 'age' });
+      query.request.ExpressionAttributeValues.should.eql({ ':age': 5, ':age_2': 20, ':age_3': 15 });
+      query.request.FilterExpression.should.eql('(#age > :age) OR (#age < :age_2) AND (#age <> :age_3)');
     });
 
     it('should support Map.Attr document paths', () => {

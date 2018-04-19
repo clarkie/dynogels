@@ -1036,6 +1036,13 @@ Account
   .where('name').equals('Werner')
   .where('age').notNull()
   .exec();
+  
+// multiple filters with 'OR' binding
+Account
+  .scan()
+  .where('name').equals('Werner')
+  .where('age', 'OR').notNull()
+  .exec();
 ```
 
 You can also use the new expressions api when filtering scans

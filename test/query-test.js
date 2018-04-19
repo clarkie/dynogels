@@ -623,6 +623,14 @@ describe('Query', () => {
       query.request.FilterExpression.should.eql('(#age > :age) OR (#age < :age_2) AND (#age <> :age_3)');
     });
 
+    it('should support multiple filters on same attribute with custom binding and parentheses', () => {
+      query = query.filter('age', null, 'start').gt(5).filter('name', 'OR', 'end').equals('lars').filter('age').ne(15);
+
+      query.request.ExpressionAttributeNames.should.eql({ '#age': 'age', '#name': 'name' });
+      query.request.ExpressionAttributeValues.should.eql({ ':age': 5, ':name': 'lars', ':age_2': 15 });
+      query.request.FilterExpression.should.eql('((#age > :age) OR (#name = :name)) AND (#age <> :age_2)');
+    });
+
     it('should support Map.Attr document paths', () => {
       query = query.filter('data.attr').equals(15);
 

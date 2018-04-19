@@ -1,4 +1,4 @@
-﻿# dynogels
+# dynogels
 [![Build Status](https://travis-ci.org/clarkie/dynogels.png?branch=master)](https://travis-ci.org/clarkie/dynogels)
 [![Coverage Status](https://coveralls.io/repos/github/clarkie/dynogels/badge.svg)](https://coveralls.io/github/clarkie/dynogels)
 [![npm version](https://badge.fury.io/js/dynogels.svg)](http://badge.fury.io/js/dynogels)
@@ -739,6 +739,14 @@ BlogPost
   .query('werner@example.com')
   .where('title').equals('Expanding')
   .where('title', 'OR').equals('Closing');
+ 
+// Handling of parentheses
+// age > 10 AND (title = 'Expanding' OR title = 'Closing')
+BlogPost
+  .query('werner@example.com')
+  .filter('age').gt(10)
+  .filter('title', 'AND', 'start').equals('Expanding')
+  .filter('title', 'OR', 'end').equals('Closing');
 ```
 
 Query Filters allow you to further filter results on non-key attributes.

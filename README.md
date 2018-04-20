@@ -117,6 +117,7 @@ var BlogPost = dynogels.define('BlogPost', {
 });
 ```
 
+
 ### Create Tables for all defined models
 
 ```js
@@ -178,6 +179,15 @@ BlogPost.deleteTable(function(err) {
     console.log('Table has been deleted');
   }
 });
+```
+
+### Get Dynamo API Parameters
+You can get the raw parameters needed for the DynamoDB [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html):
+
+```js
+var parameters = BlogPost.dynamoCreateTableParams();
+var dynamodb = new AWS.DynamoDB();
+dynamodb.createTable(params, (err)=>{ ... });
 ```
 
 ### Schema Types

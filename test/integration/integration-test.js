@@ -535,18 +535,6 @@ describe('Dynogels Integration Tests', function () {
         done();
       });
     });
-
-    it('should fail with custom error', done => {
-      User.update({
-        id: '123456789',
-        custom: 'forbidden'
-      }, (err, acc) => {
-        expect(err).to.exist;
-        expect(acc).to.not.exist;
-        expect(err).to.match(/Custom field is prohibited/);
-        done();
-      });
-    });
   });
 
   describe('#getItems', () => {

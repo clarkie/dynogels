@@ -220,7 +220,7 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
+      expect(nickIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
 
       return Model.deleteTable(done);
     });
@@ -271,7 +271,7 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 10, WriteCapacityUnits: 5 });
+      expect(nickIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 10, WriteCapacityUnits: 5 });
 
       return Model.deleteTable(done);
     });
@@ -323,7 +323,7 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
+      expect(nickIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
 
       const ageWinsIndex = _.find(desc.GlobalSecondaryIndexes, { IndexName: 'GlobalAgeWinsIndex' });
       expect(ageWinsIndex.IndexName).to.eql('GlobalAgeWinsIndex');
@@ -332,7 +332,7 @@ describe('Create Tables Integration Tests', function () {
         { AttributeName: 'age', KeyType: 'HASH' },
         { AttributeName: 'wins', KeyType: 'RANGE' },
       ]);
-      expect(ageWinsIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
+      expect(ageWinsIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
 
       expect(desc.LocalSecondaryIndexes).to.have.length(2);
 

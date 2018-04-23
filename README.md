@@ -138,6 +138,7 @@ dynogels.createTables({
   'Account': {
     readCapacity: 20,
     writeCapacity: 4,
+    encryption: true,
     streamSpecification: {
       streamEnabled: true,
       streamViewType: 'NEW_IMAGE'

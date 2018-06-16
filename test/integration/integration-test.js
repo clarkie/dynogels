@@ -879,8 +879,6 @@ describe('Dynogels Integration Tests', function () {
     it('should return tweets using secondaryIndex', (done) => {
       Tweet.scan()
         .usingIndex('PublishedDateTimeIndex')
-        .consistentRead(true)
-        .descending()
         .exec((err, data) => {
           expect(err).to.not.exist;
           expect(data.Items).to.have.length.above(0);
@@ -909,7 +907,6 @@ describe('Dynogels Integration Tests', function () {
       Tweet.scan()
         .usingIndex('PublishedDateTimeIndex')
         .where('PublishedDateTime').gt(oneMinAgo)
-        .descending()
         .exec((err, data) => {
           expect(err).to.not.exist;
           expect(data.Items).to.have.length.above(0);

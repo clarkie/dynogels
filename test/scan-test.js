@@ -436,7 +436,7 @@ describe('Scan', () => {
 
       serializer.serializeItem.returns({ age: { N: '18' } });
 
-      const scan = new Scan(18, table, serializer).usingIndex('UserAgeIndex');
+      const scan = new Scan(table, serializer).usingIndex('UserAgeIndex');
       scan.exec();
 
       scan.request.IndexName.should.equal('UserAgeIndex');

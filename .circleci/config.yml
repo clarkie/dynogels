@@ -34,7 +34,6 @@ jobs:
             nvm install 6.10
             nvm use 6.10
             npm install
-            npm test
             npm run ci
 
       - persist_to_workspace:

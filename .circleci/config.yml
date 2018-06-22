@@ -1,0 +1,68 @@
+version: 2
+
+jobs:
+  build:
+    machine: true
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: v1-{{ checksum "package.json" }}
+
+      - run:
+          name: Authenticate with Artifactory
+          command: curl -ks -u$DOCKER_USER:$DOCKER_PASS "https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/npm-local/auth/d2l" -o ~/project/.npmrc
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-{{ checksum "package.json" }}
+
+      - run:
+          name: Start docker containers
+          command: ./circle-docker.sh
+
+      - run:
+          name: Setup Node.js and run tests
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+            nvm install 6.10
+            nvm use 6.10
+            npm install
+            npm run ci
+
+      - persist_to_workspace:
+          root: ~/project
+          paths: .
+
+  deploy:
+    machine: true
+
+    steps:
+      - attach_workspace:
+          at: ~/project
+
+      - run:
+          command: |
+            docker login --username=$DOCKER_USER --password=$DOCKER_PASS d2lartifacts-docker-dockerv2-local.artifactoryonline.com
+            npm install publish
+            ./node_modules/.bin/publish
+
+workflows:
+  version: 2
+
+  build-and-publish:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master

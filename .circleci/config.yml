@@ -23,9 +23,7 @@ jobs:
 
       - run:
           name: Start docker containers
-          command: |
-            docker login --username=$DOCKER_USER --password=$DOCKER_PASS d2lartifacts-docker-dockerv2-local.artifactoryonline.com
-            ./circle-docker.sh
+          command: ./circle-docker.sh
 
       - run:
           name: Setup Node.js and run tests

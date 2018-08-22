@@ -1761,12 +1761,12 @@ describe('table', () => {
         expect(dynamoCreateTableParamsStub.args[0]).to.deep.equal([options]);
         dynamodb.createTable.calledWith(mockCreateTableParamsResult).should.be.true;
         sandbox.verify();
-        sandbox.reset();
+        sandbox.restore();
         done();
       });
     });
 
-    it('should create table with SSESpecification to true', done => {
+    it('should create table with SSESpecification to true', (done) => {
       const config = {
         hashKey: 'email',
         encrypt: true,
@@ -1795,7 +1795,7 @@ describe('table', () => {
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
+      table.createTable({ readCapacity: 5, writeCapacity: 5 }, (err) => {
         expect(err).to.be.null;
         dynamodb.createTable.calledWith(request).should.be.true;
         done();

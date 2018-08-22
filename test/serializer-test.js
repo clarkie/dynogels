@@ -2,10 +2,11 @@
 
 const serializer = require('../lib/serializer');
 const chai = require('chai');
-const expect = chai.expect;
 const Schema = require('../lib/schema');
 const helper = require('./test-helper');
 const Joi = require('joi');
+
+const expect = chai.expect;
 
 chai.should();
 
@@ -222,9 +223,9 @@ describe('Serializer', () => {
 
       const s = new Schema(config);
 
-      const item = serializer.serializeItem(s, { data: 'hello', bin: new Buffer('binary') });
+      const item = serializer.serializeItem(s, { data: 'hello', bin: Buffer.from('binary') });
 
-      item.should.eql({ data: new Buffer('hello'), bin: new Buffer('binary') });
+      item.should.eql({ data: Buffer.from('hello'), bin: Buffer.from('binary') });
     });
 
     it('should serialize number attribute with value zero', () => {
@@ -367,7 +368,7 @@ describe('Serializer', () => {
 
       const item = serializer.serializeItem(s, { data: ['hello', 'world'] });
 
-      const binarySet = docClient.createSet([new Buffer('hello'), new Buffer('world')]);
+      const binarySet = docClient.createSet([Buffer.from('hello'), Buffer.from('world')]);
       item.data.type.should.eql('Binary');
       item.data.values.should.eql(binarySet.values);
     });
@@ -385,7 +386,7 @@ describe('Serializer', () => {
 
       const item = serializer.serializeItem(s, { data: 'hello' });
 
-      const binarySet = docClient.createSet([new Buffer('hello')]);
+      const binarySet = docClient.createSet([Buffer.from('hello')]);
       item.data.type.should.eql('Binary');
       item.data.values.should.eql(binarySet.values);
     });

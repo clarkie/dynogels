@@ -2,10 +2,11 @@
 
 const Schema = require('../lib/schema');
 const chai = require('chai');
-const expect = chai.expect;
 const Joi = require('joi');
 const _ = require('lodash');
 const sinon = require('sinon');
+
+const expect = chai.expect;
 
 chai.should();
 

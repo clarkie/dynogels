@@ -10,8 +10,9 @@ const Scan = require('../lib//scan');
 const Item = require('../lib/item');
 const realSerializer = require('../lib/serializer');
 const chai = require('chai');
-const expect = chai.expect;
 const sinon = require('sinon');
+
+const expect = chai.expect;
 
 chai.should();
 
@@ -30,7 +31,7 @@ describe('table', () => {
   });
 
   describe('#get', () => {
-    it('should get item by hash key', done => {
+    it('should get item by hash key', (done) => {
       const config = {
         hashKey: 'email'
       };
@@ -59,7 +60,7 @@ describe('table', () => {
       });
     });
 
-    it('should get item by hash and range key', done => {
+    it('should get item by hash and range key', (done) => {
       const config = {
         hashKey: 'name',
         rangeKey: 'email'
@@ -92,7 +93,7 @@ describe('table', () => {
       });
     });
 
-    it('should get item by hash key and options', done => {
+    it('should get item by hash key and options', (done) => {
       const config = {
         hashKey: 'email',
       };
@@ -122,7 +123,7 @@ describe('table', () => {
       });
     });
 
-    it('should get item by hashkey, range key and options', done => {
+    it('should get item by hashkey, range key and options', (done) => {
       const config = {
         hashKey: 'name',
         rangeKey: 'email',
@@ -156,7 +157,7 @@ describe('table', () => {
       });
     });
 
-    it('should get item from dynamic table by hash key', done => {
+    it('should get item from dynamic table by hash key', (done) => {
       const config = {
         hashKey: 'email',
         tableName: function () {
@@ -188,7 +189,7 @@ describe('table', () => {
       });
     });
 
-    it('should return error', done => {
+    it('should return error', (done) => {
       const config = {
         hashKey: 'email',
       };
@@ -208,7 +209,7 @@ describe('table', () => {
   });
 
   describe('#create', () => {
-    it('should create valid item', done => {
+    it('should create valid item', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -244,7 +245,7 @@ describe('table', () => {
       });
     });
 
-    it('should call apply defaults', done => {
+    it('should call apply defaults', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -280,7 +281,7 @@ describe('table', () => {
       });
     });
 
-    it('should omit null values', done => {
+    it('should omit null values', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -296,7 +297,7 @@ describe('table', () => {
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      const numberSet = sinon.match(value => {
+      const numberSet = sinon.match((value) => {
         const s = docClient.createSet([1, 2, 3]);
 
         value.type.should.eql('Number');
@@ -330,7 +331,7 @@ describe('table', () => {
       });
     });
 
-    it('should omit empty values', done => {
+    it('should omit empty values', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -365,7 +366,7 @@ describe('table', () => {
       });
     });
 
-    it('should create item with createdAt timestamp', done => {
+    it('should create item with createdAt timestamp', (done) => {
       const config = {
         hashKey: 'email',
         timestamps: true,
@@ -398,7 +399,7 @@ describe('table', () => {
       });
     });
 
-    it('should create item with custom createdAt attribute name', done => {
+    it('should create item with custom createdAt attribute name', (done) => {
       const config = {
         hashKey: 'email',
         timestamps: true,
@@ -433,7 +434,7 @@ describe('table', () => {
     });
 
 
-    it('should create item without createdAt param', done => {
+    it('should create item without createdAt param', (done) => {
       const config = {
         hashKey: 'email',
         timestamps: true,
@@ -466,7 +467,7 @@ describe('table', () => {
       });
     });
 
-    it('should create item with expected option', done => {
+    it('should create item with expected option', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -500,7 +501,7 @@ describe('table', () => {
       });
     });
 
-    it('should create item with no callback', done => {
+    it('should create item with no callback', (done) => {
       const config = {
         hashKey: 'email',
         timestamps: true,
@@ -528,7 +529,7 @@ describe('table', () => {
       return done();
     });
 
-    it('should return validation error', done => {
+    it('should return validation error', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -551,7 +552,7 @@ describe('table', () => {
       });
     });
 
-    it('should fail with custom errors specified in schema', done => {
+    it('should fail with custom errors specified in schema', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -574,7 +575,7 @@ describe('table', () => {
       });
     });
 
-    it('should create item with condition expression on hashkey when overwrite flag is false', done => {
+    it('should create item with condition expression on hashkey when overwrite flag is false', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -609,7 +610,7 @@ describe('table', () => {
       });
     });
 
-    it('should create item with condition expression on hash and range key when overwrite flag is false', done => {
+    it('should create item with condition expression on hash and range key when overwrite flag is false', (done) => {
       const config = {
         hashKey: 'email',
         rangeKey: 'name',
@@ -645,7 +646,7 @@ describe('table', () => {
       });
     });
 
-    it('should create item without condition expression when overwrite flag is true', done => {
+    it('should create item without condition expression when overwrite flag is true', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -679,7 +680,7 @@ describe('table', () => {
   });
 
   describe('#update', () => {
-    it('should update valid item', done => {
+    it('should update valid item', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -724,7 +725,7 @@ describe('table', () => {
       });
     });
 
-    it('should accept falsy key and range values', done => {
+    it('should accept falsy key and range values', (done) => {
       const config = {
         hashKey: 'userId',
         rangeKey: 'timeOffset',
@@ -761,7 +762,7 @@ describe('table', () => {
       });
     });
 
-    it('should update with passed in options', done => {
+    it('should update with passed in options', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -816,7 +817,7 @@ describe('table', () => {
       });
     });
 
-    it('should update merge update expressions when passed in as options', done => {
+    it('should update merge update expressions when passed in as options', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -870,7 +871,7 @@ describe('table', () => {
       });
     });
 
-    it('should update valid item without a callback', done => {
+    it('should update valid item without a callback', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -909,7 +910,7 @@ describe('table', () => {
       return done();
     });
 
-    it('should return error', done => {
+    it('should return error', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -996,7 +997,7 @@ describe('table', () => {
   });
 
   describe('#destroy', () => {
-    it('should destroy valid item', done => {
+    it('should destroy valid item', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1029,7 +1030,7 @@ describe('table', () => {
       });
     });
 
-    it('should destroy valid item with falsy hash and range keys', done => {
+    it('should destroy valid item with falsy hash and range keys', (done) => {
       const config = {
         hashKey: 'userId',
         rangeKey: 'timeOffset',
@@ -1063,7 +1064,7 @@ describe('table', () => {
       });
     });
 
-    it('should take optional params', done => {
+    it('should take optional params', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1097,7 +1098,7 @@ describe('table', () => {
       });
     });
 
-    it('should parse and return attributes', done => {
+    it('should parse and return attributes', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1125,9 +1126,10 @@ describe('table', () => {
       docClient.delete.yields(null, { Attributes: returnedAttributes });
 
       serializer.buildKey.returns(request.Key);
-      serializer.deserializeItem.withArgs(returnedAttributes).returns(
-        { email: 'test@test.com', name: 'Foo Bar'
-        });
+      serializer
+        .deserializeItem
+        .withArgs(returnedAttributes)
+        .returns({ email: 'test@test.com', name: 'Foo Bar' });
 
       table.destroy('test@test.com', { ReturnValues: 'ALL_OLD' }, (err, item) => {
         serializer.buildKey.calledWith('test@test.com', null, s).should.be.true;
@@ -1139,7 +1141,7 @@ describe('table', () => {
       });
     });
 
-    it('should accept hash and range key', done => {
+    it('should accept hash and range key', (done) => {
       const config = {
         hashKey: 'email',
         rangeKey: 'name',
@@ -1170,9 +1172,10 @@ describe('table', () => {
       docClient.delete.yields(null, { Attributes: returnedAttributes });
 
       serializer.buildKey.returns(request.Key);
-      serializer.deserializeItem.withArgs(returnedAttributes).returns(
-        { email: 'test@test.com', name: 'Foo Bar'
-        });
+      serializer
+        .deserializeItem
+        .withArgs(returnedAttributes)
+        .returns({ email: 'test@test.com', name: 'Foo Bar' });
 
       table.destroy('test@test.com', 'Foo Bar', (err, item) => {
         serializer.buildKey.calledWith('test@test.com', 'Foo Bar', s).should.be.true;
@@ -1184,7 +1187,7 @@ describe('table', () => {
       });
     });
 
-    it('should accept hashkey rangekey and options', done => {
+    it('should accept hashkey rangekey and options', (done) => {
       const config = {
         hashKey: 'email',
         rangeKey: 'name',
@@ -1216,9 +1219,10 @@ describe('table', () => {
       docClient.delete.yields(null, { Attributes: returnedAttributes });
 
       serializer.buildKey.returns(request.Key);
-      serializer.deserializeItem.withArgs(returnedAttributes).returns(
-        { email: 'test@test.com', name: 'Foo Bar'
-        });
+      serializer
+        .deserializeItem
+        .withArgs(returnedAttributes)
+        .returns({ email: 'test@test.com', name: 'Foo Bar' });
 
       table.destroy('test@test.com', 'Foo Bar', { ReturnValues: 'ALL_OLD' }, (err, item) => {
         serializer.buildKey.calledWith('test@test.com', 'Foo Bar', s).should.be.true;
@@ -1230,7 +1234,7 @@ describe('table', () => {
       });
     });
 
-    it('should serialize expected option', done => {
+    it('should serialize expected option', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1267,7 +1271,7 @@ describe('table', () => {
       });
     });
 
-    it('should call delete item without callback', done => {
+    it('should call delete item without callback', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1296,7 +1300,7 @@ describe('table', () => {
       return done();
     });
 
-    it('should call delete item with hash key, options and no callback', done => {
+    it('should call delete item with hash key, options and no callback', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1329,8 +1333,181 @@ describe('table', () => {
     });
   });
 
-  describe('#createTable', () => {
-    it('should create table with hash key', done => {
+  describe('#describeTable', () => {
+    it('should make describe table request', (done) => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      const request = {
+        TableName: 'accounts'
+      };
+
+      dynamodb.describeTable.yields(null, {});
+
+      table.describeTable((err) => {
+        expect(err).to.be.null;
+        dynamodb.describeTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
+  });
+
+  describe('#updateTable', () => {
+    beforeEach(() => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+    });
+
+    it('should make update table request', (done) => {
+      const request = {
+        TableName: 'accounts',
+        ProvisionedThroughput: { ReadCapacityUnits: 4, WriteCapacityUnits: 2 }
+      };
+
+      dynamodb.describeTable.yields(null, {});
+      dynamodb.updateTable.yields(null, {});
+
+      table.updateTable({ readCapacity: 4, writeCapacity: 2 }, (err) => {
+        expect(err).to.be.null;
+        dynamodb.updateTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
+
+    it('should make update table request without callback', (done) => {
+      const request = {
+        TableName: 'accounts',
+        ProvisionedThroughput: { ReadCapacityUnits: 2, WriteCapacityUnits: 1 }
+      };
+
+      table.updateTable({ readCapacity: 2, writeCapacity: 1 });
+
+      dynamodb.updateTable.calledWith(request).should.be.true;
+
+      return done();
+    });
+  });
+
+  describe('#deleteTable', () => {
+    beforeEach(() => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+    });
+
+    it('should make delete table request', (done) => {
+      const request = {
+        TableName: 'accounts'
+      };
+
+      dynamodb.deleteTable.yields(null, {});
+
+      table.deleteTable((err) => {
+        expect(err).to.be.null;
+        dynamodb.deleteTable.calledWith(request).should.be.true;
+        done();
+      });
+    });
+
+    it('should make delete table request without callback', (done) => {
+      const request = {
+        TableName: 'accounts',
+      };
+
+      table.deleteTable();
+
+      dynamodb.deleteTable.calledWith(request).should.be.true;
+
+      return done();
+    });
+  });
+
+  describe('#tableName', () => {
+    it('should return given name', () => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      table.tableName().should.eql('accounts');
+    });
+
+    it('should return table name set on schema', () => {
+      const config = {
+        hashKey: 'email',
+        tableName: 'accounts-2014-03',
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      table.tableName().should.eql('accounts-2014-03');
+    });
+
+    it('should return table name returned from function on schema', () => {
+      const d = new Date();
+      const dateString = [d.getFullYear(), d.getMonth() + 1].join('_');
+
+      const nameFunc = () => `accounts_${dateString}`;
+
+      const config = {
+        hashKey: 'email',
+        tableName: nameFunc,
+        schema: {
+          email: Joi.string(),
+          name: Joi.string(),
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      table.tableName().should.eql(`accounts_${dateString}`);
+    });
+  });
+
+
+  describe('#dynamoCreateTableParams', () => {
+    it('should make table arguments with hash key', () => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1342,8 +1519,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-
-      const request = {
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'email', AttributeType: 'S' }
@@ -1352,18 +1528,10 @@ describe('table', () => {
           { AttributeName: 'email', KeyType: 'HASH' }
         ],
         ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
-      };
-
-      dynamodb.createTable.yields(null, {});
-
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
-        expect(err).to.be.null;
-        dynamodb.createTable.calledWith(request).should.be.true;
-        done();
       });
     });
 
-    it('should create table with range key', done => {
+    it('should make table arguments with range key', () => {
       const config = {
         hashKey: 'name',
         rangeKey: 'email',
@@ -1376,8 +1544,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-
-      const request = {
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1388,18 +1555,10 @@ describe('table', () => {
           { AttributeName: 'email', KeyType: 'RANGE' }
         ],
         ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
-      };
-
-      dynamodb.createTable.yields(null, {});
-
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
-        expect(err).to.be.null;
-        dynamodb.createTable.calledWith(request).should.be.true;
-        done();
       });
     });
 
-    it('should create table with stream specification', done => {
+    it('should make table arguments with stream specification', () => {
       const config = {
         hashKey: 'name',
         schema: {
@@ -1411,8 +1570,14 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('accounts', s, serializer, docClient, logger);
-
-      const request = {
+      expect(table.dynamoCreateTableParams({
+        readCapacity: 5,
+        writeCapacity: 5,
+        streamSpecification: {
+          streamEnabled: true,
+          streamViewType: 'NEW_IMAGE'
+        }
+      })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' }
@@ -1422,25 +1587,10 @@ describe('table', () => {
         ],
         ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 },
         StreamSpecification: { StreamEnabled: true, StreamViewType: 'NEW_IMAGE' }
-      };
-
-      dynamodb.createTable.yields(null, {});
-
-      table.createTable({
-        readCapacity: 5,
-        writeCapacity: 5,
-        streamSpecification: {
-          streamEnabled: true,
-          streamViewType: 'NEW_IMAGE'
-        }
-      }, err => {
-        expect(err).to.be.null;
-        dynamodb.createTable.calledWith(request).should.be.true;
-        done();
       });
     });
 
-    it('should create table with secondary index', done => {
+    it('should make table arguments with secondary index', () => {
       const config = {
         hashKey: 'name',
         rangeKey: 'email',
@@ -1458,7 +1608,7 @@ describe('table', () => {
 
       table = new Table('accounts', s, serializer, docClient, logger);
 
-      const request = {
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
@@ -1482,18 +1632,10 @@ describe('table', () => {
           }
         ],
         ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
-      };
-
-      dynamodb.createTable.yields(null, {});
-
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
-        expect(err).to.be.null;
-        dynamodb.createTable.calledWith(request).should.be.true;
-        done();
       });
     });
 
-    it('should create table with global secondary index', done => {
+    it('should make table arguments with global secondary index', () => {
       const config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
@@ -1510,8 +1652,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
-
-      const request = {
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1536,18 +1677,10 @@ describe('table', () => {
           }
         ],
         ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
-      };
-
-      dynamodb.createTable.yields(null, {});
-
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
-        expect(err).to.be.null;
-        dynamodb.createTable.calledWith(request).should.be.true;
-        done();
       });
     });
 
-    it('should create table with global secondary index', done => {
+    it('should make table arguments with global secondary index', () => {
       const config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
@@ -1570,8 +1703,7 @@ describe('table', () => {
       const s = new Schema(config);
 
       table = new Table('gameScores', s, serializer, docClient, logger);
-
-      const request = {
+      expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
@@ -1597,13 +1729,39 @@ describe('table', () => {
           }
         ],
         ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+      });
+    });
+  });
+
+  describe('#createTable', () => {
+    it('should call dynamo.createTable with the dynamoCreateTableParams result', (done) => {
+      const config = {
+        hashKey: 'email',
+        schema: {
+          name: Joi.string(),
+          email: Joi.string(),
+        }
       };
+      const s = new Schema(config);
+      table = new Table('accounts', s, serializer, docClient, logger);
+
+      const mockCreateTableParamsResult = 'mockResult';
+
+      const options = { readCapacity: 5, writeCapacity: 5 };
+
+      const sandbox = sinon.sandbox.create();
+      const dynamoCreateTableParamsStub = sandbox.stub(Table.prototype, 'dynamoCreateTableParams');
+      dynamoCreateTableParamsStub.callsFake(() => mockCreateTableParamsResult);
 
       dynamodb.createTable.yields(null, {});
 
-      table.createTable({ readCapacity: 5, writeCapacity: 5 }, err => {
+      table.createTable(options, (err) => {
         expect(err).to.be.null;
-        dynamodb.createTable.calledWith(request).should.be.true;
+        dynamoCreateTableParamsStub.calledOnce.should.be.true;
+        expect(dynamoCreateTableParamsStub.args[0]).to.deep.equal([options]);
+        dynamodb.createTable.calledWith(mockCreateTableParamsResult).should.be.true;
+        sandbox.verify();
+        sandbox.reset();
         done();
       });
     });
@@ -1646,7 +1804,7 @@ describe('table', () => {
   });
 
   describe('#describeTable', () => {
-    it('should make describe table request', done => {
+    it('should make describe table request', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -1665,7 +1823,7 @@ describe('table', () => {
 
       dynamodb.describeTable.yields(null, {});
 
-      table.describeTable(err => {
+      table.describeTable((err) => {
         expect(err).to.be.null;
         dynamodb.describeTable.calledWith(request).should.be.true;
         done();
@@ -1688,7 +1846,7 @@ describe('table', () => {
       table = new Table('accounts', s, serializer, docClient, logger);
     });
 
-    it('should make update table request', done => {
+    it('should make update table request', (done) => {
       const request = {
         TableName: 'accounts',
         ProvisionedThroughput: { ReadCapacityUnits: 4, WriteCapacityUnits: 2 }
@@ -1697,14 +1855,14 @@ describe('table', () => {
       dynamodb.describeTable.yields(null, {});
       dynamodb.updateTable.yields(null, {});
 
-      table.updateTable({ readCapacity: 4, writeCapacity: 2 }, err => {
+      table.updateTable({ readCapacity: 4, writeCapacity: 2 }, (err) => {
         expect(err).to.be.null;
         dynamodb.updateTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should make update table request without callback', done => {
+    it('should make update table request without callback', (done) => {
       const request = {
         TableName: 'accounts',
         ProvisionedThroughput: { ReadCapacityUnits: 2, WriteCapacityUnits: 1 }
@@ -1733,21 +1891,21 @@ describe('table', () => {
       table = new Table('accounts', s, serializer, docClient, logger);
     });
 
-    it('should make delete table request', done => {
+    it('should make delete table request', (done) => {
       const request = {
         TableName: 'accounts'
       };
 
       dynamodb.deleteTable.yields(null, {});
 
-      table.deleteTable(err => {
+      table.deleteTable((err) => {
         expect(err).to.be.null;
         dynamodb.deleteTable.calledWith(request).should.be.true;
         done();
       });
     });
 
-    it('should make delete table request without callback', done => {
+    it('should make delete table request without callback', (done) => {
       const request = {
         TableName: 'accounts',
       };
@@ -1819,7 +1977,7 @@ describe('table', () => {
 
   describe('hooks', () => {
     describe('#create', () => {
-      it('should call before hooks', done => {
+      it('should call before hooks', (done) => {
         const config = {
           hashKey: 'email',
           schema: {
@@ -1861,7 +2019,7 @@ describe('table', () => {
         });
       });
 
-      it('should return error when before hook returns error', done => {
+      it('should return error when before hook returns error', (done) => {
         const config = {
           hashKey: 'email',
           schema: {
@@ -1885,7 +2043,7 @@ describe('table', () => {
         });
       });
 
-      it('should call after hook', done => {
+      it('should call after hook', (done) => {
         const config = {
           hashKey: 'email',
           schema: {
@@ -1904,7 +2062,7 @@ describe('table', () => {
 
         serializer.serializeItem.withArgs(s, item).returns({});
 
-        table.after('create', data => {
+        table.after('create', (data) => {
           expect(data).to.exist;
 
           return done();
@@ -1915,7 +2073,7 @@ describe('table', () => {
     });
 
     describe('#update', () => {
-      it('should call before hook', done => {
+      it('should call before hook', (done) => {
         const config = {
           hashKey: 'email',
           schema: {
@@ -1956,7 +2114,7 @@ describe('table', () => {
         table.update(item, () => {});
       });
 
-      it('should return error when before hook returns error', done => {
+      it('should return error when before hook returns error', (done) => {
         const config = {
           hashKey: 'email',
           schema: {
@@ -1972,7 +2130,7 @@ describe('table', () => {
 
         table.before('update', (data, next) => next(new Error('fail')));
 
-        table.update({}, err => {
+        table.update({}, (err) => {
           expect(err).to.exist;
           err.message.should.equal('fail');
 
@@ -1980,7 +2138,7 @@ describe('table', () => {
         });
       });
 
-      it('should call after hook', done => {
+      it('should call after hook', (done) => {
         const config = {
           hashKey: 'email',
           schema: {
@@ -2011,7 +2169,7 @@ describe('table', () => {
       });
     });
 
-    it('#destroy should call after hook', done => {
+    it('#destroy should call after hook', (done) => {
       const config = {
         hashKey: 'email',
         schema: {

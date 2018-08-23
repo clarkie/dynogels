@@ -2,12 +2,13 @@
 
 const dynogels = require('../../index');
 const chai = require('chai');
-const expect = chai.expect;
 const async = require('async');
 const _ = require('lodash');
 const helper = require('../test-helper');
 const uuid = require('uuid');
 const Joi = require('joi');
+
+const expect = chai.expect;
 
 chai.should();
 
@@ -19,11 +20,11 @@ const internals = {};
 
 internals.userId = n => `userid-${n}`;
 
-internals.loadSeedData = callback => {
+internals.loadSeedData = (callback) => {
   callback = callback || _.noop;
 
   async.parallel([
-    callback => {
+    (callback) => {
       async.times(15, (n, next) => {
         let roles = ['user'];
         if (n % 3 === 0) {
@@ -35,7 +36,7 @@ internals.loadSeedData = callback => {
         User.create({ id: internals.userId(n), email: `test${n}@example.com`, name: `Test ${n % 3}`, age: n + 10, roles: roles }, next);
       }, callback);
     },
-    callback => {
+    (callback) => {
       async.times(15 * 5, (n, next) => {
         const userId = internals.userId(n % 5);
         const p = { UserId: userId, content: `I love tweeting, in fact Ive tweeted ${n} times`, num: n };
@@ -46,11 +47,11 @@ internals.loadSeedData = callback => {
         return Tweet.create(p, next);
       }, callback);
     },
-    callback => {
+    (callback) => {
       async.times(10, (n, next) => {
         const director = { firstName: 'Steven', lastName: `Spielberg the ${n}`, titles: ['Producer', 'Writer', 'Director'] };
         const actors = [
-        { firstName: 'Tom', lastName: 'Hanks', titles: ['Producer', 'Actor', 'Soundtrack'] }
+          { firstName: 'Tom', lastName: 'Hanks', titles: ['Producer', 'Actor', 'Soundtrack'] }
         ];
 
         const tags = [`tag ${n}`];
@@ -74,7 +75,7 @@ internals.loadSeedData = callback => {
 describe('Dynogels Integration Tests', function () {
   this.timeout(0);
 
-  before(done => {
+  before((done) => {
     dynogels.dynamoDriver(helper.realDynamoDB());
 
     User = dynogels.define('dynogels-int-test-user', {
@@ -150,11 +151,11 @@ describe('Dynogels Integration Tests', function () {
 
     async.series([
       async.apply(dynogels.createTables.bind(dynogels)),
-      callback => {
+      (callback) => {
         const items = [{ fiz: 3, buz: 5, fizbuz: 35 }];
         User.create({ id: '123456789', email: 'some@user.com', age: 30, settings: { nickname: 'thedude' }, things: items }, callback);
       },
-      callback => {
+      (callback) => {
         User.create({ id: '9999', email: '9999@test.com', age: 99, name: 'Nancy Nine' }, callback);
       },
       internals.loadSeedData
@@ -162,7 +163,7 @@ describe('Dynogels Integration Tests', function () {
   });
 
   describe('#create', () => {
-    it('should create item with hash key', done => {
+    it('should create item with hash key', (done) => {
       User.create({
         email: 'foo@bar.com',
         age: 18,
@@ -180,7 +181,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should create item with empty string', done => {
+    it('should create item with empty string', (done) => {
       User.create({
         email: 'foo2@bar.com',
         name: '',
@@ -198,7 +199,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return condition exception when using ConditionExpression', done => {
+    it('should return condition exception when using ConditionExpression', (done) => {
       const item = { email: 'test123@test.com', age: 33, roles: ['user'] };
 
       User.create(item, (err, acc) => {
@@ -222,7 +223,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return condition exception when using expected shorthand', done => {
+    it('should return condition exception when using expected shorthand', (done) => {
       const item = { email: 'test444@test.com', age: 33, roles: ['user'] };
 
       User.create(item, (err, acc) => {
@@ -243,7 +244,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return condition exception when using overwrite shorthand', done => {
+    it('should return condition exception when using overwrite shorthand', (done) => {
       const item = { email: 'testOverwrite@test.com', age: 20 };
 
       User.create(item, (err, acc) => {
@@ -261,7 +262,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return custom errors specified in the schema', done => {
+    it('should return custom errors specified in the schema', (done) => {
       const item = { id: '123456789', email: 'newemail', custom: 'forbidden' };
       User.create(item, (err, acc) => {
         expect(err).to.exist;
@@ -271,7 +272,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should create item with dynamic keys', done => {
+    it('should create item with dynamic keys', (done) => {
       DynamicKeyModel.create({
         id: 'rand-1',
         name: 'Foo Bar',
@@ -285,7 +286,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should create multiple items at once', done => {
+    it('should create multiple items at once', (done) => {
       const item = { email: 'testMulti1@test.com', age: 10 };
       const item2 = { email: 'testMulti2@test.com', age: 20 };
       const item3 = { email: 'testMulti3@test.com', age: 30 };
@@ -301,7 +302,7 @@ describe('Dynogels Integration Tests', function () {
   });
 
   describe('#get', () => {
-    it('should get item by hash key', done => {
+    it('should get item by hash key', (done) => {
       User.get({ id: '123456789' }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -310,7 +311,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should get return selected attributes AttributesToGet param', done => {
+    it('should get return selected attributes AttributesToGet param', (done) => {
       User.get({ id: '123456789' }, { AttributesToGet: ['email', 'age'] }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -319,7 +320,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should get return selected attributes using ProjectionExpression param', done => {
+    it('should get return selected attributes using ProjectionExpression param', (done) => {
       User.get({ id: '123456789' }, { ProjectionExpression: 'email, age, settings.nickname' }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -331,7 +332,7 @@ describe('Dynogels Integration Tests', function () {
   });
 
   describe('#update', () => {
-    it('should update item appended role', done => {
+    it('should update item appended role', (done) => {
       User.update({
         id: '123456789',
         roles: { $add: 'tester' }
@@ -377,7 +378,7 @@ describe('Dynogels Integration Tests', function () {
       );
     });
 
-    it('should remove name attribute from user record when set to empty string', done => {
+    it('should remove name attribute from user record when set to empty string', (done) => {
       User.update({ id: '9999', name: '' }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -387,7 +388,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should update age using expected value', done => {
+    it('should update age using expected value', (done) => {
       User.update({ id: '9999', age: 100 }, { expected: { age: 99 } }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -397,7 +398,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should update email using expected that an email already exists', done => {
+    it('should update email using expected that an email already exists', (done) => {
       User.update({ id: '9999', email: 'new9999@test.com' }, { expected: { email: { Exists: true } } }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -407,7 +408,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should remove settings attribute from user record', done => {
+    it('should remove settings attribute from user record', (done) => {
       User.update({ id: '123456789', settings: null }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -417,7 +418,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should update User using updateExpression', done => {
+    it('should update User using updateExpression', (done) => {
       const params = {};
       params.UpdateExpression = 'ADD #a :x SET things[0].buz = :y';
       params.ConditionExpression = '#a = :current';
@@ -433,7 +434,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should update Movie using updateExpressions', done => {
+    it('should update Movie using updateExpressions', (done) => {
       const params = {};
       params.UpdateExpression = 'SET #year = #year + :inc, #dir.titles = list_append(#dir.titles, :title), #act[0].firstName = :firstName ADD tags :tag';
       params.ConditionExpression = '#year = :current';
@@ -461,7 +462,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should update item with dynamic keys', done => {
+    it('should update item with dynamic keys', (done) => {
       DynamicKeyModel.update({
         id: 'rand-5',
         color: 'green',
@@ -535,22 +536,10 @@ describe('Dynogels Integration Tests', function () {
         done();
       });
     });
-
-    it('should fail with custom error', done => {
-      User.update({
-        id: '123456789',
-        custom: 'forbidden'
-      }, (err, acc) => {
-        expect(err).to.exist;
-        expect(acc).to.not.exist;
-        expect(err).to.match(/Custom field is prohibited/);
-        done();
-      });
-    });
   });
 
   describe('#getItems', () => {
-    it('should return 3 items', done => {
+    it('should return 3 items', (done) => {
       User.getItems(['userid-1', 'userid-2', 'userid-3'], (err, accounts) => {
         expect(err).to.not.exist;
         expect(accounts).to.have.length(3);
@@ -558,13 +547,13 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return 2 items with only selected attributes', done => {
+    it('should return 2 items with only selected attributes', (done) => {
       const opts = { AttributesToGet: ['email', 'age'] };
 
       User.getItems(['userid-1', 'userid-2'], opts, (err, accounts) => {
         expect(err).to.not.exist;
         expect(accounts).to.have.length(2);
-        _.each(accounts, acc => {
+        _.each(accounts, (acc) => {
           expect(acc.get()).to.have.keys(['email', 'age']);
         });
 
@@ -574,12 +563,12 @@ describe('Dynogels Integration Tests', function () {
   });
 
   describe('#query', () => {
-    it('should return users tweets', done => {
+    it('should return users tweets', (done) => {
       Tweet.query('userid-1').exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
+        _.each(data.Items, (t) => {
           expect(t.get('UserId')).to.eql('userid-1');
         });
 
@@ -587,12 +576,12 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return users tweets with specific attributes', done => {
+    it('should return users tweets with specific attributes', (done) => {
       Tweet.query('userid-1').attributes(['num', 'content']).exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
+        _.each(data.Items, (t) => {
           expect(t.get('UserId')).to.not.exist;
           expect(t.get()).to.include.keys('num', 'content');
         });
@@ -601,87 +590,87 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return tweets using secondaryIndex', done => {
+    it('should return tweets using secondaryIndex', (done) => {
       Tweet.query('userid-1')
-      .usingIndex('PublishedDateTimeIndex')
-      .consistentRead(true)
-      .descending()
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .usingIndex('PublishedDateTimeIndex')
+        .consistentRead(true)
+        .descending()
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        let prev;
-        _.each(data.Items, t => {
-          expect(t.get('UserId')).to.eql('userid-1');
+          let prev;
+          _.each(data.Items, (t) => {
+            expect(t.get('UserId')).to.eql('userid-1');
 
-          const published = t.get('PublishedDateTime');
+            const published = t.get('PublishedDateTime');
 
-          if (prev) {
-            expect(published < prev).to.be.true;
-          }
+            if (prev) {
+              expect(published < prev).to.be.true;
+            }
 
-          prev = published;
+            prev = published;
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return tweets using secondaryIndex and date object', done => {
-      const oneMinAgo = new Date(new Date().getTime() - 60 * 1000);
+    it('should return tweets using secondaryIndex and date object', (done) => {
+      const oneMinAgo = new Date(new Date().getTime() - (60 * 1000));
 
       Tweet.query('userid-1')
-      .usingIndex('PublishedDateTimeIndex')
-      .where('PublishedDateTime').gt(oneMinAgo)
-      .descending()
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .usingIndex('PublishedDateTimeIndex')
+        .where('PublishedDateTime').gt(oneMinAgo)
+        .descending()
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        let prev;
-        _.each(data.Items, t => {
-          expect(t.get('UserId')).to.eql('userid-1');
+          let prev;
+          _.each(data.Items, (t) => {
+            expect(t.get('UserId')).to.eql('userid-1');
 
-          const published = t.get('PublishedDateTime');
+            const published = t.get('PublishedDateTime');
 
-          if (prev) {
-            expect(published < prev).to.be.true;
-          }
+            if (prev) {
+              expect(published < prev).to.be.true;
+            }
 
-          prev = published;
+            prev = published;
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return tweets that match filters', done => {
+    it('should return tweets that match filters', (done) => {
       Tweet.query('userid-1')
-      .filter('num').between(4, 8)
-      .filter('tag').exists()
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .filter('num').between(4, 8)
+        .filter('tag').exists()
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
-          expect(t.get('UserId')).to.eql('userid-1');
-          expect(t.get('num')).to.be.above(3);
-          expect(t.get('num')).to.be.below(9);
-          expect(t.get('tag')).to.exist;
+          _.each(data.Items, (t) => {
+            expect(t.get('UserId')).to.eql('userid-1');
+            expect(t.get('num')).to.be.above(3);
+            expect(t.get('num')).to.be.below(9);
+            expect(t.get('tag')).to.exist;
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return tweets that match exists filter', done => {
+    it('should return tweets that match exists filter', (done) => {
       Tweet.query('userid-1')
         .filter('tag').exists()
         .exec((err, data) => {
           expect(err).to.not.exist;
           expect(data.Items).to.have.length.above(0);
 
-          _.each(data.Items, t => {
+          _.each(data.Items, (t) => {
             expect(t.get('UserId')).to.eql('userid-1');
             expect(t.get('tag')).to.exist;
           });
@@ -690,14 +679,14 @@ describe('Dynogels Integration Tests', function () {
         });
     });
 
-    it('should return tweets that match IN filter', done => {
+    it('should return tweets that match IN filter', (done) => {
       Tweet.query('userid-1')
         .filter('num').in([4, 6, 8])
         .exec((err, data) => {
           expect(err).to.not.exist;
           expect(data.Items).to.have.length.above(0);
 
-          _.each(data.Items, t => {
+          _.each(data.Items, (t) => {
             expect(t.get('UserId')).to.eql('userid-1');
             const c = _.includes([4, 6, 8], t.get('num'));
             expect(c).to.be.true;
@@ -707,48 +696,48 @@ describe('Dynogels Integration Tests', function () {
         });
     });
 
-    it('should return tweets that match expression filters', done => {
+    it('should return tweets that match expression filters', (done) => {
       Tweet.query('userid-1')
-      .filterExpression('#num BETWEEN :low AND :high AND attribute_exists(#tag)')
-      .expressionAttributeValues({ ':low': 4, ':high': 8 })
-      .expressionAttributeNames({ '#num': 'num', '#tag': 'tag' })
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .filterExpression('#num BETWEEN :low AND :high AND attribute_exists(#tag)')
+        .expressionAttributeValues({ ':low': 4, ':high': 8 })
+        .expressionAttributeNames({ '#num': 'num', '#tag': 'tag' })
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
-          expect(t.get('UserId')).to.eql('userid-1');
-          expect(t.get('num')).to.be.above(3);
-          expect(t.get('num')).to.be.below(9);
-          expect(t.get('tag')).to.exist;
+          _.each(data.Items, (t) => {
+            expect(t.get('UserId')).to.eql('userid-1');
+            expect(t.get('num')).to.be.above(3);
+            expect(t.get('num')).to.be.below(9);
+            expect(t.get('tag')).to.exist;
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return tweets with projection expression', done => {
+    it('should return tweets with projection expression', (done) => {
       Tweet.query('userid-1')
-      .projectionExpression('#con, UserId')
-      .expressionAttributeNames({ '#con': 'content' })
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .projectionExpression('#con, UserId')
+        .expressionAttributeNames({ '#con': 'content' })
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
-          expect(t.get()).to.have.keys(['content', 'UserId']);
+          _.each(data.Items, (t) => {
+            expect(t.get()).to.have.keys(['content', 'UserId']);
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return all tweets from user', done => {
+    it('should return all tweets from user', (done) => {
       Tweet.query('userid-1').limit(2).loadAll().exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
+        _.each(data.Items, (t) => {
           expect(t.get('UserId')).to.eql('userid-1');
         });
 
@@ -756,12 +745,12 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return movie if directed by Steven Spielberg the 4', done => {
+    it('should return movie if directed by Steven Spielberg the 4', (done) => {
       Movie.query('Movie 4').filter('director.firstName').equals('Steven').filter('director.lastName').equals('Spielberg the 4').limit(2).loadAll().exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
+        _.each(data.Items, (t) => {
           expect(t.get('title')).to.eql('Movie 4');
 
           expect(t.get('director').firstName).to.eql('Steven');
@@ -775,7 +764,7 @@ describe('Dynogels Integration Tests', function () {
 
 
   describe('#scan', () => {
-    it('should return all users', done => {
+    it('should return all users', (done) => {
       User.scan().loadAll().exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -784,7 +773,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return all users with limit', done => {
+    it('should return all users with limit', (done) => {
       User.scan().limit(2).loadAll().exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -793,13 +782,13 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return users with specific attributes', done => {
+    it('should return users with specific attributes', (done) => {
       User.scan()
         .where('age').gt(18)
         .attributes(['email', 'roles', 'age']).exec((err, data) => {
           expect(err).to.not.exist;
           expect(data.Items).to.have.length.above(0);
-          _.each(data.Items, u => {
+          _.each(data.Items, (u) => {
             expect(u.get()).to.include.keys('email', 'roles', 'age');
           });
 
@@ -807,7 +796,7 @@ describe('Dynogels Integration Tests', function () {
         });
     });
 
-    it('should return 10 users', done => {
+    it('should return 10 users', (done) => {
       User.scan().limit(10).exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length(10);
@@ -816,54 +805,54 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return users older than 18', done => {
+    it('should return users older than 18', (done) => {
       User.scan()
-      .where('age').gt(18)
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .where('age').gt(18)
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, u => {
-          expect(u.get('age')).to.be.above(18);
+          _.each(data.Items, (u) => {
+            expect(u.get('age')).to.be.above(18);
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return users matching multiple filters', done => {
+    it('should return users matching multiple filters', (done) => {
       User.scan()
-      .where('age').between(18, 22)
-      .where('email').beginsWith('test1')
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .where('age').between(18, 22)
+        .where('email').beginsWith('test1')
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, u => {
-          expect(u.get('age')).to.be.within(18, 22);
-          expect(u.get('email')).to.match(/^test1.*/);
+          _.each(data.Items, (u) => {
+            expect(u.get('age')).to.be.within(18, 22);
+            expect(u.get('email')).to.match(/^test1.*/);
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return users contains admin role', done => {
+    it('should return users contains admin role', (done) => {
       User.scan()
-      .where('roles').contains('admin')
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .where('roles').contains('admin')
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, u => {
-          expect(u.get('roles')).to.include('admin');
+          _.each(data.Items, (u) => {
+            expect(u.get('roles')).to.include('admin');
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return users using stream interface', done => {
+    it('should return users using stream interface', (done) => {
       const stream = User.scan().exec();
 
       let called = false;
@@ -881,33 +870,16 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return users that match expression filters', done => {
+    it('should return users that match expression filters', (done) => {
       User.scan()
-      .filterExpression('#age BETWEEN :low AND :high AND begins_with(#email, :e)')
-      .expressionAttributeValues({ ':low': 18, ':high': 22, ':e': 'test1' })
-      .expressionAttributeNames({ '#age': 'age', '#email': 'email' })
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
-
-        _.each(data.Items, u => {
-          expect(u.get('age')).to.be.within(18, 22);
-          expect(u.get('email')).to.match(/^test1.*/);
-        });
-
-        return done();
-      });
-    });
-
-    it('should return users between ages', done => {
-      User.scan()
-        .where('age').between(18, 22)
-        .where('email').beginsWith('test1')
+        .filterExpression('#age BETWEEN :low AND :high AND begins_with(#email, :e)')
+        .expressionAttributeValues({ ':low': 18, ':high': 22, ':e': 'test1' })
+        .expressionAttributeNames({ '#age': 'age', '#email': 'email' })
         .exec((err, data) => {
           expect(err).to.not.exist;
           expect(data.Items).to.have.length.above(0);
 
-          _.each(data.Items, u => {
+          _.each(data.Items, (u) => {
             expect(u.get('age')).to.be.within(18, 22);
             expect(u.get('email')).to.match(/^test1.*/);
           });
@@ -916,14 +888,31 @@ describe('Dynogels Integration Tests', function () {
         });
     });
 
-    it('should return users matching IN filter', done => {
+    it('should return users between ages', (done) => {
+      User.scan()
+        .where('age').between(18, 22)
+        .where('email').beginsWith('test1')
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
+
+          _.each(data.Items, (u) => {
+            expect(u.get('age')).to.be.within(18, 22);
+            expect(u.get('email')).to.match(/^test1.*/);
+          });
+
+          return done();
+        });
+    });
+
+    it('should return users matching IN filter', (done) => {
       User.scan()
         .where('age').in([2, 9, 20])
         .exec((err, data) => {
           expect(err).to.not.exist;
           expect(data.Items).to.have.length.above(0);
 
-          _.each(data.Items, u => {
+          _.each(data.Items, (u) => {
             const c = _.includes([2, 9, 20], u.get('age'));
             expect(c).to.be.true;
           });
@@ -932,23 +921,23 @@ describe('Dynogels Integration Tests', function () {
         });
     });
 
-    it('should return users with projection expression', done => {
+    it('should return users with projection expression', (done) => {
       User.scan()
-      .projectionExpression('age, email, #roles')
-      .expressionAttributeNames({ '#roles': 'roles' })
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .projectionExpression('age, email, #roles')
+        .expressionAttributeNames({ '#roles': 'roles' })
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, u => {
-          expect(u.get()).to.have.keys(['age', 'email', 'roles']);
+          _.each(data.Items, (u) => {
+            expect(u.get()).to.have.keys(['age', 'email', 'roles']);
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should load all users with limit', done => {
+    it('should load all users with limit', (done) => {
       User.scan().loadAll().limit(2).exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -957,7 +946,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return users using stream interface and limit', done => {
+    it('should return users using stream interface and limit', (done) => {
       const stream = User.scan().loadAll().limit(2).exec();
 
       let called = false;
@@ -976,12 +965,12 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should load tweets using not null tag clause', done => {
+    it('should load tweets using not null tag clause', (done) => {
       Tweet.scan().where('tag').notNull().exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
+        _.each(data.Items, (t) => {
           expect(t.get('tag')).to.exist;
         });
 
@@ -989,12 +978,12 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return all movies directed by Steven Spielberg the 4', done => {
+    it('should return all movies directed by Steven Spielberg the 4', (done) => {
       Movie.scan().where('director.firstName').equals('Steven').where('director.lastName').equals('Spielberg the 4').limit(2).loadAll().exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, t => {
+        _.each(data.Items, (t) => {
           expect(t.get('director').firstName).to.eql('Steven');
           expect(t.get('director').lastName).to.eql('Spielberg the 4');
         });
@@ -1005,7 +994,7 @@ describe('Dynogels Integration Tests', function () {
   });
 
   describe('#parallelScan', () => {
-    it('should return all users', done => {
+    it('should return all users', (done) => {
       User.parallelScan(4).exec((err, data) => {
         expect(err).to.not.exist;
         expect(data.Items).to.have.length.above(0);
@@ -1014,22 +1003,22 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return users older than 18', done => {
+    it('should return users older than 18', (done) => {
       User.parallelScan(4)
-      .where('age').gt(18)
-      .exec((err, data) => {
-        expect(err).to.not.exist;
-        expect(data.Items).to.have.length.above(0);
+        .where('age').gt(18)
+        .exec((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.Items).to.have.length.above(0);
 
-        _.each(data.Items, u => {
-          expect(u.get('age')).to.be.above(18);
+          _.each(data.Items, (u) => {
+            expect(u.get('age')).to.be.above(18);
+          });
+
+          return done();
         });
-
-        return done();
-      });
     });
 
-    it('should return users using stream interface', done => {
+    it('should return users using stream interface', (done) => {
       const stream = User.parallelScan(4).exec();
 
       let called = false;
@@ -1054,7 +1043,7 @@ describe('Dynogels Integration Tests', function () {
     let Model;
     let ModelCustomTimestamps;
 
-    before(done => {
+    before((done) => {
       Model = dynogels.define('dynogels-int-test-timestamp', {
         hashKey: 'id',
         timestamps: true,
@@ -1077,8 +1066,8 @@ describe('Dynogels Integration Tests', function () {
       return dynogels.createTables(done);
     });
 
-    it('should add createdAt param', done => {
-      Model.create({ id: 'test-1' }, err => {
+    it('should add createdAt param', (done) => {
+      Model.create({ id: 'test-1' }, (err) => {
         expect(err).to.not.exist;
 
         Model.get('test-1', (err2, data) => {
@@ -1092,8 +1081,8 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should add updatedAt param', done => {
-      Model.update({ id: 'test-2' }, err => {
+    it('should add updatedAt param', (done) => {
+      Model.update({ id: 'test-2' }, (err) => {
         expect(err).to.not.exist;
 
         Model.get('test-2', (err2, data) => {
@@ -1107,8 +1096,8 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should add custom createdAt param', done => {
-      ModelCustomTimestamps.create({ id: 'test-1' }, err => {
+    it('should add custom createdAt param', (done) => {
+      ModelCustomTimestamps.create({ id: 'test-1' }, (err) => {
         expect(err).to.not.exist;
 
         ModelCustomTimestamps.get('test-1', (err2, data) => {
@@ -1122,8 +1111,8 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should add custom updatedAt param', done => {
-      ModelCustomTimestamps.update({ id: 'test-2' }, err => {
+    it('should add custom updatedAt param', (done) => {
+      ModelCustomTimestamps.update({ id: 'test-2' }, (err) => {
         expect(err).to.not.exist;
 
         ModelCustomTimestamps.get('test-2', (err2, data) => {
@@ -1140,7 +1129,7 @@ describe('Dynogels Integration Tests', function () {
 
   describe('#destroy', () => {
     let userId;
-    beforeEach(done => {
+    beforeEach((done) => {
       User.create({ email: 'destroy@test.com', age: 20, roles: ['tester'] }, (err, acc) => {
         expect(err).to.not.exist;
         userId = acc.get('id');
@@ -1149,14 +1138,14 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should destroy item with hash key', done => {
-      User.destroy({ id: userId }, err => {
+    it('should destroy item with hash key', (done) => {
+      User.destroy({ id: userId }, (err) => {
         expect(err).to.not.exist;
         return done();
       });
     });
 
-    it('should destroy item and return old values', done => {
+    it('should destroy item and return old values', (done) => {
       User.destroy({ id: userId }, { ReturnValues: 'ALL_OLD' }, (err, acc) => {
         expect(err).to.not.exist;
         expect(acc).to.exist;
@@ -1165,7 +1154,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return condition exception when using ConditionExpression', done => {
+    it('should return condition exception when using ConditionExpression', (done) => {
       const params = {};
       params.ConditionExpression = '#i = :x';
       params.ExpressionAttributeNames = { '#i': 'id' };
@@ -1180,7 +1169,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('should return condition exception when using Expected shorthand', done => {
+    it('should return condition exception when using Expected shorthand', (done) => {
       const opts = { expected: { id: 'dontexist' } };
 
       User.destroy({ id: 'dontexist' }, opts, (err, acc) => {
@@ -1195,32 +1184,32 @@ describe('Dynogels Integration Tests', function () {
 
 
   describe('model methods', () => {
-    it('#save with passed in attributes', done => {
+    it('#save with passed in attributes', (done) => {
       const t = new Tweet({
         UserId: 'tester-1',
         content: 'save test tweet',
         tag: 'test'
       });
 
-      t.save(err => {
+      t.save((err) => {
         expect(err).to.not.exist;
         return done();
       });
     });
 
-    it('#save without passed in attributes', done => {
+    it('#save without passed in attributes', (done) => {
       const t = new Tweet();
 
       const attrs = { UserId: 'tester-1', content: 'save test tweet', tag: 'test' };
       t.set(attrs);
 
-      t.save(err => {
+      t.save((err) => {
         expect(err).to.not.exist;
         return done();
       });
     });
 
-    it('#save without callback', done => {
+    it('#save without callback', (done) => {
       const t = new Tweet({
         UserId: 'tester-1',
         content: 'save test tweet',
@@ -1232,13 +1221,13 @@ describe('Dynogels Integration Tests', function () {
       return done();
     });
 
-    it('#update with callback', done => {
+    it('#update with callback', (done) => {
       Tweet.create({ UserId: 'tester-2', content: 'update test tweet' }, (err, tweet) => {
         expect(err).to.not.exist;
 
         tweet.set({ tag: 'update' });
 
-        tweet.update(err => {
+        tweet.update((err) => {
           expect(err).to.not.exist;
           expect(tweet.get('tag')).to.eql('update');
           return done();
@@ -1246,7 +1235,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('#update without callback', done => {
+    it('#update without callback', (done) => {
       Tweet.create({ UserId: 'tester-2', content: 'update test tweet' }, (err, tweet) => {
         expect(err).to.not.exist;
 
@@ -1259,18 +1248,18 @@ describe('Dynogels Integration Tests', function () {
     });
 
 
-    it('#destroy with callback', done => {
+    it('#destroy with callback', (done) => {
       Tweet.create({ UserId: 'tester-2', content: 'update test tweet' }, (err, tweet) => {
         expect(err).to.not.exist;
 
-        tweet.destroy(err => {
+        tweet.destroy((err) => {
           expect(err).to.not.exist;
           return done();
         });
       });
     });
 
-    it('#destroy without callback', done => {
+    it('#destroy without callback', (done) => {
       Tweet.create({ UserId: 'tester-2', content: 'update test tweet' }, (err, tweet) => {
         expect(err).to.not.exist;
 
@@ -1280,7 +1269,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('#toJSON', done => {
+    it('#toJSON', (done) => {
       Tweet.create({ UserId: 'tester-2', content: 'update test tweet' }, (err, tweet) => {
         expect(err).to.not.exist;
 
@@ -1289,7 +1278,7 @@ describe('Dynogels Integration Tests', function () {
       });
     });
 
-    it('#toPlainObject', done => {
+    it('#toPlainObject', (done) => {
       Tweet.create({ UserId: 'tester-2', content: 'update test tweet' }, (err, tweet) => {
         expect(err).to.not.exist;
 

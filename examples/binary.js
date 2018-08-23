@@ -2,9 +2,9 @@
 
 const dynogels = require('../index');
 const fs = require('fs');
-const AWS = dynogels.AWS;
 const Joi = require('joi');
 
+const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 const BinModel = dynogels.define('example-binary', {
@@ -26,7 +26,7 @@ const printFileInfo = (err, file) => {
   }
 };
 
-dynogels.createTables(err => {
+dynogels.createTables((err) => {
   if (err) {
     console.log('Error creating tables', err);
     process.exit(1);

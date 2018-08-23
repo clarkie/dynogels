@@ -44,7 +44,7 @@ exports.mockDocClient = () => {
     'query'
   ];
 
-  _.each(operations, op => {
+  _.each(operations, (op) => {
     client[op] = sinon.stub();
   });
 

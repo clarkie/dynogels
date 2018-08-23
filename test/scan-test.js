@@ -5,8 +5,9 @@ const Schema = require('../lib/schema');
 const Scan = require('../lib/scan');
 const _ = require('lodash');
 const chai = require('chai');
-const expect = chai.expect;
 const Joi = require('joi');
+
+const expect = chai.expect;
 
 chai.should();
 
@@ -51,7 +52,7 @@ describe('Scan', () => {
   });
 
   describe('#exec', () => {
-    it('should call run scan on table', done => {
+    it('should call run scan on table', (done) => {
       table.runScan.yields(null, { ConsumedCapacity: { CapacityUnits: 5, TableName: 'accounts' }, Count: 10, ScannedCount: 12 });
       serializer.serializeItem.returns({ name: { S: 'tim' } });
 
@@ -64,7 +65,7 @@ describe('Scan', () => {
       });
     });
 
-    it('should return LastEvaluatedKey', done => {
+    it('should return LastEvaluatedKey', (done) => {
       table.runScan.yields(null, { LastEvaluatedKey: { name: 'tim' }, Count: 10, ScannedCount: 12 });
       serializer.serializeItem.returns({ name: { S: 'tim' } });
 
@@ -78,7 +79,7 @@ describe('Scan', () => {
       });
     });
 
-    it('should return error', done => {
+    it('should return error', (done) => {
       table.runScan.yields(new Error('Fail'));
 
       new Scan(table, serializer).exec((err, results) => {
@@ -88,7 +89,7 @@ describe('Scan', () => {
       });
     });
 
-    it('should run scan after encountering a retryable exception', done => {
+    it('should run scan after encountering a retryable exception', (done) => {
       const err = new Error('RetryableException');
       err.retryable = true;
 

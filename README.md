@@ -117,6 +117,7 @@ var BlogPost = dynogels.define('BlogPost', {
 });
 ```
 
+
 ### Create Tables for all defined models
 
 ```js
@@ -135,11 +136,11 @@ When creating tables you can pass specific throughput settings or stream specifi
 dynogels.createTables({
   'BlogPost': {readCapacity: 5, writeCapacity: 10},
   'Account': {
-    readCapacity: 20, 
-    writeCapacity: 4, 
-    streamSpecification: { 
-      streamEnabled: true, 
-      streamViewType: 'NEW_IMAGE' 
+    readCapacity: 20,
+    writeCapacity: 4,
+    streamSpecification: {
+      streamEnabled: true,
+      streamViewType: 'NEW_IMAGE'
     }
   }
 }, function(err) {
@@ -177,6 +178,15 @@ BlogPost.deleteTable(function(err) {
     console.log('Table has been deleted');
   }
 });
+```
+
+### Get Dynamo API Parameters
+You can get the raw parameters needed for the DynamoDB [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html):
+
+```js
+var parameters = BlogPost.dynamoCreateTableParams();
+var dynamodb = new AWS.DynamoDB();
+dynamodb.createTable(params, (err)=>{ ... });
 ```
 
 ### Schema Types
@@ -644,7 +654,7 @@ BlogPost
   .query('werner@example.com')
   .where('title').beginsWith('Expanding')
   .exec(callback);
-  
+
 // return only the count of documents that begin with the title Expanding
 BlogPost
   .query('werner@example.com')
@@ -1157,7 +1167,7 @@ var Event = dynogels.define('Event', {
 ```
 
 ### Logging
-A [Bunyan](https://www.npmjs.com/package/bunyan) logger instance can be provided to either dynogels itself or individual models.  Dynogels requests are logged at the `info` level. 
+A [Bunyan](https://www.npmjs.com/package/bunyan) logger instance can be provided to either dynogels itself or individual models.  Dynogels requests are logged at the `info` level.
 Other loggers that implement `info` and `warn` methods can also be used. However, [Winston](https://www.npmjs.com/package/winston) uses a different parameter signature than bunyan so the log messages are improperly formatted when using Winston.
 
 ```js

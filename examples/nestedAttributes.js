@@ -5,8 +5,8 @@ const util = require('util');
 const _ = require('lodash');
 const async = require('async');
 const Joi = require('joi');
-const AWS = dynogels.AWS;
 
+const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 const Movie = dynogels.define('example-nested-attribute', {
@@ -39,7 +39,7 @@ const printResults = (err, data) => {
   console.log('----------------------------------------------------------------------');
 };
 
-const loadSeedData = callback => {
+const loadSeedData = (callback) => {
   callback = callback || _.noop;
 
   async.times(10, (n, next) => {
@@ -101,7 +101,7 @@ const runExample = () => {
 async.series([
   async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
-], err => {
+], (err) => {
   if (err) {
     console.log('error', err);
     process.exit(1);

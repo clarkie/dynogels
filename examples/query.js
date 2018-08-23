@@ -5,8 +5,8 @@ const util = require('util');
 const _ = require('lodash');
 const async = require('async');
 const Joi = require('joi');
-const AWS = dynogels.AWS;
 
+const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 const Account = dynogels.define('example-query', {
@@ -41,7 +41,7 @@ const printResults = (err, resp) => {
   console.log('----------------------------------------------------------------------');
 };
 
-const loadSeedData = callback => {
+const loadSeedData = (callback) => {
   callback = callback || _.noop;
 
   async.times(25, (n, next) => {
@@ -59,29 +59,29 @@ const runQueries = () => {
 
   // Query with rang key condition
   Account.query('Test 1')
-  .where('email').beginsWith('foo')
-  .exec(printResults);
+    .where('email').beginsWith('foo')
+    .exec(printResults);
 
   // Run query returning only email and created attributes
   // also returns consumed capacity query took
   Account.query('Test 2')
-  .where('email').gte('a@example.com')
-  .attributes(['email', 'createdAt'])
-  .returnConsumedCapacity()
-  .exec(printResults);
+    .where('email').gte('a@example.com')
+    .attributes(['email', 'createdAt'])
+    .returnConsumedCapacity()
+    .exec(printResults);
 
   // Run query against secondary index
   Account.query('Test 0')
-  .usingIndex('CreatedAtIndex')
-  .where('createdAt').lt(new Date().toISOString())
-  .descending()
-  .exec(printResults);
+    .usingIndex('CreatedAtIndex')
+    .where('createdAt').lt(new Date().toISOString())
+    .descending()
+    .exec(printResults);
 };
 
 async.series([
   async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
-], err => {
+], (err) => {
   if (err) {
     console.log('error', err);
     process.exit(1);

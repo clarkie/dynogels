@@ -1,8 +1,9 @@
 'use strict';
 
 const dynogels = require('../index');
-const AWS = dynogels.AWS;
 const Joi = require('joi');
+
+const AWS = dynogels.AWS;
 
 dynogels.dynamoDriver(new AWS.DynamoDB({
   endpoint: 'http://localhost:8000',
@@ -22,7 +23,7 @@ const Account = dynogels.define('example-Account', {
 
 dynogels.createTables({
   'example-Account': { readCapacity: 1, writeCapacity: 10 },
-}, err => {
+}, (err) => {
   if (err) {
     console.log('Error creating tables', err);
     process.exit(1);

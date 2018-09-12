@@ -45,7 +45,7 @@
     "sinon": "4.0.1"
   },
   "peerDependencies": {
-    "aws-sdk": "2.131.0",
+    "aws-sdk": "^2.131.0",
     "joi": "^11.3.4"
   }
 }

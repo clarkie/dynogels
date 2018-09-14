@@ -67,4 +67,3 @@ async.series([
 
   runParallelScan();
 });
-

@@ -27,24 +27,24 @@
   },
   "license": "MIT",
   "dependencies": {
-    "async": "2.5.0",
-    "aws-sdk": "2.131.0",
-    "lodash": "4.17.4",
-    "uuid": "3.1.0"
+    "async": "^2.6.1",
+    "aws-sdk": "^2.315.0",
+    "lodash": "^4.17.11",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "chai": "4.1.2",
-    "coveralls": "3.0.0",
-    "eslint": "4.19.1",
-    "eslint-config-airbnb-base": "12.1.0",
-    "eslint-plugin-import": "2.10.0",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "istanbul": "^0.4.4",
-    "joi": "^11.3.4",
+    "joi": "^13.6.0",
     "jscoverage": "^0.6.0",
-    "mocha": "4.0.1",
-    "sinon": "4.0.1"
+    "mocha": "^5.2.0",
+    "sinon": "^6.3.2"
   },
   "peerDependencies": {
-    "joi": "^11.3.4"
+    "joi": "^13.6.0"
   }
 }

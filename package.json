@@ -42,7 +42,7 @@
     "joi": "^13.6.0",
     "jscoverage": "^0.6.0",
     "mocha": "^5.2.0",
-    "sinon": "^6.3.2"
+    "sinon": "^6.3.3"
   },
   "peerDependencies": {
     "joi": "^13.6.0"

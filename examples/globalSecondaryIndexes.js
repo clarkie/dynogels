@@ -1,10 +1,11 @@
 'use strict';
 
-const dynogels = require('../index');
 const _ = require('lodash');
 const util = require('util');
 const Joi = require('joi');
 const async = require('async');
+
+const dynogels = require('../index');
 
 // http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html
 

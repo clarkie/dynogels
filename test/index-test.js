@@ -1,12 +1,13 @@
 'use strict';
 
-const dynogels = require('../index');
 const AWS = require('aws-sdk');
-const helper = require('./test-helper');
-const Table = require('../lib/table');
 const chai = require('chai');
 const Joi = require('joi');
 const sinon = require('sinon');
+
+const dynogels = require('../index');
+const helper = require('./test-helper');
+const Table = require('../lib/table');
 
 const expect = chai.expect;
 

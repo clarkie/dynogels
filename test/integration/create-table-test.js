@@ -1,10 +1,11 @@
 'use strict';
 
-const dynogels = require('../../index');
 const chai = require('chai');
 const _ = require('lodash');
-const helper = require('../test-helper');
 const Joi = require('joi');
+
+const helper = require('../test-helper');
+const dynogels = require('../../index');
 
 const expect = chai.expect;
 

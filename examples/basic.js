@@ -1,9 +1,10 @@
 'use strict';
 
-const dynogels = require('../index');
 const _ = require('lodash');
 const util = require('util');
 const Joi = require('joi');
+
+const dynogels = require('../index');
 
 const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);

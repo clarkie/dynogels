@@ -1,10 +1,11 @@
 'use strict';
 
-const Schema = require('../lib/schema');
 const chai = require('chai');
 const Joi = require('joi');
 const _ = require('lodash');
 const sinon = require('sinon');
+
+const Schema = require('../lib/schema');
 
 const expect = chai.expect;
 

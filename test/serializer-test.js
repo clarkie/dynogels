@@ -1,10 +1,11 @@
 'use strict';
 
-const serializer = require('../lib/serializer');
 const chai = require('chai');
+const Joi = require('joi');
+
+const serializer = require('../lib/serializer');
 const Schema = require('../lib/schema');
 const helper = require('./test-helper');
-const Joi = require('joi');
 
 const expect = chai.expect;
 

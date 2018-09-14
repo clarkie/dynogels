@@ -1,16 +1,17 @@
 'use strict';
 
-const helper = require('./test-helper');
 const _ = require('lodash');
 const Joi = require('joi');
+const chai = require('chai');
+const sinon = require('sinon');
+
+const helper = require('./test-helper');
 const Table = require('../lib/table');
 const Schema = require('../lib/schema');
 const Query = require('../lib//query');
 const Scan = require('../lib//scan');
 const Item = require('../lib/item');
 const realSerializer = require('../lib/serializer');
-const chai = require('chai');
-const sinon = require('sinon');
 
 const expect = chai.expect;
 

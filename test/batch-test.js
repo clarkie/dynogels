@@ -2,13 +2,14 @@
 
 const helper = require('./test-helper');
 const chai = require('chai');
-const expect = chai.expect;
 const Schema = require('../lib/schema');
 const Item = require('../lib/item');
 const batch = require('../lib/batch');
 const Serializer = require('../lib/serializer');
 const Joi = require('joi');
 const _ = require('lodash');
+
+const expect = chai.expect;
 
 describe('Batch', () => {
   let serializer;
@@ -35,7 +36,7 @@ describe('Batch', () => {
   });
 
   describe('#getItems', () => {
-    it('should get items by hash key', done => {
+    it('should get items by hash key', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -79,7 +80,7 @@ describe('Batch', () => {
       });
     });
 
-    it('should get items by hash and range key', done => {
+    it('should get items by hash and range key', (done) => {
       const key1 = { email: 'test@test.com', name: 'Tim Tester' };
       const key2 = { email: 'foo@example.com', name: 'Foo Bar' };
 
@@ -116,8 +117,8 @@ describe('Batch', () => {
       });
     });
 
-    it('should not modify passed in keys', done => {
-      const keys = _.map(_.range(300), num => {
+    it('should not modify passed in keys', (done) => {
+      const keys = _.map(_.range(100), (num) => {
         const key = { email: `test${num}@test.com`, name: `Test ${num}` };
         serializer.buildKey.withArgs(key).returns({ email: { S: key.email }, name: { S: key.name } });
 
@@ -131,7 +132,7 @@ describe('Batch', () => {
       table.initItem.returns(new Item(item1));
 
       batch(table, serializer).getItems(keys, () => {
-        _.each(_.range(300), num => {
+        _.each(_.range(100), (num) => {
           const key = { email: `test${num}@test.com`, name: `Test ${num}` };
           keys[num].should.eql(key);
         });
@@ -140,7 +141,7 @@ describe('Batch', () => {
       });
     });
 
-    it('should get items by hash key with consistent read', done => {
+    it('should get items by hash key with consistent read', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -185,7 +186,7 @@ describe('Batch', () => {
       });
     });
 
-    it('should get items by hash key with projection expression', done => {
+    it('should get items by hash key with projection expression', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -236,7 +237,7 @@ describe('Batch', () => {
       });
     });
 
-    it('should get items when encounters retryable excpetion', done => {
+    it('should get items when encounters retryable excpetion', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -279,7 +280,7 @@ describe('Batch', () => {
     });
 
 
-    it('should get unprocessed keys', done => {
+    it('should get unprocessed keys', (done) => {
       const config = {
         hashKey: 'email',
         schema: {
@@ -354,7 +355,7 @@ describe('Batch', () => {
       });
     });
 
-    it('should return error', done => {
+    it('should return error', (done) => {
       const config = {
         hashKey: 'email',
         schema: {

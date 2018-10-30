@@ -2,10 +2,11 @@
 
 const dynogels = require('../../index');
 const chai = require('chai');
-const expect = chai.expect;
 const _ = require('lodash');
 const helper = require('../test-helper');
 const Joi = require('joi');
+
+const expect = chai.expect;
 
 chai.should();
 
@@ -20,7 +21,7 @@ describe('Create Tables Integration Tests', function () {
     dynogels.reset();
   });
 
-  it('should create table with hash key', done => {
+  it('should create table with hash key', (done) => {
     const Model = dynogels.define('dynogels-create-table-test', {
       hashKey: 'id',
       tableName: helper.randomName('dynogels-createtable-Accounts'),
@@ -44,7 +45,7 @@ describe('Create Tables Integration Tests', function () {
     });
   });
 
-  it('should create table with hash and range key', done => {
+  it('should create table with hash and range key', (done) => {
     const Model = dynogels.define('dynogels-createtable-rangekey', {
       hashKey: 'name',
       rangeKey: 'age',
@@ -76,7 +77,7 @@ describe('Create Tables Integration Tests', function () {
     });
   });
 
-  it('should create table with local secondary index', done => {
+  it('should create table with local secondary index', (done) => {
     const Model = dynogels.define('dynogels-createtable-rangekey', {
       hashKey: 'name',
       rangeKey: 'age',
@@ -134,7 +135,7 @@ describe('Create Tables Integration Tests', function () {
     });
   });
 
-  it('should create table with local secondary index with custom projection', done => {
+  it('should create table with local secondary index with custom projection', (done) => {
     const Model = dynogels.define('dynogels-createtable-local-proj', {
       hashKey: 'name',
       rangeKey: 'age',
@@ -183,7 +184,7 @@ describe('Create Tables Integration Tests', function () {
     });
   });
 
-  it('should create table with global index', done => {
+  it('should create table with global index', (done) => {
     const Model = dynogels.define('dynogels-createtable-global', {
       hashKey: 'name',
       rangeKey: 'age',
@@ -220,13 +221,13 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
+      expect(nickIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
 
       return Model.deleteTable(done);
     });
   });
 
-  it('should create table with global index with optional settings', done => {
+  it('should create table with global index with optional settings', (done) => {
     const Model = dynogels.define('dynogels-createtable-global', {
       hashKey: 'name',
       rangeKey: 'age',
@@ -271,13 +272,13 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 10, WriteCapacityUnits: 5 });
+      expect(nickIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 10, WriteCapacityUnits: 5 });
 
       return Model.deleteTable(done);
     });
   });
 
-  it('should create table with global and local indexes', done => {
+  it('should create table with global and local indexes', (done) => {
     const Model = dynogels.define('dynogels-createtable-both-indexes', {
       hashKey: 'name',
       rangeKey: 'age',
@@ -323,7 +324,7 @@ describe('Create Tables Integration Tests', function () {
       expect(nickIndex.KeySchema).to.eql([
         { AttributeName: 'nick', KeyType: 'HASH' },
       ]);
-      expect(nickIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
+      expect(nickIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
 
       const ageWinsIndex = _.find(desc.GlobalSecondaryIndexes, { IndexName: 'GlobalAgeWinsIndex' });
       expect(ageWinsIndex.IndexName).to.eql('GlobalAgeWinsIndex');
@@ -332,7 +333,7 @@ describe('Create Tables Integration Tests', function () {
         { AttributeName: 'age', KeyType: 'HASH' },
         { AttributeName: 'wins', KeyType: 'RANGE' },
       ]);
-      expect(ageWinsIndex.ProvisionedThroughput).to.eql({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
+      expect(ageWinsIndex.ProvisionedThroughput).to.include({ ReadCapacityUnits: 1, WriteCapacityUnits: 1 });
 
       expect(desc.LocalSecondaryIndexes).to.have.length(2);
 
@@ -362,7 +363,7 @@ describe('Update Tables Integration Tests', function () {
   let Tweet;
   let tableName;
 
-  before(done => {
+  before((done) => {
     dynogels.dynamoDriver(helper.realDynamoDB());
 
     tableName = helper.randomName('dynogels-updateTable-Tweets');
@@ -386,7 +387,7 @@ describe('Update Tables Integration Tests', function () {
     dynogels.reset();
   });
 
-  it('should add global secondary index', done => {
+  it('should add global secondary index', (done) => {
     Tweet = dynogels.define('dynogels-update-table-test', {
       hashKey: 'UserId',
       rangeKey: 'TweetID',
@@ -402,7 +403,7 @@ describe('Update Tables Integration Tests', function () {
       ]
     });
 
-    Tweet.updateTable(err => {
+    Tweet.updateTable((err) => {
       expect(err).to.not.exist;
 
       Tweet.describeTable((err, data) => {
@@ -413,8 +414,10 @@ describe('Update Tables Integration Tests', function () {
 
         const idx = _.first(globalIndexes);
         expect(idx.IndexName).to.eql('PublishedDateTimeIndex');
-        expect(idx.KeySchema).to.eql([{ AttributeName: 'UserId', KeyType: 'HASH' },
-                                      { AttributeName: 'PublishedDateTime', KeyType: 'RANGE' }]);
+        expect(idx.KeySchema).to.eql([
+          { AttributeName: 'UserId', KeyType: 'HASH' },
+          { AttributeName: 'PublishedDateTime', KeyType: 'RANGE' }
+        ]);
         expect(idx.Projection).to.eql({ ProjectionType: 'ALL' });
 
         return done();

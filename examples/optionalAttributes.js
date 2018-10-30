@@ -1,9 +1,9 @@
 'use strict';
 
 const dynogels = require('../index');
-const AWS = dynogels.AWS;
 const Joi = require('joi');
 
+const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 const Person = dynogels.define('example-optional-attribute', {
@@ -24,7 +24,7 @@ const printInfo = (err, person) => {
   }
 };
 
-dynogels.createTables(err => {
+dynogels.createTables((err) => {
   if (err) {
     console.log('Failed to create table', err);
     process.exit(1);

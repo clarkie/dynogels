@@ -5,8 +5,8 @@ const util = require('util');
 const _ = require('lodash');
 const Joi = require('joi');
 const async = require('async');
-const AWS = dynogels.AWS;
 
+const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 const Account = dynogels.define('example-query-filter', {
@@ -42,7 +42,7 @@ const printResults = msg => (err, resp) => {
   console.log('----------------------------------------------------------------------');
 };
 
-const loadSeedData = callback => {
+const loadSeedData = (callback) => {
   callback = callback || _.noop;
 
   async.times(30, (n, next) => {
@@ -76,7 +76,7 @@ const runFilterQueries = () => {
 async.series([
   async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
-], err => {
+], (err) => {
   if (err) {
     console.log('error', err);
     process.exit(1);

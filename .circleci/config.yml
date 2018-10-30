@@ -23,7 +23,7 @@ jobs:
 
       - run:
           name: Start docker containers
-          command: ./circle-docker.sh
+          command: docker-compose -f ./dev/docker-compose.yml up -d dynamodb
 
       - run:
           name: Setup Node.js and run tests

@@ -2,10 +2,11 @@
 
 const Schema = require('../lib/schema');
 const chai = require('chai');
-const expect = chai.expect;
 const Joi = require('joi');
 const _ = require('lodash');
 const sinon = require('sinon');
+
+const expect = chai.expect;
 
 chai.should();
 
@@ -408,6 +409,21 @@ describe('schema', () => {
 
       expect(s.validate({ created: new Date() }).error).to.be.null;
       expect(s.validate({ created: Date.now() }).error).to.be.null;
+    });
+
+    it('should pass through validation options', () => {
+      const config = {
+        hashKey: 'name',
+        schema: {
+          name: Joi.string()
+        },
+        validation: {
+          allowUnknown: true
+        }
+      };
+
+      const s = new Schema(config);
+      expect(s.validate({ name: 'foo', age: 1 }).error).to.be.null;
     });
   });
 

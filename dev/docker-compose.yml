@@ -1,0 +1,10 @@
+version: "2"
+
+services:
+
+  dynamodb:
+    image: cnadiminti/dynamodb-local:latest
+    ports:
+      - "4567:4567"
+    environment:
+      DYNAMODB_PORT: 4567

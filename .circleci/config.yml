@@ -23,10 +23,10 @@ jobs:
 
       - run:
           name: Start docker containers
-          command: ./circle-docker.sh
+          command: docker-compose -f ./dev/docker-compose.yml up -d dynamodb
 
       - run:
-          name: Setup Node.js and run tests
+          name: Setup Node.js
           command: |
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -35,6 +35,10 @@ jobs:
             nvm use 6.10
             npm install
             npm run ci
+
+      - run:
+          name: Run tests
+          command: npm test
 
       - persist_to_workspace:
           root: ~/project

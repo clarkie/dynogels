@@ -2,6 +2,9 @@ sudo: false
 
 language: node_js
 
+services:
+  - docker
+
 node_js:
   - 4
   - 5
@@ -14,12 +17,7 @@ env:
     - AWS_SECRET_ACCESS_KEY=SECRET
     - AWS_REGION=us-east-1
 before_script:
-  - wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz -O /tmp/dynamodb_local_latest.tar.gz
-  - tar -xzf /tmp/dynamodb_local_latest.tar.gz -C /tmp
-  - java -Xmx256m -Djava.library.path=/tmp/DynamoDBLocal_lib -jar /tmp/DynamoDBLocal.jar -inMemory &
+  - docker-compose -f ./dev/docker-compose.yml up -d dynamodb
   - sleep 2
 script: npm run ci
 after_success: npm run coveralls
-addons:
-  hosts:
-    - dynamodb-local

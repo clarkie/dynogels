@@ -2,8 +2,8 @@
 
 const dynogels = require('../index');
 const Joi = require('joi');
-const AWS = dynogels.AWS;
 
+const AWS = dynogels.AWS;
 AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
 
 const Product = dynogels.define('example-streaming-Product', {
@@ -19,12 +19,12 @@ const Product = dynogels.define('example-streaming-Product', {
 
 const printStream = (msg, stream) => {
   let count = 0;
-  stream.on('error', err => {
+  stream.on('error', (err) => {
     console.log(`error ${msg}`, err);
   });
 
   stream.on('readable', () => {
-    count++;
+    count += 1;
     console.log(`----------------------${count}--------------------------`);
     console.log(`Scanned ${stream.read().Count} products - ${msg}`);
   });

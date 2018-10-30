@@ -6,7 +6,7 @@ const Table = require('../lib/table');
 const _ = require('lodash');
 
 exports.mockDynamoDB = () => {
-  const opts = { endpoint: 'http://dynamodb-local:8000', apiVersion: '2012-08-10' };
+  const opts = { endpoint: 'http://localhost:4567', apiVersion: '2012-08-10' };
   const db = new AWS.DynamoDB(opts);
 
   db.scan = sinon.stub();
@@ -26,7 +26,7 @@ exports.mockDynamoDB = () => {
 };
 
 exports.realDynamoDB = () => {
-  const opts = { endpoint: 'http://localhost:8000', apiVersion: '2012-08-10', region: 'eu-west-1' };
+  const opts = { endpoint: 'http://localhost:4567', apiVersion: '2012-08-10', region: 'eu-west-1' };
   return new AWS.DynamoDB(opts);
 };
 
@@ -44,7 +44,7 @@ exports.mockDocClient = () => {
     'query'
   ];
 
-  _.each(operations, op => {
+  _.each(operations, (op) => {
     client[op] = sinon.stub();
   });
 

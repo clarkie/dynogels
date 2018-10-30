@@ -4,11 +4,12 @@ const Table = require('../lib/table');
 const ParallelScan = require('../lib/parallelScan');
 const Schema = require('../lib/schema');
 const chai = require('chai');
-const expect = chai.expect;
 const assert = require('assert');
 const helper = require('./test-helper');
 const serializer = require('../lib/serializer');
 const Joi = require('joi');
+
+const expect = chai.expect;
 
 chai.should();
 
@@ -29,7 +30,7 @@ describe('ParallelScan', () => {
     table = new Table('mockTable', schema, serializer, helper.mockDynamoDB(), helper.testLogger());
   });
 
-  it('should return error', done => {
+  it('should return error', (done) => {
     const scan = new ParallelScan(table, serializer, 4);
 
     table.docClient.scan.yields(new Error('fail'));
@@ -42,14 +43,14 @@ describe('ParallelScan', () => {
     });
   });
 
-  it('should stream error', done => {
+  it('should stream error', (done) => {
     const scan = new ParallelScan(table, serializer, 4);
 
     table.docClient.scan.yields(new Error('fail'));
 
     const stream = scan.exec();
 
-    stream.on('error', err => {
+    stream.on('error', (err) => {
       expect(err).to.exist;
       return done();
     });

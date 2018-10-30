@@ -3,14 +3,12 @@
 const dynogels = require('../index');
 const _ = require('lodash');
 const util = require('util');
-const AWS = dynogels.AWS;
 const Joi = require('joi');
 const async = require('async');
 
-// AWS.config.loadFromPath(`${process.env.HOME}/.ec2/credentials.json`);
-
 // http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html
 
+const AWS = dynogels.AWS;
 AWS.config.update({ region: 'us-east-1' });
 
 const GameScore = dynogels.define('example-global-index', {
@@ -49,7 +47,7 @@ const data = [
   { userId: '103', gameTitle: 'Starship X', topScore: 42, wins: 4, losses: 19 },
 ];
 
-const loadSeedData = callback => {
+const loadSeedData = (callback) => {
   callback = callback || _.noop;
 
   async.each(data, (attrs, callback) => {
@@ -60,7 +58,7 @@ const loadSeedData = callback => {
 async.series([
   async.apply(dynogels.createTables.bind(dynogels)),
   loadSeedData
-], err => {
+], (err) => {
   if (err) {
     console.log('error', err);
     process.exit(1);
@@ -68,16 +66,16 @@ async.series([
 
   // Perform query against global secondary index
   GameScore
-  .query('Galaxy Invaders')
-  .usingIndex('GameTitleIndex')
-  .where('topScore').gt(0)
-  .descending()
-  .exec((err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Found', data.Count, 'items');
-      console.log(util.inspect(_.pluck(data.Items, 'attrs')));
-    }
-  });
+    .query('Galaxy Invaders')
+    .usingIndex('GameTitleIndex')
+    .where('topScore').gt(0)
+    .descending()
+    .exec((err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Found', data.Count, 'items');
+        console.log(util.inspect(_.pluck(data.Items, 'attrs')));
+      }
+    });
 });

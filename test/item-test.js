@@ -20,7 +20,8 @@ describe('item', () => {
       hashKey: 'num',
       schema: {
         num: Joi.number(),
-        name: Joi.string()
+        name: Joi.string(),
+        obj: Joi.object()
       }
     };
 
@@ -95,6 +96,28 @@ describe('item', () => {
 
         return done();
       });
+    });
+  });
+
+  describe('set', () => {
+    it('should set attributes', () => {
+      const item = new Item({});
+      item.set({ num: 1, name: 'foo' });
+      expect(item.get('num')).to.equal(1);
+      expect(item.get('name')).to.equal('foo');
+    });
+
+    it('should set a single key when provided a string and value', () => {
+      const item = new Item({});
+      item.set('num', 123);
+      expect(item.get('num')).to.equal(123);
+    });
+
+
+    it('should not merge object attributes', () => {
+      const item = new Item({ obj: { a: 1 } });
+      item.set({ obj: { b: 2 } });
+      expect(item.get('obj')).to.eql({ b: 2 });
     });
   });
 });

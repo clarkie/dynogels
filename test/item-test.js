@@ -99,7 +99,7 @@ describe('item', () => {
     });
   });
 
-  describe('set', () => {
+  describe('#set', () => {
     it('should set attributes', () => {
       const item = new Item({});
       item.set({ num: 1, name: 'foo' });

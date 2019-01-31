@@ -97,4 +97,20 @@ describe('item', () => {
       });
     });
   });
+
+  describe('#set', () => {
+    it('should set attributes', () => {
+      const item = new Item({});
+      item.set({ num: 1, name: 'foo' });
+      expect(item.get('num')).to.equal(1);
+      expect(item.get('name')).to.equal('foo');
+    });
+
+    it('should set a single key when provided a string and value', () => {
+      const item = new Item({});
+      item.set('num', 123);
+      expect(item.get('num')).to.equal(123);
+    });
+  });
 });
+

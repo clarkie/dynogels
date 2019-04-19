@@ -330,6 +330,29 @@ Account.config({dynamodb: dynamodb});
 dynogels.dynamoDriver(dynamodb);
 ```
 
+#### On-Demand Mode
+You can enable [On-Demand](https://aws.amazon.com/blogs/aws/amazon-dynamodb-on-demand-no-capacity-planning-and-pay-per-request-pricing/ ) mode by setting the `billingMode` schema attribute to `'PAY_PER_REQUEST'`.
+
+```js
+const Event = dynogels.define('Event', {
+  hashKey : 'id',
+  schema : {
+    id : Joi.string()
+  },
+  billingMode: 'PAY_PER_REQUEST'
+});
+```
+
+Alternatively, set the billing mode in dynogels.createTables options. E.g.,
+
+```js
+dynogels.createTables({
+  'BlogPost': {
+    billingMode: 'PAY_PER_REQUEST'
+  }
+);
+```
+
 ### Saving Models to DynamoDB
 With your models defined, we can start saving them to DynamoDB.
 

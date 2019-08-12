@@ -51,7 +51,7 @@ jobs:
           command: |
             docker login --username=$DOCKER_USER --password=$DOCKER_PASS d2lartifacts-docker-dockerv2-local.artifactoryonline.com
             sudo npm install -g publish
-            ./node_modules/.bin/publish
+            publish
 
 workflows:
   version: 2

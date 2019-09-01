@@ -27,6 +27,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^8.0.52",
     "async": "2.5.0",
     "aws-sdk": "^2.408.0",
     "lodash": "^4.17.15",

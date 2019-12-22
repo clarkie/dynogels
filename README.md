@@ -31,7 +31,7 @@ dynogels.AWS.config.loadFromPath('credentials.json');
 ```
 
 When running on EC2 it's recommended to leverage EC2 IAM roles. If you have configured your instance to use IAM roles,
-Vogels will automatically select these credentials for use in your application,
+Dynogels will automatically select these credentials for use in your application,
 and you do not need to manually provide credentials in any other format.
 
 ```js
@@ -190,7 +190,7 @@ dynamodb.createTable(params, (err)=>{ ... });
 ```
 
 ### Schema Types
-Vogels provides the following schema types:
+Dynogels provides the following schema types:
 
 * String
 * Number

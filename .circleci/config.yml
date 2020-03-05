@@ -8,18 +8,11 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: v1-{{ checksum "package.json" }}
+          key: v1-{{ checksum "package-lock.json" }}
 
       - run:
           name: Authenticate with Artifactory
           command: curl -ks -u$DOCKER_USER:$DOCKER_PASS "https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/npm-local/auth/d2l" -o ~/project/.npmrc
-
-      - run: npm install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-{{ checksum "package.json" }}
 
       - run:
           name: Start docker containers
@@ -31,10 +24,18 @@ jobs:
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-            nvm install 6.10
-            nvm use 6.10
-            npm install
+            nvm install 10
+            nvm alias default 10
+            if [ ! -d node_modules ]; then
+              npm ci
+            fi
             npm run ci
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-{{ checksum "package-lock.json" }}
+
 
       - persist_to_workspace:
           root: ~/project

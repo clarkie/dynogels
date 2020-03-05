@@ -1,6 +1,6 @@
 {
   "name": "@d2l/dynogels",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "author": "Ryan Fitzgerald <ryan@codebrewstudios.com>",
   "contributors": [
     "Clarkie <andrew.t.clarke@gmail.com> (http://clarkie.io)"
@@ -29,6 +29,7 @@
   "dependencies": {
     "async": "2.5.0",
     "aws-sdk": "^2.408.0",
+    "joi": "11.3.4",
     "lodash": "^4.17.15",
     "uuid": "3.1.0"
   },

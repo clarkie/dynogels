@@ -1521,6 +1521,7 @@ describe('table', () => {
       table = new Table('accounts', s, serializer, docClient, logger);
       expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
+        BillingMode: 'PROVISIONED',
         AttributeDefinitions: [
           { AttributeName: 'email', AttributeType: 'S' }
         ],
@@ -1546,6 +1547,7 @@ describe('table', () => {
       table = new Table('accounts', s, serializer, docClient, logger);
       expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
+        BillingMode: 'PROVISIONED',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
           { AttributeName: 'email', AttributeType: 'S' }
@@ -1579,6 +1581,7 @@ describe('table', () => {
         }
       })).to.deep.equal({
         TableName: 'accounts',
+        BillingMode: 'PROVISIONED',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' }
         ],
@@ -1610,6 +1613,7 @@ describe('table', () => {
 
       expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'accounts',
+        BillingMode: 'PROVISIONED',
         AttributeDefinitions: [
           { AttributeName: 'name', AttributeType: 'S' },
           { AttributeName: 'email', AttributeType: 'S' },
@@ -1654,6 +1658,7 @@ describe('table', () => {
       table = new Table('gameScores', s, serializer, docClient, logger);
       expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
+        BillingMode: 'PROVISIONED',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
           { AttributeName: 'gameTitle', AttributeType: 'S' },
@@ -1680,10 +1685,59 @@ describe('table', () => {
       });
     });
 
-    it('should make table arguments with global secondary index', () => {
+    it('should make table arguments for on demand mode', () => {
       const config = {
         hashKey: 'userId',
         rangeKey: 'gameTitle',
+        billingMode: 'PAY_PER_REQUEST',
+        indexes: [
+          { hashKey: 'gameTitle', rangeKey: 'topScore', name: 'GameTitleIndex', type: 'global' }
+        ],
+        schema: {
+          userId: Joi.string(),
+          gameTitle: Joi.string(),
+          topScore: Joi.number()
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('gameScores', s, serializer, docClient, logger);
+      const createParams = table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 });
+      expect(createParams).to.deep.equal({
+        TableName: 'gameScores',
+        BillingMode: 'PAY_PER_REQUEST',
+        AttributeDefinitions: [
+          { AttributeName: 'userId', AttributeType: 'S' },
+          { AttributeName: 'gameTitle', AttributeType: 'S' },
+          { AttributeName: 'topScore', AttributeType: 'N' }
+        ],
+        KeySchema: [
+          { AttributeName: 'userId', KeyType: 'HASH' },
+          { AttributeName: 'gameTitle', KeyType: 'RANGE' }
+        ],
+        GlobalSecondaryIndexes: [
+          {
+            IndexName: 'GameTitleIndex',
+            KeySchema: [
+              { AttributeName: 'gameTitle', KeyType: 'HASH' },
+              { AttributeName: 'topScore', KeyType: 'RANGE' }
+            ],
+            Projection: {
+              ProjectionType: 'ALL'
+            }
+          }
+        ]
+      });
+      expect(createParams.ProvisionedThroughput).to.equal(undefined);
+      expect(createParams.GlobalSecondaryIndexes[0].ProvisionedThroughput).to.equal(undefined);
+    });
+
+    it('should make table arguments for on demand mode with global secondary index', () => {
+      const config = {
+        hashKey: 'userId',
+        rangeKey: 'gameTitle',
+        billingMode: 'PAY_PER_REQUEST',
         indexes: [{
           hashKey: 'gameTitle',
           rangeKey: 'topScore',
@@ -1705,6 +1759,7 @@ describe('table', () => {
       table = new Table('gameScores', s, serializer, docClient, logger);
       expect(table.dynamoCreateTableParams({ readCapacity: 5, writeCapacity: 5 })).to.deep.equal({
         TableName: 'gameScores',
+        BillingMode: 'PAY_PER_REQUEST',
         AttributeDefinitions: [
           { AttributeName: 'userId', AttributeType: 'S' },
           { AttributeName: 'gameTitle', AttributeType: 'S' },
@@ -1724,12 +1779,57 @@ describe('table', () => {
             Projection: {
               NonKeyAttributes: ['wins'],
               ProjectionType: 'INCLUDE'
-            },
-            ProvisionedThroughput: { ReadCapacityUnits: 10, WriteCapacityUnits: 5 }
+            }
           }
-        ],
-        ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+        ]
       });
+    });
+
+    it('should make on on demand mode table when a billingMode argument option is set to PAY_PER_REQUEST', () => {
+      const config = {
+        hashKey: 'userId',
+        rangeKey: 'gameTitle',
+        indexes: [
+          { hashKey: 'gameTitle', rangeKey: 'topScore', name: 'GameTitleIndex', type: 'global' }
+        ],
+        schema: {
+          userId: Joi.string(),
+          gameTitle: Joi.string(),
+          topScore: Joi.number()
+        }
+      };
+
+      const s = new Schema(config);
+
+      table = new Table('gameScores', s, serializer, docClient, logger);
+      const createParams = table.dynamoCreateTableParams({ billingMode: 'PAY_PER_REQUEST', readCapacity: 5, writeCapacity: 5 });
+      expect(createParams).to.deep.equal({
+        TableName: 'gameScores',
+        BillingMode: 'PAY_PER_REQUEST',
+        AttributeDefinitions: [
+          { AttributeName: 'userId', AttributeType: 'S' },
+          { AttributeName: 'gameTitle', AttributeType: 'S' },
+          { AttributeName: 'topScore', AttributeType: 'N' }
+        ],
+        KeySchema: [
+          { AttributeName: 'userId', KeyType: 'HASH' },
+          { AttributeName: 'gameTitle', KeyType: 'RANGE' }
+        ],
+        GlobalSecondaryIndexes: [
+          {
+            IndexName: 'GameTitleIndex',
+            KeySchema: [
+              { AttributeName: 'gameTitle', KeyType: 'HASH' },
+              { AttributeName: 'topScore', KeyType: 'RANGE' }
+            ],
+            Projection: {
+              ProjectionType: 'ALL'
+            }
+          }
+        ]
+      });
+      expect(createParams.ProvisionedThroughput).to.equal(undefined);
+      expect(createParams.GlobalSecondaryIndexes[0].ProvisionedThroughput).to.equal(undefined);
     });
   });
 

@@ -15,7 +15,7 @@ const Account = dynogels.define('Foobar', {
     name: Joi.string(),
     age: Joi.number(),
     scores: dynogels.types.numberSet(),
-    created: Joi.date().default(Date.now, 'now'),
+    created: Joi.date().default(Date.now),
     list: Joi.array(),
     settings: {
       nickname: Joi.string(),

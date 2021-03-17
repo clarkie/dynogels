@@ -1,9 +1,10 @@
 {
   "name": "dynogels",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "author": "Ryan Fitzgerald <ryan@codebrewstudios.com>",
   "contributors": [
-    "Clarkie <andrew.t.clarke@gmail.com> (http://clarkie.io)"
+    "Clarkie <andrew.t.clarke@gmail.com> (http://clarkie.io)",
+    "David Willis"
   ],
   "description": "DynamoDB data mapper",
   "main": "index.js",

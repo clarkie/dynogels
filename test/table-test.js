@@ -556,7 +556,7 @@ describe('table', () => {
       const config = {
         hashKey: 'email',
         schema: {
-          email: Joi.string().email({ errorLevel: true }).required(),
+          email: Joi.string().email().required(),
           custom: Joi.any().forbidden().error(new Error('Only hashed passwords should be persisted')),
         }
       };
@@ -2175,7 +2175,7 @@ describe('table', () => {
       const attrs = {};
 
       const result = helper(config, attrs);
-      expect(result.error).to.be.null;
+      expect(result.error).to.be.undefined;
     });
 
     it('should succeed with required items', () => {
@@ -2188,7 +2188,7 @@ describe('table', () => {
       const attrs = { email: 'test@email.com' };
 
       const result = helper(config, attrs);
-      expect(result.error).to.be.null;
+      expect(result.error).to.be.undefined;
     });
 
     it('should fail when missing required string field', () => {

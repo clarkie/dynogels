@@ -23,7 +23,7 @@
     "nosql"
   ],
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   },
   "license": "MIT",
   "dependencies": {
@@ -39,12 +39,12 @@
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "2.10.0",
     "istanbul": "^0.4.4",
-    "joi": "^11.3.4",
+    "joi": "^17.4.0",
     "jscoverage": "^0.6.0",
     "mocha": "4.0.1",
     "sinon": "4.0.1"
   },
   "peerDependencies": {
-    "joi": "^11.3.4"
+    "joi": "^17.4.0"
   }
 }

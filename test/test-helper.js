@@ -77,15 +77,6 @@ exports.mockSerializer = () => {
 
 exports.mockTable = () => sinon.createStubInstance(Table);
 
-exports.fakeUUID = () => {
-  const uuid = {
-    v1: sinon.stub(),
-    v4: sinon.stub()
-  };
-
-  return uuid;
-};
-
 exports.randomName = prefix => `${prefix}_${Date.now()}.${_.random(1000)}`;
 
 exports.testLogger = () => ({

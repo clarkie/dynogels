@@ -8,24 +8,24 @@ lint:
 	npm run lint
 
 test-unit: lint
-	@node node_modules/.bin/mocha \
+	@node node_modules/mocha/bin/_mocha \
 		--reporter $(REPORTER) \
 		--ui bdd \
 		test/*-test.js
 
 test-integration: lint
-	@node node_modules/.bin/mocha \
+	@node node_modules/mocha/bin/_mocha \
 		--reporter spec \
 		--ui bdd \
 		test/integration/*-test.js
 
 test-cov: lint
-	@node node_modules/.bin/mocha \
+	@node node_modules/mocha/bin/_mocha \
 		-r jscoverage \
 		$(TESTSRC)
 
 test-cov-html: lint
-	@node node_modules/.bin/mocha \
+	@node node_modules/mocha/bin/_mocha \
 		-r jscoverage \
 		--covout=html \
 		$(TESTSRC)
@@ -35,7 +35,7 @@ coverage: lint
 	@node_modules/.bin/istanbul check-coverage
 
 test-io: lint
-	@node node_modules/.bin/mocha \
+	@node node_modules/mocha/bin/_mocha \
 		--reporter $(REPORTER) \
 		--ui bdd \
 		--grep "stream data after handling retryable error" \

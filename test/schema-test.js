@@ -66,7 +66,7 @@ describe('schema', () => {
       const s = new Schema(config);
       s.timestamps.should.be.true;
 
-      expect(s._modelSchema.describe().children).to.have.keys(['id', 'createdAt', 'updatedAt']);
+      expect(s._modelSchema.describe().keys).to.have.keys(['id', 'createdAt', 'updatedAt']);
 
       s._modelDatatypes.should.eql({
         id: 'S',
@@ -89,7 +89,7 @@ describe('schema', () => {
       const s = new Schema(config);
       s.timestamps.should.be.true;
 
-      expect(s._modelSchema.describe().children).to.have.keys(['id', 'created', 'updated']);
+      expect(s._modelSchema.describe().keys).to.have.keys(['id', 'created', 'updated']);
 
       s._modelDatatypes.should.eql({
         id: 'S',
@@ -111,7 +111,7 @@ describe('schema', () => {
       const s = new Schema(config);
       s.timestamps.should.be.true;
 
-      expect(s._modelSchema.describe().children).to.have.keys(['id', 'createdAt']);
+      expect(s._modelSchema.describe().keys).to.have.keys(['id', 'createdAt']);
 
       s._modelDatatypes.should.eql({
         id: 'S',
@@ -132,7 +132,7 @@ describe('schema', () => {
       const s = new Schema(config);
       s.timestamps.should.be.true;
 
-      expect(s._modelSchema.describe().children).to.have.keys(['id', 'updatedAt']);
+      expect(s._modelSchema.describe().keys).to.have.keys(['id', 'updatedAt']);
 
       s._modelDatatypes.should.eql({
         id: 'S',
@@ -154,7 +154,7 @@ describe('schema', () => {
       const s = new Schema(config);
       s.timestamps.should.be.true;
 
-      expect(s._modelSchema.describe().children).to.have.keys(['id', 'fooCreate']);
+      expect(s._modelSchema.describe().keys).to.have.keys(['id', 'fooCreate']);
 
       s._modelDatatypes.should.eql({
         id: 'S',
@@ -253,7 +253,7 @@ describe('schema', () => {
         hashKey: 'foo',
         schema: Joi.object().keys({
           foo: Joi.string().default('foobar'),
-          date: Joi.date().default(Date.now, 'now'),
+          date: Joi.date().default(() => Date.now()),
           count: Joi.number(),
           flag: Joi.boolean(),
           nums: Joi.array().items(Joi.number()).meta({ dynamoType: 'NS' }),
@@ -394,7 +394,7 @@ describe('schema', () => {
 
       const s = new Schema(config);
 
-      expect(s.validate({ email: 'foo@bar.com' }).error).to.be.null;
+      expect(s.validate({ email: 'foo@bar.com' }).error).to.not.exist;
     });
 
     it('should return no error for valid date object', () => {
@@ -407,8 +407,8 @@ describe('schema', () => {
 
       const s = new Schema(config);
 
-      expect(s.validate({ created: new Date() }).error).to.be.null;
-      expect(s.validate({ created: Date.now() }).error).to.be.null;
+      expect(s.validate({ created: new Date() }).error).to.not.exist;
+      expect(s.validate({ created: Date.now() }).error).to.not.exist;
     });
 
     it('should pass through validation options', () => {
@@ -423,7 +423,7 @@ describe('schema', () => {
       };
 
       const s = new Schema(config);
-      expect(s.validate({ name: 'foo', age: 1 }).error).to.be.null;
+      expect(s.validate({ name: 'foo', age: 1 }).error).to.not.exist;
     });
   });
 
@@ -454,10 +454,10 @@ describe('schema', () => {
         hashKey: 'email',
         schema: {
           email: Joi.string(),
-          created: Joi.date().default(Date.now, 'now'),
+          created: Joi.date().default(() => Date.now()),
           data: {
             name: Joi.string().default('Tim Tester'),
-            nick: Joi.string().default(_.constant('foo bar'), 'lodash constant \'foo bar\'')
+            nick: Joi.string().default(_.constant('foo bar'))
           }
         }
       };

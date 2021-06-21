@@ -23,13 +23,13 @@
     "nosql"
   ],
   "engines": {
-    "node": ">=4"
+    "node": ">=10"
   },
   "license": "MIT",
   "dependencies": {
     "async": "2.5.0",
     "aws-sdk": "^2.408.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "uuid": "3.1.0"
   },
   "devDependencies": {
@@ -39,12 +39,12 @@
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "2.10.0",
     "istanbul": "^0.4.4",
-    "joi": "^11.3.4",
+    "joi": "^17.4.0",
     "jscoverage": "^0.6.0",
     "mocha": "4.0.1",
     "sinon": "4.0.1"
   },
   "peerDependencies": {
-    "joi": "^11.3.4"
+    "joi": "^17.4.0"
   }
 }

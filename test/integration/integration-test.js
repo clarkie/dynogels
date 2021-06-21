@@ -81,7 +81,7 @@ describe('Dynogels Integration Tests', function () {
     User = dynogels.define('dynogels-int-test-user', {
       hashKey: 'id',
       schema: {
-        id: Joi.string().default(() => uuid.v4(), 'uuid'),
+        id: Joi.string().default(() => uuid.v4()),
         email: Joi.string().required(),
         name: Joi.string().allow(''),
         age: Joi.number().min(10),
@@ -107,7 +107,7 @@ describe('Dynogels Integration Tests', function () {
         content: Joi.string(),
         num: Joi.number(),
         tag: Joi.string(),
-        PublishedDateTime: Joi.date().default(Date.now, 'now')
+        PublishedDateTime: Joi.date().default(Date.now)
       },
       indexes: [
         { hashKey: 'UserId', rangeKey: 'PublishedDateTime', type: 'local', name: 'PublishedDateTimeIndex' }

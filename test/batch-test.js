@@ -21,6 +21,7 @@ describe('Batch', () => {
     table = helper.mockTable();
     table.serializer = Serializer;
     table.tableName = () => 'accounts';
+    table.getResolvedTableName = () => Promise.resolve('accounts');
 
     const config = {
       hashKey: 'name',

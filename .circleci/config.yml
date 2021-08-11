@@ -12,7 +12,7 @@ jobs:
 
       - run:
           name: Authenticate with Artifactory
-          command: curl -ks -u$DOCKER_USER:$DOCKER_PASS "https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/npm-local/auth/d2l" -o ~/project/.npmrc
+          command: curl -ks -u$DOCKER_USER:$DOCKER_PASS "https://d2lartifacts.jfrog.io/artifactory/api/npm/npm-local/auth/d2l" -o ~/project/.npmrc
 
       - run:
           name: Start docker containers

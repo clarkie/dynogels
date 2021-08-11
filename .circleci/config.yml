@@ -50,7 +50,7 @@ jobs:
 
       - run:
           command: |
-            docker login --username=$DOCKER_USER --password=$DOCKER_PASS d2lartifacts-docker-dockerv2-local.artifactoryonline.com
+            docker login --username=$DOCKER_USER --password=$DOCKER_PASS d2lartifacts-dockerv2-local.jfrog.io
             npm install -g publish
             publish
 

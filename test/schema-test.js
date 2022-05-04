@@ -70,8 +70,8 @@ describe('schema', () => {
 
       s._modelDatatypes.should.eql({
         id: 'S',
-        createdAt: 'DATE',
-        updatedAt: 'DATE',
+        createdAt: 'S',
+        updatedAt: 'S',
       });
     });
 
@@ -93,8 +93,8 @@ describe('schema', () => {
 
       s._modelDatatypes.should.eql({
         id: 'S',
-        created: 'DATE',
-        updated: 'DATE',
+        created: 'S',
+        updated: 'S',
       });
     });
 
@@ -115,7 +115,7 @@ describe('schema', () => {
 
       s._modelDatatypes.should.eql({
         id: 'S',
-        createdAt: 'DATE'
+        createdAt: 'S'
       });
     });
 
@@ -136,7 +136,7 @@ describe('schema', () => {
 
       s._modelDatatypes.should.eql({
         id: 'S',
-        updatedAt: 'DATE'
+        updatedAt: 'S'
       });
     });
 
@@ -158,7 +158,7 @@ describe('schema', () => {
 
       s._modelDatatypes.should.eql({
         id: 'S',
-        fooCreate: 'DATE'
+        fooCreate: 'S'
       });
     });
 

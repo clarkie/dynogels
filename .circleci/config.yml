@@ -2,13 +2,11 @@ version: 2
 
 jobs:
   build:
-    machine: true
+    machine:
+      image: ubuntu-2004:202104-01
 
     steps:
       - checkout
-
-      - restore_cache:
-          key: v1-{{ checksum "package-lock.json" }}
 
       - run:
           name: Authenticate with Artifactory
@@ -19,23 +17,18 @@ jobs:
           command: docker-compose -f ./dev/docker-compose.yml up -d dynamodb
 
       - run:
-          name: Setup Node.js and run tests
+          name: Install dependencies and run tests
           command: |
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-            nvm install 10
-            nvm alias default 10
+            nvm install 14
+            nvm alias default 14
             if [ ! -d node_modules ]; then
+              npm install -g npm@6.14.11
               npm ci
             fi
             npm run ci
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-{{ checksum "package-lock.json" }}
-
 
       - persist_to_workspace:
           root: ~/project

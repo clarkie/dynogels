@@ -35,7 +35,8 @@ jobs:
           paths: .
 
   deploy:
-    machine: true
+    machine:
+      image: ubuntu-2004:202104-01
 
     steps:
       - attach_workspace:

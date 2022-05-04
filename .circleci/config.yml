@@ -42,6 +42,15 @@ jobs:
           at: ~/project
 
       - run:
+          name: Install node and npm
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+            nvm install 14
+            nvm alias default 14
+
+      - run:
           command: |
             docker login --username=$DOCKER_USER --password=$DOCKER_PASS d2lartifacts-dockerv2-local.jfrog.io
             npm install -g publish

@@ -57,6 +57,16 @@ jobs:
             npm install -g publish
             publish
 
+      - run:
+        - name: Publish
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        run:
+          name: Publish to npm registry
+          command: |
+            npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+            npm publish
+
 workflows:
   version: 2
 

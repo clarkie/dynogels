@@ -54,6 +54,4 @@ jobs:
       - name: Publish to npm public registry
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish
+        run: npm publish --access public

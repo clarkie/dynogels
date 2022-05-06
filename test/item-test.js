@@ -111,6 +111,24 @@ describe('item', () => {
       item.set('num', 123);
       expect(item.get('num')).to.equal(123);
     });
+
+    it('should set an empty array', () => {
+      const item = new Item({ array: [1, 2, 3] });
+      item.set({ array: [] });
+      const setField = item.get('array');
+      expect(setField).to.be.an('array');
+      expect(setField).to.have.length(0);
+    });
+
+    it('should combine objects in array when setting array field', () => {
+      const item = new Item({ a: [{ b: 2 }, { d: 4 }] });
+      item.set({ a: [{ c: 3 }, { e: 5 }] });
+      const setField = item.get('a');
+      expect(setField[0].b).to.equal(2);
+      expect(setField[0].c).to.equal(3);
+      expect(setField[1].d).to.equal(4);
+      expect(setField[1].e).to.equal(5);
+    });
   });
 });
 

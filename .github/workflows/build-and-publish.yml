@@ -1,0 +1,59 @@
+name: Build and publish
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Persist Workspace
+        uses: Brightspace/third-party-actions@actions/cache
+        with:
+          path: |
+            ./*
+          key: worksapce-v1-${{ github.sha }}
+
+      - name: Checkout
+        uses: Brightspace/third-party-actions@actions/checkout
+
+      - name: setup-docker
+        uses: docker-practice/actions-setup-docker@1.0.9
+
+      - name: Start docker containers
+        run: docker-compose -f ./dev/docker-compose.yml up -d dynamodb
+
+      - name: Setup Node
+        uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14'
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+
+  deploy:
+    if: ${{ github.ref_name == 'master' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Persist Workspace
+        uses: Brightspace/third-party-actions@actions/cache
+        with:
+          path: |
+            ./*
+          key: worksapce-v1-${{ github.sha }}
+
+      - name: Setup node
+        uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: 14
+          cache: npm
+
+      - name: Publish to npm public registry
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish

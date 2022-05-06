@@ -302,6 +302,26 @@ describe('expressions', () => {
       expect(result.values).to.eql({});
       expect(result.attributeNames).to.eql({});
     });
+
+    it('should ignore item fields that are explicitly set to undefined', () => {
+      const updates = {
+        id: 'foobar',
+        email: 'test@test.com',
+        optionalField: undefined,
+      };
+
+      const result = expressions.serializeUpdateExpression(schema, updates);
+
+      expect(result.expressions).to.eql({
+        SET: ['#email = :email'],
+        ADD: [],
+        REMOVE: [],
+        DELETE: [],
+      });
+
+      expect(result.values).to.eql({ ':email': 'test@test.com' });
+      expect(result.attributeNames).to.eql({ '#email': 'email' });
+    });
   });
 
   describe('#stringify', () => {

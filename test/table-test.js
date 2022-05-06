@@ -948,7 +948,7 @@ describe('table', () => {
 
       table = new Table('accounts', s, realSerializer, docClient, logger);
 
-      const item = { name: 'Dr. Who', birthday: undefined };
+      const item = { name: 'Dr. Who', birthday: 'a' };
 
       table.update(item, (err, account) => {
         expect(err).to.exist;

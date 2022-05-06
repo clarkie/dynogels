@@ -48,7 +48,7 @@ jobs:
       - name: Setup node
         uses: Brightspace/third-party-actions@actions/setup-node
         with:
-          node-version: 14
+          node-version: '14'
           cache: npm
 
       - name: Publish to npm public registry

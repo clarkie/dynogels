@@ -60,4 +60,4 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish @d2l/dynogels --access public
+          npm publish d2l-dynogels --access public

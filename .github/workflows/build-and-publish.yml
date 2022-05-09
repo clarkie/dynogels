@@ -54,10 +54,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Publish to npm public registry
-        env:
+      - name: Semantic Release
+        uses: BrightspaceUI/actions/semantic-release@master
+        with:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
+          NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish d2l-dynogels --access public

@@ -51,11 +51,13 @@ jobs:
           node-version: '14'
           cache: npm
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Publish to npm public registry
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm login
           npm publish @d2l/dynogels --access public

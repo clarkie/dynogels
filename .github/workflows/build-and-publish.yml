@@ -56,4 +56,5 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          npm login
           npm publish @d2l/dynogels --access public

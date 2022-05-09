@@ -54,4 +54,6 @@ jobs:
       - name: Publish to npm public registry
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish @d2l/dynogels --access public

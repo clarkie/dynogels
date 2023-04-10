@@ -36,16 +36,16 @@
   "devDependencies": {
     "chai": "4.1.2",
     "coveralls": "3.0.0",
-    "eslint": "4.19.1",
+    "eslint": "5.6.0",
     "eslint-config-airbnb-base": "12.1.0",
-    "eslint-plugin-import": "2.10.0",
+    "eslint-plugin-import": "2.14.0",
     "istanbul": "^0.4.4",
-    "joi": "^11.3.4",
+    "joi": "^14.0.1",
     "jscoverage": "^0.6.0",
-    "mocha": "4.0.1",
+    "mocha": "5.2.0",
     "sinon": "4.0.1"
   },
   "peerDependencies": {
-    "joi": "^11.3.4"
+    "joi": "^14.0.1"
   }
 }

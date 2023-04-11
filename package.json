@@ -30,6 +30,7 @@
     "async": "2.5.0",
     "@aws-sdk/client-dynamodb": "3.306.0",
     "@aws-sdk/lib-dynamodb": "3.306.0",
+    "@aws-sdk/util-dynamodb": "3.310.0",
     "lodash": "^4.17.15",
     "uuid": "3.1.0"
   },
